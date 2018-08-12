@@ -1,0 +1,13 @@
+[package]
+name = "buoyfinder"
+version = "0.1.0"
+authors = ["Matthew Iannucci <mpiannucci@gmail.com>"]
+
+[lib]
+name = "buoyfinder"
+crate-type = ["staticlib"]
+
+[dependencies]
+
+[build-dependencies]
+cbindgen = "*"
