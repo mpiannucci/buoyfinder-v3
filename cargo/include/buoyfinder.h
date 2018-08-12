@@ -1,8 +1,5 @@
-#include <cstdint>
-#include <cstdlib>
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
-extern "C" {
-
-int32_t rust_hello_world();
-
-} // extern "C"
+int32_t rust_hello_world(void);
