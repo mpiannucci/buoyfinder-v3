@@ -2,4 +2,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-int32_t rust_hello_world(void);
+typedef struct {
+  const uint8_t *bytes;
+  size_t len;
+} RustByteSlice;
+
+RustByteSlice get_string_from_rust(void);

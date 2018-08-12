@@ -8,6 +8,7 @@ name = "buoyfinder"
 crate-type = ["staticlib"]
 
 [dependencies]
+libc = "*"
 
 [build-dependencies]
 cbindgen = "*"
