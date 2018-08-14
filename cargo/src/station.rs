@@ -1,8 +1,9 @@
 use location::Location;
+use std::string::String;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
-enum BuoyType {
+pub enum BuoyType {
     None,
     Buoy, 
     Fixed,
@@ -13,33 +14,34 @@ enum BuoyType {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-struct BuoyStation {
+pub struct BuoyStation {
     #[serde(rename = "id")]
-    station_id: String,
+    pub station_id: String,
 
-    #[serde(flatten)]
-    location: Location,
-
-    owner: String, 
+    pub owner: String, 
 
     #[serde(rename = "pgm")]
-    program: String,
+    pub program: String,
 
-    type: BuoyType,
+    #[serde(rename = "type")]
+    pub buoy_type: BuoyType,
 
     #[serde(rename = "met")]
-    active: bool,
+    pub active: bool,
 
-    currents: bool,
+    pub currents: bool,
 
     #[serde(rename = "waterquality")]
-    water_quality: bool,
+    pub water_quality: bool,
 
-    dart: bool,
+    pub dart: bool,
+
+    #[serde(flatten)]
+    pub location: Location,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-struct BuoyStations {
+pub struct BuoyStations {
     #[serde(rename = "$value")]
-    stations: Vec<BuoyStation>,
+    pub stations: Vec<BuoyStation>,
 }
