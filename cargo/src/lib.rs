@@ -1,22 +1,12 @@
+#![allow(dead_code)]
+
 extern crate libc;
+#[macro_use] 
+extern crate serde_derive;
+extern crate serde_xml_rs;
 
-use libc::size_t;
-
-
-#[repr(C)]
-pub struct RustByteSlice {
-    pub bytes: *const u8,
-    pub len: size_t,
-}
-
-#[no_mangle]
-pub extern fn get_string_from_rust() -> RustByteSlice {
-    let s = "This is a string from Rust.";
-    RustByteSlice{
-        bytes: s.as_ptr(),
-        len: s.len() as size_t,
-    }
-}
+pub mod strings;
+pub mod location;
 
 #[cfg(test)]
 mod tests {
