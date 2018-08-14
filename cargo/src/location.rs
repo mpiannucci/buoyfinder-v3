@@ -1,13 +1,14 @@
 use std::string::String;
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 struct Location {
+    #[serde(default)]
     name: String,
 
-    #[serde(rename = "lat", default)]
+    #[serde(rename = "lat")]
     latitude: f64,
 
-    #[serde(rename = "lon", default)]
+    #[serde(rename = "lon")]
     longitude: f64,
 
     #[serde(rename = "elev", default)]
