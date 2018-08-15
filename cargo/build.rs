@@ -1,4 +1,4 @@
-extern crate cbindgen;
+//extern crate cbindgen;
 
 use std::env;
 

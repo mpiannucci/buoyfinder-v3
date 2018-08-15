@@ -9,9 +9,9 @@ crate-type = ["staticlib"]
 
 [dependencies]
 libc = "*"
-serde = "1.0"
-serde_derive = "1.0"
+serde = "1.0.71"
+serde_derive = "1.0.71"
 serde-xml-rs = "0.2.1"
 
 [build-dependencies]
-cbindgen = "*"
+#cbindgen = "*"

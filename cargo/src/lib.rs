@@ -14,9 +14,10 @@ mod tests {
     use serde_xml_rs::deserialize;
     use std::fs::File;
     use std::path::Path;
+    use station;
 
     #[test]
-    fn it_works() {
+    fn read_stations_xml() {
         let stations_xml_path = Path::new("mock/activestations.xml");
         let stations_xml_file = File::open(stations_xml_path).expect("file not found");
         let buoy_stations: station::BuoyStations = deserialize(stations_xml_file).unwrap();
