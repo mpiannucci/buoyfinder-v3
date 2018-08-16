@@ -1,6 +1,7 @@
 use location::Location;
 use std::string::String;
 use serde::de::{Deserialize, Deserializer};
+use serde_xml_rs::de::from_reader;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -51,6 +52,16 @@ pub struct BuoyStations {
 
     #[serde(rename = "count")]
     pub station_count: i64,
+}
+
+impl BuoyStations {
+    pub fn active_stations_url() -> String {
+        String::from("https://www.ndbc.noaa.gov/activestations.xml")
+    }
+
+    pub fn from_raw_data(raw_data: &str) -> BuoyStations {
+        from_reader(raw_data.as_bytes()).unwrap()
+    }
 }
 
 fn bool_from_simple_str<'de, D>(deserializer: D) -> Result<bool, D::Error>
