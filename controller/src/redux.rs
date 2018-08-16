@@ -1,4 +1,5 @@
 use std::clone::Clone;
+use std::rc::Rc;
 
 pub trait StoreObserver<T> {
     fn new_state(&mut self, state: &T);
@@ -8,7 +9,7 @@ type Reducer<T, U> = fn(&T, &U) -> T;
 
 pub struct Store<T: Clone, U> {
     state: T,
-    observers: Vec<&StoreObserver<T>>,
+    observers: Vec<Rc<StoreObserver<T>>>,
     reducer: Reducer<T, U>,
 }
 
@@ -22,12 +23,16 @@ impl <T: Clone, U> Store<T, U> {
         }
     }
 
-    pub fn subscribe(&mut self, new_observer: &StoreObserver<T>) {
+    pub fn subscribe(&mut self, new_observer: Rc<StoreObserver<T>>) {
         self.observers.push(new_observer);
     }
 
-    pub fn unsubscribe(&mut self, observer: &StoreObserver<T>) {
-        self.observers.remove_item(observer);
+    pub fn unsubscribe(&mut self, observer: Rc<StoreObserver<T>>) {
+        let index = self.observers.iter().position(|&r| { &observer as *const StoreObserver<T> == r as *const StoreObserver<T> });
+        match index {
+            Some(x) => self.observers.remove(x),
+            _ => ()
+        };
     }
 
     pub fn dispatch(&mut self, action: &U) {
