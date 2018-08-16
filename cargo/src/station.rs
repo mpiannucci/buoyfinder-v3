@@ -1,5 +1,6 @@
 use location::Location;
 use std::string::String;
+use serde::de::{Deserialize, Deserializer};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -27,29 +28,17 @@ pub struct BuoyStation {
     #[serde(rename = "type")]
     pub buoy_type: BuoyType,
 
-    #[serde(rename = "met", default)]
-    pub active: String,
+    #[serde(rename = "met", deserialize_with = "bool_from_simple_str", default)]
+    pub active: bool,
 
-    #[serde(default)]
-    pub currents: String,
+    #[serde(default, deserialize_with = "bool_from_simple_str")]
+    pub currents: bool,
 
-    #[serde(rename = "waterquality", default)]
-    pub water_quality: String,
+    #[serde(rename = "waterquality", deserialize_with = "bool_from_simple_str", default)]
+    pub water_quality: bool,
 
-    #[serde(default)]
-    pub dart: String,
-
-    #[serde(default)]
-    pub name: String,
-
-    // #[serde(rename = "lat")]
-    // pub latitude: f64,
-
-    // #[serde(rename = "lon")]
-    // pub longitude: f64,
-
-    // #[serde(rename = "elev", default)]
-    // pub altitude: f64,
+    #[serde(default, deserialize_with = "bool_from_simple_str")]
+    pub dart: bool,
 
     #[serde(flatten)]
     pub location: Location,
@@ -62,4 +51,14 @@ pub struct BuoyStations {
 
     #[serde(rename = "count")]
     pub station_count: i64,
+}
+
+fn bool_from_simple_str<'de, D>(deserializer: D) -> Result<bool, D::Error>
+    where D: Deserializer<'de>
+{
+    let s = String::deserialize(deserializer)?;
+    match s.as_ref() {
+        "y" => Ok(true),
+        _ => Ok(false)
+    }
 }

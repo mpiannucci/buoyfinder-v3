@@ -68,20 +68,3 @@ fn f64_from_str<'de, D>(deserializer: D) -> Result<f64, D::Error>
     let s = String::deserialize(deserializer)?;
     s.parse::<f64>().map_err(de::Error::custom)
 }
-
-
-// struct F64Visitor;
-
-// impl<'de> Visitor<'de> for F64Visitor {
-
-//     type Value = f64;
-
-//     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-//         formatter.write_str("a float value wrapped in a string")
-//     }
-
-//     fn visit_str<E>(self, s: &str) -> Result<Self::Value, E> where E: de::Error, {
-//         println!("{}", s);
-//         Result::Ok(0.0)
-//     }
-// }
