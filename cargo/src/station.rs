@@ -14,6 +14,7 @@ pub enum BuoyType {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename = "station")]
 pub struct BuoyStation {
     #[serde(rename = "id")]
     pub station_id: String,
@@ -26,22 +27,22 @@ pub struct BuoyStation {
     #[serde(rename = "type")]
     pub buoy_type: BuoyType,
 
-    #[serde(rename = "met")]
-    pub active: bool,
+    // #[serde(rename = "met")]
+    // pub active: String,
 
-    pub currents: bool,
+    // pub currents: String,
 
-    #[serde(rename = "waterquality")]
-    pub water_quality: bool,
+    // #[serde(rename = "waterquality")]
+    // pub water_quality: String,
 
-    pub dart: bool,
+    // pub dart: String,
 
-    #[serde(flatten)]
-    pub location: Location,
+    // #[serde(flatten)]
+    // pub location: Location,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuoyStations {
     #[serde(rename = "$value")]
-    pub stations: Vec<Location>,
+    pub stations: Vec<BuoyStation>,
 }
