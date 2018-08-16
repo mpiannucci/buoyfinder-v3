@@ -27,15 +27,17 @@ pub struct BuoyStation {
     #[serde(rename = "type")]
     pub buoy_type: BuoyType,
 
-    // #[serde(rename = "met")]
-    // pub active: String,
+    #[serde(rename = "met", default)]
+    pub active: String,
 
-    // pub currents: String,
+    #[serde(default)]
+    pub currents: String,
 
-    // #[serde(rename = "waterquality")]
-    // pub water_quality: String,
+    #[serde(rename = "waterquality", default)]
+    pub water_quality: String,
 
-    // pub dart: String,
+    #[serde(default)]
+    pub dart: String,
 
     // #[serde(flatten)]
     // pub location: Location,
