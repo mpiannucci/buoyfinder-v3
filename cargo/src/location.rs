@@ -1,20 +1,20 @@
 use std::string::String;
 use std::f64;
 use std::fmt;
-use serde::de::{self, Deserializer, Visitor, Unexpected};
+use serde::de::{self, Deserialize, Deserializer, Visitor, Unexpected};
 
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Location {
     #[serde(default)]
     pub name: String,
 
-    #[serde(rename = "lat")]
+    #[serde(rename = "lat", deserialize_with = "f64_from_str")]
     pub latitude: f64,
 
-    #[serde(rename = "lon")]
+    #[serde(rename = "lon", deserialize_with = "f64_from_str")]
     pub longitude: f64,
 
-    #[serde(rename = "elev", default)]
+    #[serde(rename = "elev", deserialize_with = "f64_from_str", default)]
     pub altitude: f64,
 }
 
@@ -62,3 +62,27 @@ impl Location {
         }
     }
 }
+
+fn f64_from_str<'de, D>(deserializer: D) -> Result<f64, D::Error>
+    where D: Deserializer<'de>
+{
+    let s = String::deserialize(deserializer)?;
+    s.parse::<f64>().map_err(de::Error::custom)
+}
+
+
+// struct F64Visitor;
+
+// impl<'de> Visitor<'de> for F64Visitor {
+
+//     type Value = f64;
+
+//     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+//         formatter.write_str("a float value wrapped in a string")
+//     }
+
+//     fn visit_str<E>(self, s: &str) -> Result<Self::Value, E> where E: de::Error, {
+//         println!("{}", s);
+//         Result::Ok(0.0)
+//     }
+// }

@@ -39,8 +39,20 @@ pub struct BuoyStation {
     #[serde(default)]
     pub dart: String,
 
-    // #[serde(flatten)]
-    // pub location: Location,
+    #[serde(default)]
+    pub name: String,
+
+    // #[serde(rename = "lat")]
+    // pub latitude: f64,
+
+    // #[serde(rename = "lon")]
+    // pub longitude: f64,
+
+    // #[serde(rename = "elev", default)]
+    // pub altitude: f64,
+
+    #[serde(flatten)]
+    pub location: Location,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
