@@ -59,4 +59,7 @@ pub struct BuoyStation {
 pub struct BuoyStations {
     #[serde(rename = "$value")]
     pub stations: Vec<BuoyStation>,
+
+    #[serde(rename = "count")]
+    pub station_count: i64,
 }

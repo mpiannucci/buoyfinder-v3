@@ -1,7 +1,6 @@
 use std::string::String;
 use std::f64;
-use std::fmt;
-use serde::de::{self, Deserialize, Deserializer, Visitor, Unexpected};
+use serde::de::{self, Deserialize, Deserializer};
 
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Location {

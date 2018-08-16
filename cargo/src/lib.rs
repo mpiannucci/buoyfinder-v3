@@ -26,6 +26,6 @@ mod tests {
         let mut raw_station_data = String::new();
         stations_xml_file.read_to_string(&mut raw_station_data);
         let buoy_stations: station::BuoyStations = from_reader(raw_station_data.as_bytes()).unwrap();
-        println!("{:?}", buoy_stations);
+        assert_eq!(buoy_stations.station_count, buoy_stations.stations.len() as i64 - 1)
     }
 }
