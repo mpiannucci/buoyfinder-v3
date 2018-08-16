@@ -43,5 +43,5 @@ pub struct BuoyStation {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuoyStations {
     #[serde(rename = "$value")]
-    pub stations: Vec<BuoyStation>,
+    pub stations: Vec<Location>,
 }
