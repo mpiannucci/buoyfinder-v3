@@ -25,6 +25,7 @@ impl <T, U> Store<T, U> where T: Clone {
     }
 
     pub fn subscribe(&mut self, new_observer: Arc<RefCell<StoreObserver<T>>>) {
+        new_observer.borrow_mut().new_state(&self.state);
         self.observers.push(new_observer);
     }
 

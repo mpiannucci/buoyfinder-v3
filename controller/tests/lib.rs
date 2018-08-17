@@ -1,6 +1,8 @@
 extern crate controller;
 
 use controller::redux;
+use std::cell::RefCell;
+use std::sync::Arc;
 
 pub enum Action {
     Increment,
@@ -31,9 +33,9 @@ pub fn reducer(state: &State, action: &Action) -> State {
 
 pub struct StatePrinter;
 
-impl <T: State> redux::StoreObserver<T> for StatePrinter {
+impl <T> redux::StoreObserver<T> for StatePrinter {
     fn new_state(&mut self, state: &T) {
-        println!("{}", state.count);
+        println!("Got state");
     }
 }
 
@@ -45,6 +47,20 @@ mod tests {
     #[test]
     fn run_redux() {
         let state = State::new();
-        let store = redux::Store::create(&state, reducer);
+
+        let observer = StatePrinter{};
+        let observer = RefCell::new(observer);
+        let observer = Arc::new(observer);
+
+        let mut store = redux::Store::create(&state, reducer);
+        store.subscribe(observer.clone());
+
+        store.dispatch(&Action::Increment); // 1
+        store.dispatch(&Action::Increment); // 2
+        store.dispatch(&Action::Decrement); // 1
+
+        store.unsubscribe(observer);
+        store.dispatch(&Action::Decrement); // 0
+
     }
 }
