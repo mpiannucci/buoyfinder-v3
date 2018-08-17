@@ -3,13 +3,14 @@ extern crate controller;
 use controller::redux;
 use std::cell::RefCell;
 use std::sync::Arc;
+use std::fmt::Debug;
 
 pub enum Action {
     Increment,
     Decrement,
 }
 
-#[derive(Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct State {
     pub count: i64,
 }
@@ -33,9 +34,9 @@ pub fn reducer(state: &State, action: &Action) -> State {
 
 pub struct StatePrinter;
 
-impl <T> redux::StoreObserver<T> for StatePrinter {
-    fn new_state(&mut self, state: &T) {
-        println!("Got state");
+impl redux::StoreObserver<State> for StatePrinter {
+    fn new_state(&mut self, state: &State) {
+        println!("Got state: {}", state.count);
     }
 }
 
