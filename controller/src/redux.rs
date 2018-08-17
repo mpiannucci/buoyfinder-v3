@@ -1,5 +1,6 @@
 use std::clone::Clone;
-use std::rc::Rc;
+use std::sync::Arc;
+use std::cell::RefCell;
 
 pub trait StoreObserver<T> {
     fn new_state(&mut self, state: &T);
@@ -9,7 +10,7 @@ type Reducer<T, U> = fn(&T, &U) -> T;
 
 pub struct Store<T: Clone, U> {
     state: T,
-    observers: Vec<Rc<StoreObserver<T>>>,
+    observers: Vec<Arc<RefCell<StoreObserver<T>>>>,
     reducer: Reducer<T, U>,
 }
 
@@ -23,16 +24,16 @@ impl <T: Clone, U> Store<T, U> {
         }
     }
 
-    pub fn subscribe(&mut self, new_observer: Rc<StoreObserver<T>>) {
+    pub fn subscribe(&mut self, new_observer: Arc<RefCell<StoreObserver<T>>>) {
         self.observers.push(new_observer);
     }
 
-    pub fn unsubscribe(&mut self, observer: Rc<StoreObserver<T>>) {
-        let index = self.observers.iter().position(|&r| { &observer as *const StoreObserver<T> == r as *const StoreObserver<T> });
-        match index {
-            Some(x) => self.observers.remove(x),
-            _ => ()
-        };
+    pub fn unsubscribe(&mut self, observer: Arc<RefCell<StoreObserver<T>>>) {
+        if let Some(position) = self.observers.iter().position(|x| {
+            Arc::ptr_eq(&x, &observer)
+        }) {
+            self.observers.remove(position);
+        }
     }
 
     pub fn dispatch(&mut self, action: &U) {
@@ -42,7 +43,7 @@ impl <T: Clone, U> Store<T, U> {
 
     fn notify_observers(&mut self) {
         for mut observer in self.observers.iter_mut() {
-            observer.new_state(&self.state);
+            observer.borrow_mut().new_state(&self.state);
         }
     }
 }
