@@ -8,13 +8,13 @@ pub trait StoreObserver<T> {
 
 type Reducer<T, U> = fn(&T, &U) -> T;
 
-pub struct Store<T: Clone, U> {
+pub struct Store<T, U> {
     state: T,
     observers: Vec<Arc<RefCell<StoreObserver<T>>>>,
     reducer: Reducer<T, U>,
 }
 
-impl <T: Clone, U> Store<T, U> {
+impl <T, U> Store<T, U> where T: Clone {
 
     pub fn create(initial_state: &T, reducer: Reducer<T, U>) -> Store<T, U> {
         Store {
