@@ -52,14 +52,21 @@ mod tests {
         let observer = RefCell::new(observer);
         let observer = Arc::new(observer);
 
+        println!("{}", Arc::strong_count(&observer));
+
         let mut store = redux::Store::create(&state, reducer);
         store.subscribe(observer.clone());
+
+        println!("{}", Arc::strong_count(&observer));
 
         store.dispatch(&Action::Increment); // 1
         store.dispatch(&Action::Increment); // 2
         store.dispatch(&Action::Decrement); // 1
 
-        store.unsubscribe(observer);
+        store.unsubscribe(observer.clone());
+
+        println!("{}", Arc::strong_count(&observer));
+
         store.dispatch(&Action::Decrement); // 0
 
     }
