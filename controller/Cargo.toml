@@ -1,8 +1,0 @@
-[package]
-name = "controller"
-version = "0.1.0"
-authors = ["Matthew Iannucci <miannucci@navatekltd.com>"]
-
-[dependencies]
-libc = "*"
-buoyfinder = { path = "../model" }
