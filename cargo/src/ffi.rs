@@ -21,3 +21,4 @@ pub extern fn store_new() -> *mut Store<AppState, Actions> {
 pub unsafe extern fn store_free(data: *mut Store<AppState, Actions>) {
     let _ = Box::from_raw(data);
 }
+
