@@ -1,7 +1,12 @@
 use libc::size_t;
+use std::ffi::CStr;
 use std::boxed::Box;
+use std::sync::Arc;
+use std::sync::Weak;
+use std::cell::RefCell;
 use redux::Store;
-use app::{Actions, AppState, app_reducer};
+use app::{Actions, DataState, AppState, app_reducer};
+use vm::{ExploreViewData, ExploreView, ExploreViewModel};
 
 #[repr(C)]
 pub struct RustByteSlice {
@@ -22,3 +27,14 @@ pub unsafe extern fn store_free(data: *mut Store<AppState, Actions>) {
     let _ = Box::from_raw(data);
 }
 
+#[no_mangle]
+pub extern fn explore_view_data_new() -> *mut ExploreViewData {
+    let explore_view_data = ExploreViewData::from_state(&DataState::NoData);
+    let boxed_explore_view_data = Box::new(explore_view_data);
+    Box::into_raw(boxed_explore_view_data)
+}
+
+#[no_mangle]
+pub unsafe extern fn explore_view_data_free(data: *mut ExploreViewData) {
+    let _ = Box::from_raw(data);
+}
