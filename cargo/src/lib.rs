@@ -9,6 +9,9 @@ extern crate serde_xml_rs;
 pub mod strings;
 pub mod location;
 pub mod station;
+pub mod redux;
+pub mod app;
+pub mod vm;
 
 #[cfg(test)]
 mod tests {
