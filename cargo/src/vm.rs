@@ -7,7 +7,7 @@ use app;
 
 #[derive(Clone)]
 pub struct ExploreViewData {
-    stations: Vec<station::BuoyStation>
+    pub stations: Vec<station::BuoyStation>
 }
 
 impl ExploreViewData {

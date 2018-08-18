@@ -38,3 +38,9 @@ pub extern fn explore_view_data_new() -> *mut ExploreViewData {
 pub unsafe extern fn explore_view_data_free(data: *mut ExploreViewData) {
     let _ = Box::from_raw(data);
 }
+
+#[no_mangle]
+pub unsafe extern fn explore_view_data_station_count(data: *const ExploreViewData) -> i64 {
+    let view_data = &*data;
+    view_data.stations.len() as i64
+}
