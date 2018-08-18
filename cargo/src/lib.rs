@@ -6,12 +6,13 @@ extern crate serde_derive;
 extern crate serde;
 extern crate serde_xml_rs;
 
-pub mod strings;
 pub mod location;
 pub mod station;
 pub mod redux;
 pub mod app;
 pub mod vm;
+
+pub mod ffi;
 
 #[cfg(test)]
 mod tests {
