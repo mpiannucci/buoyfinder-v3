@@ -1,11 +1,12 @@
 use libc::size_t;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
+use std::ops::Deref;
 use std::boxed::Box;
 use std::sync::Arc;
 use std::sync::Weak;
 use std::cell::RefCell;
-use redux::Store;
+use redux::{Store, StoreObserver};
 use app::{Actions, DataState, AppState, app_reducer};
 use vm::{ExploreViewData, ExploreView, ExploreViewModel};
 use station::{BuoyStation};
@@ -43,11 +44,42 @@ pub unsafe extern fn store_free(data: *mut Store<AppState, Actions>) {
     let _ = Box::from_raw(data);
 }
 
+#[repr(C)]
+pub struct explore_view {
+    pub new_view_data: extern fn(view_data: *mut ExploreViewData),
+}
+
+// #[no_mangle]
+// pub unsafe extern fn explore_view_model_new(view: *mut explore_view) -> *mut ExploreViewModel {
+//     let view = &*view;
+//     let view = ExploreViewWrapper(*view);
+//     //let view = Arc::new(RefCell::from(view as ExploreView));
+
+//     let view_model = ExploreViewModel::new(Arc::downgrade(&view));
+//     //Arc::
+// }
+
+struct ExploreViewWrapper(explore_view);
+
+impl Deref for ExploreViewWrapper {
+    type Target = explore_view;
+    fn deref(&self) -> &explore_view {
+        &self.0
+    }
+}
+
+impl ExploreView for ExploreViewWrapper {
+    fn new_view_data(&mut self, view_data: &ExploreViewData) {
+        let view_data = Box::into_raw(Box::new(view_data.clone()));
+        (self.new_view_data)(view_data);
+    }
+}
+
 #[no_mangle]
 pub extern fn explore_view_data_new() -> *mut ExploreViewData {
-    let explore_view_data = ExploreViewData::from_state(&DataState::NoData);
-    let boxed_explore_view_data = Box::new(explore_view_data);
-    Box::into_raw(boxed_explore_view_data)
+    let view_data = ExploreViewData::from_state(&DataState::NoData);
+    let boxed_view_data = Box::new(view_data);
+    Box::into_raw(boxed_view_data)
 }
 
 #[no_mangle]
@@ -95,3 +127,4 @@ pub unsafe extern fn buoy_station_name(data: *const BuoyStation) -> *const c_cha
     let buoy_station = &*data;
     string_to_c_char(buoy_station.location.name.clone())
 }
+

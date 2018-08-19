@@ -24,11 +24,11 @@ pub trait ExploreView {
 }
 
 pub struct ExploreViewModel {
-    view: Weak<RefCell<ExploreView>>,
+    pub view: Arc<RefCell<ExploreView>>,
 }
 
 impl ExploreViewModel {
-    pub fn new(explore_view: Weak<RefCell<ExploreView>>) -> ExploreViewModel {
+    pub fn new(explore_view: Arc<RefCell<ExploreView>>) -> ExploreViewModel {
         ExploreViewModel {
             view: explore_view,
         }
@@ -37,9 +37,7 @@ impl ExploreViewModel {
 
 impl redux::StoreObserver<app::AppState> for ExploreViewModel {
     fn new_state(&mut self, new_state: &app::AppState) {
-        if let Some(explore_view) = self.view.upgrade() {
-            let new_view_data = ExploreViewData::from_state(&new_state.stations_state);
-            explore_view.borrow_mut().new_view_data(&new_view_data);
-        }
+        let new_view_data = ExploreViewData::from_state(&new_state.stations_state);
+        self.view.borrow_mut().new_view_data(&new_view_data);
     }
 }
