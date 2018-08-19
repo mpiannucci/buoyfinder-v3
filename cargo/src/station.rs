@@ -45,6 +45,22 @@ pub struct BuoyStation {
     pub location: Location,
 }
 
+impl BuoyStation {
+    pub fn new(station_id: String, location: Location) -> BuoyStation {
+        BuoyStation {
+            station_id: station_id,
+            location: location,
+            owner: String::from(""),
+            program: String::from(""),
+            buoy_type: BuoyType::Buoy,
+            active: true,
+            currents: false,
+            water_quality: false,
+            dart: false,
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuoyStations {
     #[serde(rename = "$value")]
