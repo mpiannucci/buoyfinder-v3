@@ -5,7 +5,7 @@ use std::ops::Deref;
 use std::boxed::Box;
 use std::sync::Arc;
 use std::sync::Weak;
-use std::cell::RefCell;
+use std::sync::Mutex;
 use redux::{Store, StoreObserver};
 use app::{Actions, DataState, AppState, app_reducer};
 use vm::{ExploreViewData, ExploreView, ExploreViewModel};
@@ -126,5 +126,11 @@ pub unsafe extern fn buoy_station_id(data: *const BuoyStation) -> *const c_char 
 pub unsafe extern fn buoy_station_name(data: *const BuoyStation) -> *const c_char {
     let buoy_station = &*data;
     string_to_c_char(buoy_station.location.name.clone())
+}
+
+#[no_mangle]
+pub unsafe extern fn buoy_station_active(data: *const BuoyStation) -> bool {
+    let buoy_station = &*data;
+    buoy_station.active
 }
 

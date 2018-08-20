@@ -1,6 +1,6 @@
 use std::clone::Clone;
 use std::sync::Arc;
-use std::cell::RefCell;
+use std::sync::Mutex;
 
 pub trait StoreObserver<T> {
     fn new_state(&mut self, state: &T);
@@ -10,7 +10,7 @@ type Reducer<T, U> = fn(&T, &U) -> T;
 
 pub struct Store<T, U> {
     state: T,
-    observers: Vec<Arc<RefCell<StoreObserver<T>>>>,
+    observers: Vec<Arc<Mutex<StoreObserver<T>>>>,
     reducer: Reducer<T, U>,
 }
 
@@ -24,12 +24,12 @@ impl <T, U> Store<T, U> where T: Clone {
         }
     }
 
-    pub fn subscribe(&mut self, new_observer: Arc<RefCell<StoreObserver<T>>>) {
-        new_observer.borrow_mut().new_state(&self.state);
+    pub fn subscribe(&mut self, new_observer: Arc<Mutex<StoreObserver<T>>>) {
+        new_observer.lock().unwrap().new_state(&self.state);
         self.observers.push(new_observer);
     }
 
-    pub fn unsubscribe(&mut self, observer: Arc<RefCell<StoreObserver<T>>>) {
+    pub fn unsubscribe(&mut self, observer: Arc<Mutex<StoreObserver<T>>>) {
         if let Some(position) = self.observers.iter().position(|x| {
             Arc::ptr_eq(&x, &observer)
         }) {
@@ -44,7 +44,7 @@ impl <T, U> Store<T, U> where T: Clone {
 
     fn notify_observers(&mut self) {
         for mut observer in self.observers.iter_mut() {
-            observer.borrow_mut().new_state(&self.state);
+            observer.lock().unwrap().new_state(&self.state);
         }
     }
 }
