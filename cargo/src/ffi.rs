@@ -49,16 +49,6 @@ pub struct explore_view {
     pub new_view_data: extern fn(view_data: *mut ExploreViewData),
 }
 
-// #[no_mangle]
-// pub unsafe extern fn explore_view_model_new(view: *mut explore_view) -> *mut ExploreViewModel {
-//     let view = &*view;
-//     let view = ExploreViewWrapper(*view);
-//     //let view = Arc::new(RefCell::from(view as ExploreView));
-
-//     let view_model = ExploreViewModel::new(Arc::downgrade(&view));
-//     //Arc::
-// }
-
 struct ExploreViewWrapper(explore_view);
 
 impl Deref for ExploreViewWrapper {
@@ -73,6 +63,25 @@ impl ExploreView for ExploreViewWrapper {
         let view_data = Box::into_raw(Box::new(view_data.clone()));
         (self.new_view_data)(view_data);
     }
+}
+
+pub struct ExploreViewModelHandle(pub Arc<Mutex<ExploreViewModel>>);
+
+#[no_mangle]
+pub unsafe extern fn explore_view_bind(view: explore_view, store: *mut Store<AppState, Actions>) -> *mut ExploreViewModelHandle {
+    let explore_view_wrapper = Box::new(ExploreViewWrapper(view));
+    let explore_view_model = Arc::new(Mutex::new(ExploreViewModel::new(explore_view_wrapper)));
+    let explore_view_model_handle = Box::new(ExploreViewModelHandle(explore_view_model));
+    let store = &mut*store;
+    store.subscribe(explore_view_model_handle.0.clone());
+    Box::into_raw(explore_view_model_handle)
+}
+
+#[no_mangle]
+pub unsafe extern fn explore_view_unbind(view_model_handle: *mut ExploreViewModelHandle, store: *mut Store<AppState, Actions>) {
+    let explore_view_model_handle = Box::from_raw(view_model_handle);
+    let store = &mut*store;
+    store.unsubscribe(explore_view_model_handle.0);
 }
 
 #[no_mangle]
