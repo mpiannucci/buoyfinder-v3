@@ -28,7 +28,9 @@ impl AppState {
 pub fn app_reducer(state: &AppState, action: &Actions) -> AppState {
     let mut state = state.clone();
 
-    // TODO: Handle everything
+    match action {
+        Actions::SetBuoyStations(new_stations) => state.stations_state = DataState::DataLoaded(new_stations.clone()),
+    }
 
     state
 }
