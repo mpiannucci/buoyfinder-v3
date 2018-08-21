@@ -1,4 +1,5 @@
 use libc::size_t;
+use libc::c_void;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 use std::ops::Deref;
@@ -52,7 +53,9 @@ pub unsafe extern fn fetch_buoy_stations(store: *mut Store<AppState, Actions>) {
 
 #[repr(C)]
 pub struct explore_view {
-    pub new_view_data: extern fn(view_data: *mut ExploreViewData),
+    pub view: *mut c_void,
+
+    pub new_view_data: extern fn(view: *mut c_void, view_data: *mut ExploreViewData),
 }
 
 struct ExploreViewWrapper(explore_view);
@@ -67,7 +70,7 @@ impl Deref for ExploreViewWrapper {
 impl ExploreView for ExploreViewWrapper {
     fn new_view_data(&mut self, view_data: &ExploreViewData) {
         let view_data = Box::into_raw(Box::new(view_data.clone()));
-        (self.new_view_data)(view_data);
+        (self.new_view_data)(self.view, view_data);
     }
 }
 

@@ -11,7 +11,8 @@ typedef struct ExploreViewModelHandle ExploreViewModelHandle;
 typedef struct Store_AppState__Actions Store_AppState__Actions;
 
 typedef struct {
-  void (*new_view_data)(ExploreViewData*);
+  void *view;
+  void (*new_view_data)(void*, ExploreViewData*);
 } explore_view;
 
 bool buoy_station_active(const BuoyStation *buoy_station);
