@@ -6,7 +6,7 @@ use std::boxed::Box;
 use std::sync::Arc;
 use std::sync::Mutex;
 use redux::{Store};
-use app::{Actions, DataState, AppState, app_reducer};
+use app::{Actions, DataState, AppState, app_reducer, fetch_buoy_stations_remote};
 use vm::{ExploreViewData, ExploreView, ExploreViewModel};
 use station::{BuoyStation};
 use location::Location;
@@ -39,13 +39,15 @@ pub extern fn store_new() -> *mut Store<AppState, Actions> {
 }
 
 #[no_mangle]
-pub unsafe extern fn store_free(data: *mut Store<AppState, Actions>) {
-    let _ = Box::from_raw(data);
+pub unsafe extern fn store_free(store: *mut Store<AppState, Actions>) {
+    let _ = Box::from_raw(store);
 }
 
 #[no_mangle]
-pub unsafe extern fn fetch_buoy_stations(data: *mut Store<AppState, Actions>) {
-    
+pub unsafe extern fn fetch_buoy_stations(store: *mut Store<AppState, Actions>) {
+    let store = &mut*store;
+    let stations = fetch_buoy_stations_remote();
+    store.dispatch(&Actions::SetBuoyStations(stations));
 }
 
 #[repr(C)]
@@ -125,25 +127,25 @@ pub unsafe extern fn buoy_station_new(station_id: *const c_char, name: *const c_
 }
 
 #[no_mangle]
-pub unsafe extern fn buoy_station_free(data: *mut BuoyStation) {
-    let _ = Box::from_raw(data);
+pub unsafe extern fn buoy_station_free(buoy_station: *mut BuoyStation) {
+    let _ = Box::from_raw(buoy_station);
 }
 
 #[no_mangle]
-pub unsafe extern fn buoy_station_id(data: *const BuoyStation) -> *const c_char {
-    let buoy_station = &*data;
+pub unsafe extern fn buoy_station_id(buoy_station: *const BuoyStation) -> *const c_char {
+    let buoy_station = &*buoy_station;
     string_to_c_char(buoy_station.station_id.clone())
 }
 
 #[no_mangle]
-pub unsafe extern fn buoy_station_name(data: *const BuoyStation) -> *const c_char {
-    let buoy_station = &*data;
+pub unsafe extern fn buoy_station_name(buoy_station: *const BuoyStation) -> *const c_char {
+    let buoy_station = &*buoy_station;
     string_to_c_char(buoy_station.location.name.clone())
 }
 
 #[no_mangle]
-pub unsafe extern fn buoy_station_active(data: *const BuoyStation) -> bool {
-    let buoy_station = &*data;
+pub unsafe extern fn buoy_station_active(buoy_station: *const BuoyStation) -> bool {
+    let buoy_station = &*buoy_station;
     buoy_station.active
 }
 

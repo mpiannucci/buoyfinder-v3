@@ -89,3 +89,28 @@ fn bool_from_simple_str<'de, D>(deserializer: D) -> Result<bool, D::Error>
         _ => Ok(false)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use std::fs::File;
+    use std::io::Read;
+    use std;
+    use std::path::Path;
+    use super::*;
+
+    fn read_stations_mock() -> String {
+        let stations_xml_path = Path::new("mock/activestations.xml");
+        let mut stations_xml_file = File::open(stations_xml_path).expect("file not found");
+        let mut raw_station_data = String::new();
+        stations_xml_file.read_to_string(&mut raw_station_data).unwrap();
+        raw_station_data
+    }
+
+    #[test]
+    fn read_stations_xml() {
+        let raw_station_data = read_stations_mock();
+        let buoy_stations: BuoyStations = BuoyStations::from_raw_data(raw_station_data.as_ref());
+        println!("{:?}", buoy_stations);
+        assert_eq!(buoy_stations.station_count, buoy_stations.stations.len() as i64 - 1)
+    }
+}

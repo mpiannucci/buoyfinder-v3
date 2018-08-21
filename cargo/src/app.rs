@@ -1,4 +1,5 @@
 use station;
+use reqwest;
 
 #[derive(Clone)]
 pub enum Actions {
@@ -35,3 +36,10 @@ pub fn app_reducer(state: &AppState, action: &Actions) -> AppState {
     state
 }
 
+pub fn fetch_buoy_stations_remote() -> station::BuoyStations {
+        let mut res = reqwest::get("https://ndbc.noaa.gov/activestations.xml").unwrap();
+        println!("Status: {}", res.status());
+        println!("Headers:\n{:?}", res.headers());
+
+        station::BuoyStations::from_raw_data(res.text().unwrap().as_ref())
+}

@@ -5,7 +5,7 @@ authors = ["Matthew Iannucci <mpiannucci@gmail.com>"]
 
 [lib]
 name = "buoyfinder"
-crate-type = ["staticlib", "cdylib"]
+crate-type = ["staticlib", "cdylib", "rlib"]
 
 [dependencies]
 libc = "*"

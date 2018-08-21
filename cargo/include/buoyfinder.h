@@ -14,13 +14,13 @@ typedef struct {
   void (*new_view_data)(ExploreViewData*);
 } explore_view;
 
-bool buoy_station_active(const BuoyStation *data);
+bool buoy_station_active(const BuoyStation *buoy_station);
 
-void buoy_station_free(BuoyStation *data);
+void buoy_station_free(BuoyStation *buoy_station);
 
-const char *buoy_station_id(const BuoyStation *data);
+const char *buoy_station_id(const BuoyStation *buoy_station);
 
-const char *buoy_station_name(const BuoyStation *data);
+const char *buoy_station_name(const BuoyStation *buoy_station);
 
 BuoyStation *buoy_station_new(const char *station_id, const char *name, double lat, double lon);
 
@@ -36,6 +36,8 @@ BuoyStation *explore_view_data_station_index(const ExploreViewData *data, int64_
 
 void explore_view_unbind(ExploreViewModelHandle *view_model_handle, Store_AppState__Actions *store);
 
-void store_free(Store_AppState__Actions *data);
+void fetch_buoy_stations(Store_AppState__Actions *store);
+
+void store_free(Store_AppState__Actions *store);
 
 Store_AppState__Actions *store_new(void);
