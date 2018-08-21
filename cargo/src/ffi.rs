@@ -43,6 +43,11 @@ pub unsafe extern fn store_free(data: *mut Store<AppState, Actions>) {
     let _ = Box::from_raw(data);
 }
 
+#[no_mangle]
+pub unsafe extern fn fetch_buoy_stations(data: *mut Store<AppState, Actions>) {
+    
+}
+
 #[repr(C)]
 pub struct explore_view {
     pub new_view_data: extern fn(view_data: *mut ExploreViewData),
