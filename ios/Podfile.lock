@@ -1,0 +1,50 @@
+PODS:
+  - AsyncImageView (1.6)
+  - GoogleMaps (2.6.0):
+    - GoogleMaps/Maps (= 2.6.0)
+  - GoogleMaps/Base (2.6.0)
+  - GoogleMaps/Maps (2.6.0):
+    - GoogleMaps/Base
+  - GooglePlaces (2.6.0):
+    - GoogleMaps/Base (= 2.6.0)
+  - Pulley (2.3.1)
+  - RxCocoa (4.1.2):
+    - RxSwift (~> 4.0)
+  - RxSwift (4.1.2)
+  - SwiftLocation (3.2.3):
+    - SwiftyJSON (~> 4.0.0-alpha.1)
+  - SwiftyJSON (4.0.0)
+
+DEPENDENCIES:
+  - AsyncImageView
+  - GoogleMaps
+  - GooglePlaces
+  - Pulley
+  - RxCocoa (~> 4.0)
+  - RxSwift (~> 4.0)
+  - SwiftLocation
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AsyncImageView
+    - GoogleMaps
+    - GooglePlaces
+    - Pulley
+    - RxCocoa
+    - RxSwift
+    - SwiftLocation
+    - SwiftyJSON
+
+SPEC CHECKSUMS:
+  AsyncImageView: 416e99402e5b1f20571de70ad619ced90f56a7d9
+  GoogleMaps: 42f91c68b7fa2f84d5c86597b18ceb99f5414c7f
+  GooglePlaces: f6ddf33b75cef69e888907d9947c57198ed845f3
+  Pulley: 4cc7e74a6e438519e5d428ca311ff75dae747cae
+  RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
+  RxSwift: e49536837d9901277638493ea537394d4b55f570
+  SwiftLocation: a3c3bc2023118171ef3572188a31def94aa0892c
+  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+
+PODFILE CHECKSUM: 4bd02963a12be7626074c97a6914de43f01258fc
+
+COCOAPODS: 1.5.3
