@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+extern "C" {
+
 typedef struct BuoyStation BuoyStation;
 
 typedef struct ExploreViewData ExploreViewData;
@@ -42,3 +44,5 @@ void fetch_buoy_stations(Store_AppState__Actions *store);
 void store_free(Store_AppState__Actions *store);
 
 Store_AppState__Actions *store_new(void);
+
+}

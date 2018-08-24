@@ -25,5 +25,14 @@ add_library(buoyfinder SHARED ${HEADERS} ${SOURCES})
 
 target_link_libraries(buoyfinder debug ${BUOYFINDER_DEBUG_LIBRARY} optimized ${BUOYFINDER_RELEASE_LIBRARY})
 
+if (MSVC)
+	target_link_libraries(buoyfinder ws2_32.lib 
+									 crypt32.lib 
+									 secur32.lib 
+									 dbghelp.lib 
+									 userenv.lib 
+									 ncrypt.lib)
+endif()
+
 # Add the examples
 #add_subdirectory(example)
