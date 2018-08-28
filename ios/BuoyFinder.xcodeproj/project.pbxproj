@@ -12,6 +12,9 @@
 		34799A10212E48D000BEB05F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34799A0E212E48D000BEB05F /* Main.storyboard */; };
 		34799A12212E48D100BEB05F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34799A11212E48D100BEB05F /* Assets.xcassets */; };
 		34799A15212E48D100BEB05F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34799A13212E48D100BEB05F /* LaunchScreen.storyboard */; };
+		34E546602135EF62006BD19A /* BuoyStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E5465F2135EF62006BD19A /* BuoyStation.swift */; };
+		34E546652135F3A1006BD19A /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E546642135F3A0006BD19A /* libresolv.tbd */; };
+		34E546672135F3AF006BD19A /* libbuoyfinder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E546662135F3AF006BD19A /* libbuoyfinder.a */; };
 		88A71018C67BA1F3B02DEAAC /* Pods_BuoyFinder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60073CF8ABBD33A64897B6B2 /* Pods_BuoyFinder.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +26,11 @@
 		34799A11212E48D100BEB05F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		34799A14212E48D100BEB05F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		34799A16212E48D100BEB05F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		34E5465F2135EF62006BD19A /* BuoyStation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BuoyStation.swift; path = ../cargo/bindings/swift/BuoyStation.swift; sourceTree = "<group>"; };
+		34E546612135EFD3006BD19A /* buoyfinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = buoyfinder.h; path = ../cargo/include/buoyfinder.h; sourceTree = "<group>"; };
+		34E546622135EFF6006BD19A /* BuoyFinder-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BuoyFinder-Bridging-Header.h"; sourceTree = "<group>"; };
+		34E546642135F3A0006BD19A /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		34E546662135F3AF006BD19A /* libbuoyfinder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbuoyfinder.a; path = ../cargo/target/universal/release/libbuoyfinder.a; sourceTree = "<group>"; };
 		3CE07B93C8787DDA24740BE4 /* Pods-BuoyFinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuoyFinder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BuoyFinder/Pods-BuoyFinder.debug.xcconfig"; sourceTree = "<group>"; };
 		60073CF8ABBD33A64897B6B2 /* Pods_BuoyFinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BuoyFinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96EB73D73B3488B0F204E11B /* Pods-BuoyFinder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuoyFinder.release.xcconfig"; path = "Pods/Target Support Files/Pods-BuoyFinder/Pods-BuoyFinder.release.xcconfig"; sourceTree = "<group>"; };
@@ -33,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34E546672135F3AF006BD19A /* libbuoyfinder.a in Frameworks */,
+				34E546652135F3A1006BD19A /* libresolv.tbd in Frameworks */,
 				88A71018C67BA1F3B02DEAAC /* Pods_BuoyFinder.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -52,6 +62,8 @@
 		23165D7702496335EC5142BF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				34E546662135F3AF006BD19A /* libbuoyfinder.a */,
+				34E546642135F3A0006BD19A /* libresolv.tbd */,
 				60073CF8ABBD33A64897B6B2 /* Pods_BuoyFinder.framework */,
 			);
 			name = Frameworks;
@@ -60,6 +72,7 @@
 		347999FE212E48CF00BEB05F = {
 			isa = PBXGroup;
 			children = (
+				34E5465E2135EF45006BD19A /* Core */,
 				34799A09212E48D000BEB05F /* BuoyFinder */,
 				34799A08212E48D000BEB05F /* Products */,
 				142F925BB897C92792B2A86C /* Pods */,
@@ -84,8 +97,18 @@
 				34799A11212E48D100BEB05F /* Assets.xcassets */,
 				34799A13212E48D100BEB05F /* LaunchScreen.storyboard */,
 				34799A16212E48D100BEB05F /* Info.plist */,
+				34E546622135EFF6006BD19A /* BuoyFinder-Bridging-Header.h */,
 			);
 			path = BuoyFinder;
+			sourceTree = "<group>";
+		};
+		34E5465E2135EF45006BD19A /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				34E546612135EFD3006BD19A /* buoyfinder.h */,
+				34E5465F2135EF62006BD19A /* BuoyStation.swift */,
+			);
+			name = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -123,6 +146,7 @@
 				TargetAttributes = {
 					34799A06212E48D000BEB05F = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 0940;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -232,6 +256,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34E546602135EF62006BD19A /* BuoyStation.swift in Sources */,
 				34799A0D212E48D000BEB05F /* ViewController.swift in Sources */,
 				34799A0B212E48D000BEB05F /* AppDelegate.swift in Sources */,
 			);
@@ -377,12 +402,16 @@
 			baseConfigurationReference = 3CE07B93C8787DDA24740BE4 /* Pods-BuoyFinder.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 39L46PD99U;
 				INFOPLIST_FILE = BuoyFinder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../cargo/target/universal/release";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mpiannucci.BuoyFinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BuoyFinder/BuoyFinder-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -393,12 +422,15 @@
 			baseConfigurationReference = 96EB73D73B3488B0F204E11B /* Pods-BuoyFinder.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 39L46PD99U;
 				INFOPLIST_FILE = BuoyFinder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../cargo/target/universal/release";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mpiannucci.BuoyFinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BuoyFinder/BuoyFinder-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
