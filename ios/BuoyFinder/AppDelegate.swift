@@ -8,6 +8,8 @@
 
 import UIKit
 
+let store = Store()
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
