@@ -24,7 +24,9 @@ class ViewController: UIViewController {
         exploreViewHandle = ExploreViewHandle(store: store, view: self)
         
         // Load buoy stations
-        store.fetchBuoyStations()
+        DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(5)) {
+            store.fetchBuoyStations()
+        }
     }
 
     override func didReceiveMemoryWarning() {
