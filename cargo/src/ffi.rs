@@ -152,3 +152,25 @@ pub unsafe extern fn buoy_station_active(buoy_station: *const BuoyStation) -> bo
     buoy_station.active
 }
 
+/// Expose the JNI interface for android below
+#[cfg(target_os="android")]
+#[allow(non_snake_case)]
+pub mod android {
+    extern crate jni;
+
+    use super::*;
+    use self::jni::JNIEnv;
+    use self::jni::objects::{JClass, JString};
+    use self::jni::sys::{jint, jlong};
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_Store_new(_: JNIEnv, _: JClass) -> jlong {
+        store_new() as jlong
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_Store_free(_: JNIEnv, _: JClass, ptr: jlong) {
+        let store = &mut*store;
+        store_free(store);
+    }
+}
