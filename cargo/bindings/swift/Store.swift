@@ -10,7 +10,7 @@ import Foundation
 
 class Store {
     
-    private let raw: OpaquePointer
+    public let raw: OpaquePointer
     
     public init() {
         raw = store_new()

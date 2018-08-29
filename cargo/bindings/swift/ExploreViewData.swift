@@ -16,6 +16,10 @@ class ExploreViewData {
         raw = explore_view_data_new()
     }
     
+    init(from raw: OpaquePointer) {
+        self.raw = raw
+    }
+    
     deinit {
         explore_view_data_free(raw)
     }
