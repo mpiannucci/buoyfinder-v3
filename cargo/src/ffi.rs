@@ -161,7 +161,7 @@ pub mod android {
     use super::*;
     use self::jni::JNIEnv;
     use self::jni::objects::{JClass, JString};
-    use self::jni::sys::{jint, jlong};
+    use self::jni::sys::{jlong, jdouble, jboolean, jstring};
 
     #[no_mangle]
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_Store_new(_: JNIEnv, _: JClass) -> jlong {
@@ -172,5 +172,45 @@ pub mod android {
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_Store_free(_: JNIEnv, _: JClass, ptr: jlong) {
         let store = ptr as *mut Store<AppState, Actions>;
         store_free(store);
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_Store_fetchBuoyStations(_: JNIEnv, _: JClass, ptr: jlong) {
+        let store = ptr as *mut Store<AppState, Actions>;
+        fetch_buoy_stations(store);
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_BuoyStation_new(env: JNIEnv, _: JClass, station_id: JString, name: JString, lat: jdouble, lon: jdouble) -> jlong {
+        let station_id = env.get_string(station_id).expect("Invalid station id string");
+        let name = env.get_string(name).expect("Invalid station name string");
+        
+        buoy_station_new(station_id.as_ptr(), name.as_ptr(), lat, lon) as jlong
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_BuoyStation_free(_: JNIEnv, _: JClass, ptr: jlong) {
+        let buoy_station = ptr as *mut BuoyStation;
+        buoy_station_free(buoy_station);
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_BuoyStation_active(_: JNIEnv, _: JClass, ptr: jlong) -> jboolean {
+        let buoy_station = ptr as *mut BuoyStation;
+        buoy_station_active(buoy_station) as jboolean
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_BuoyStation_stationId(env: JNIEnv, _: JClass, ptr: jlong) -> jstring {
+        let buoy_station = ptr as *mut BuoyStation;
+        let output = env.new_string((*buoy_station).station_id.as_str()).expect("Failed to create station id string");
+        output.into_inner()
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_BuoyStation_name(env: JNIEnv, _: JClass, ptr: jlong) -> jstring {
+        let buoy_station = ptr as *mut BuoyStation;
+        let output = env.new_string((*buoy_station).location.name.as_str()).expect("Failed to create station id string");
+        output.into_inner()
     }
 }
