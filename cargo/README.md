@@ -37,12 +37,11 @@ cp cargo-config.toml ~/.cargo/config
 ```bash
 cargo lipo --release
 ```
+* Build Android OpenSSL in th `deps/` folder. See `deps/openssl/README.md`
 
 * Build android libraries
 ```bash
-cargo build --target aarch64-linux-android --release
-cargo build --target armv7-linux-androideabi --release
-cargo build --target i686-linux-android --release
+./build_android
 ```
 
 ## Linking 

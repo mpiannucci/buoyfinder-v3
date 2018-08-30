@@ -170,7 +170,7 @@ pub mod android {
 
     #[no_mangle]
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_Store_free(_: JNIEnv, _: JClass, ptr: jlong) {
-        let store = &mut*store;
+        let store = ptr as *mut Store<AppState, Actions>;
         store_free(store);
     }
 }
