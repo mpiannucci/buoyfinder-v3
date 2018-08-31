@@ -249,7 +249,13 @@ pub mod android {
             let env = self.jvm.get_env().expect("Failed to get the JVM environment");
             let j_view_data = env.new_object("ExploreViewData", "(J)V", &[JValue::Long(view_data as jlong)])
                 .expect("Failed to create a view data jvm object");
-            env.call_method(JObject::from(self.class), "newViewData", "(L)V", &[JValue::Object(j_view_data)])
+            let j_view = match env.get_field(JObject::from(self.class), "view", "L")
+                .expect("Failed to find the ExploreView from the handle") {
+                JValue::Object(j_view_field) => j_view_field,
+                _ => JObject::null()
+            };
+            
+            env.call_method(j_view, "newViewData", "(L)V", &[JValue::Object(j_view_data)])
                 .expect("Failed to call newViewData on the JVM receiver");
         }
     }
