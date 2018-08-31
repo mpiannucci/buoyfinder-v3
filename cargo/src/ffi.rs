@@ -160,7 +160,8 @@ pub mod android {
 
     use super::*;
     use self::jni::JNIEnv;
-    use self::jni::objects::{JClass, JString};
+    use self::jni::JavaVM;
+    use self::jni::objects::{JClass, JString, JValue, JObject};
     use self::jni::sys::{jlong, jdouble, jboolean, jstring};
 
     #[no_mangle]
@@ -235,5 +236,21 @@ pub mod android {
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewData_stationAtIndex(_: JNIEnv, _: JClass, ptr: jlong, index: jlong) -> jlong {
         let view_data = ptr as *mut ExploreViewData;
         explore_view_data_station_index(view_data, index as i64) as jlong
+    }
+
+    struct ExploreViewJVMWrapper {
+        jvm: JavaVM,
+        class: JClass<'static>,
+    }
+
+    impl ExploreView for ExploreViewJVMWrapper {
+        fn new_view_data(&mut self, view_data: &ExploreViewData) {
+            let view_data = Box::into_raw(Box::new(view_data.clone()));
+            let env = self.jvm.get_env().expect("Failed to get the JVM environment");
+            let j_view_data = env.new_object("ExploreViewData", "(J)V", &[JValue::Long(view_data as jlong)])
+                .expect("Failed to create a view data jvm object");
+            env.call_method(JObject::from(self.class), "newViewData", "(L)V", &[JValue::Object(j_view_data)])
+                .expect("Failed to call newViewData on the JVM receiver");
+        }
     }
 }
