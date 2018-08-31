@@ -253,4 +253,25 @@ pub mod android {
                 .expect("Failed to call newViewData on the JVM receiver");
         }
     }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewHandle_bind(env: JNIEnv, class: JClass<'static>, store_ptr: jlong) -> jlong {
+        let explore_view_wrapper = Box::new(ExploreViewJVMWrapper{
+            jvm: env.get_java_vm().expect("Failed to get the JVM when registering explore view"),
+            class: class,
+        });
+        let explore_view_model = Arc::new(Mutex::new(ExploreViewModel::new(explore_view_wrapper)));
+        let explore_view_model_handle = Box::new(ExploreViewModelHandle(explore_view_model));
+        let store = store_ptr as *mut Store<AppState, Actions>;
+        (*store).subscribe(explore_view_model_handle.0.clone());
+        Box::into_raw(explore_view_model_handle) as jlong
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewHandle_unbind(_: JNIEnv, _: JClass, handle_ptr: jlong, store_ptr: jlong) {
+        let view_model_handle = handle_ptr as *mut ExploreViewModelHandle;
+        let explore_view_model_handle = Box::from_raw(view_model_handle);
+        let store = store_ptr as *mut Store<AppState, Actions>;
+        (*store).unsubscribe(explore_view_model_handle.0);
+    }
 }
