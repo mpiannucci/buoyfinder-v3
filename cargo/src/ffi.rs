@@ -213,4 +213,27 @@ pub mod android {
         let output = env.new_string((*buoy_station).location.name.as_str()).expect("Failed to create station id string");
         output.into_inner()
     }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewData_new(_: JNIEnv, _: JClass) -> jlong {
+        explore_view_data_new() as jlong
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewData_free(_: JNIEnv, _: JClass, ptr: jlong) {
+        let view_data = ptr as *mut ExploreViewData;
+        explore_view_data_free(view_data);
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewData_stationCount(_: JNIEnv, _: JClass, ptr: jlong) -> jlong {
+        let view_data = ptr as *mut ExploreViewData;
+        explore_view_data_station_count(view_data) as jlong
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewData_stationAtIndex(_: JNIEnv, _: JClass, ptr: jlong, index: jlong) -> jlong {
+        let view_data = ptr as *mut ExploreViewData;
+        explore_view_data_station_index(view_data, index as i64) as jlong
+    }
 }
