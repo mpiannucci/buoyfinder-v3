@@ -48,7 +48,7 @@ pub unsafe extern fn store_free(store: *mut Store<AppState, Actions>) {
 pub unsafe extern fn fetch_buoy_stations(store: *mut Store<AppState, Actions>) {
     let store = &mut*store;
     let stations = fetch_buoy_stations_remote();
-    store.dispatch(&Actions::SetBuoyStations(stations));
+    //store.dispatch(&Actions::SetBuoyStations(stations));
 }
 
 #[repr(C)]
