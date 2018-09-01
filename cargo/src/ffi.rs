@@ -48,7 +48,7 @@ pub unsafe extern fn store_free(store: *mut Store<AppState, Actions>) {
 pub unsafe extern fn fetch_buoy_stations(store: *mut Store<AppState, Actions>) {
     let store = &mut*store;
     let stations = fetch_buoy_stations_remote();
-    store.dispatch(&Actions::SetBuoyStations(stations));
+    //store.dispatch(&Actions::SetBuoyStations(stations));
 }
 
 #[repr(C)]
@@ -259,7 +259,8 @@ pub mod android {
                 env.call_method(j_view, "newViewData", "(Lcom/mpiannucci/buoyfinder/core/ExploreViewData;)V", &[JValue::Object(j_view_data).into()])
                     .expect("Failed to call newViewData on the JVM receiver");
             } else {
-                let env = self.jvm.attach_current_thread().unwrap();
+                let env = self.jvm.attach_current_thread()
+                    .expect("Failed to attach to the current thread");
                 let j_view_data_class = env.find_class("com/mpiannucci/buoyfinder/core/ExploreViewData")
                     .expect("Failed to find ExploreViewData class");
                 let j_view_data = env.new_object(j_view_data_class, "(J)V", &[JValue::Long(view_data as jlong).into()])
