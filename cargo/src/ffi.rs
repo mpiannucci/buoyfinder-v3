@@ -48,7 +48,7 @@ pub unsafe extern fn store_free(store: *mut Store<AppState, Actions>) {
 pub unsafe extern fn fetch_buoy_stations(store: *mut Store<AppState, Actions>) {
     let store = &mut*store;
     let stations = fetch_buoy_stations_remote();
-    //store.dispatch(&Actions::SetBuoyStations(stations));
+    store.dispatch(&Actions::SetBuoyStations(stations));
 }
 
 #[repr(C)]
@@ -161,7 +161,7 @@ pub mod android {
     use super::*;
     use self::jni::JNIEnv;
     use self::jni::JavaVM;
-    use self::jni::objects::{JClass, JString, JValue, JObject};
+    use self::jni::objects::{JClass, JString, JValue, JObject, GlobalRef};
     use self::jni::sys::{jlong, jdouble, jboolean, jstring};
 
     #[no_mangle]
@@ -240,19 +240,24 @@ pub mod android {
 
     struct ExploreViewJVMWrapper {
         jvm: JavaVM,
-        view: JObject<'static>,
+        view: GlobalRef,
     }
 
     impl ExploreView for ExploreViewJVMWrapper {
         fn new_view_data(&mut self, view_data: &ExploreViewData) {
             let view_data = Box::into_raw(Box::new(view_data.clone()));
-            let env = self.jvm.get_env().expect("Failed to get the JVM environment");
+
+            // TODO: Need to attach the correct thread when not running on main 
+            let env = self.jvm.get_env().unwrap();
+
             let j_view_data_class = env.find_class("com/mpiannucci/buoyfinder/core/ExploreViewData")
                 .expect("Failed to find ExploreViewData class");
             let j_view_data = env.new_object(j_view_data_class, "(J)V", &[JValue::Long(view_data as jlong).into()])
                 .expect("Failed to create a view data jvm object");
+
+            let j_view = self.view.as_obj();
             
-            env.call_method(self.view, "newViewData", "(Lcom/mpiannucci/buoyfinder/core/ExploreViewData;)V", &[JValue::Object(j_view_data).into()])
+            env.call_method(j_view, "newViewData", "(Lcom/mpiannucci/buoyfinder/core/ExploreViewData;)V", &[JValue::Object(j_view_data).into()])
                 .expect("Failed to call newViewData on the JVM receiver");
         }
     }
@@ -261,7 +266,7 @@ pub mod android {
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewHandle_bind(env: JNIEnv, _: JClass, callback: JObject<'static>, store_ptr: jlong) -> jlong {
         let explore_view_wrapper = Box::new(ExploreViewJVMWrapper{
             jvm: env.get_java_vm().expect("Failed to get the JVM when registering explore view"),
-            view: callback,
+            view: env.new_global_ref(callback).expect("Failed to get a global ref from explore view callback"),
         });
         let explore_view_model = Arc::new(Mutex::new(ExploreViewModel::new(explore_view_wrapper)));
         let explore_view_model_handle = Box::new(ExploreViewModelHandle(explore_view_model));
