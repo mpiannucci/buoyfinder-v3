@@ -19,11 +19,15 @@ class MainActivity : AppCompatActivity(), ExploreView {
         store = Store()
         viewHandle = ExploreViewHandle(this, store)
 
-        store.fetchBuoyStations()
+        Thread(Runnable {
+            store.fetchBuoyStations()
+        }).start()
     }
 
     override fun newViewData(viewData: ExploreViewData) {
-        station_tv.text = viewData.stationCount.toString() + " stations loaded"
+        runOnUiThread {
+            station_tv.text = viewData.stationCount.toString() + " stations loaded"
+        }
     }
 
     companion object {
