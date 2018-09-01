@@ -14,15 +14,16 @@ class MainActivity : AppCompatActivity(), ExploreView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        station_tv.text = "No stations loaded"
+
         store = Store()
         viewHandle = ExploreViewHandle(this, store)
 
-        val station = BuoyStation("44097", "Block Island, RI", 41.0, -71.0)
-        station_tv.text = station.name
+        store.fetchBuoyStations()
     }
 
     override fun newViewData(viewData: ExploreViewData) {
-        println("Got new view data")
+        station_tv.text = viewData.stationCount.toString() + " stations loaded"
     }
 
     companion object {

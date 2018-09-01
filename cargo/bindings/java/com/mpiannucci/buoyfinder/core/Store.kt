@@ -15,7 +15,7 @@ class Store {
     val rawStore: Long
         get() = ptr
 
-    public external fun fetch_buoy_stations()
+    public external fun fetchBuoyStations()
 
     private external fun new(): Long
     private external fun free(ptr: Long)
