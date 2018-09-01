@@ -248,17 +248,28 @@ pub mod android {
             let view_data = Box::into_raw(Box::new(view_data.clone()));
 
             // TODO: Need to attach the correct thread when not running on main 
-            let env = self.jvm.get_env().unwrap();
+            if let Ok(env) = self.jvm.get_env() {
+                let j_view_data_class = env.find_class("com/mpiannucci/buoyfinder/core/ExploreViewData")
+                    .expect("Failed to find ExploreViewData class");
+                let j_view_data = env.new_object(j_view_data_class, "(J)V", &[JValue::Long(view_data as jlong).into()])
+                    .expect("Failed to create a view data jvm object");
 
-            let j_view_data_class = env.find_class("com/mpiannucci/buoyfinder/core/ExploreViewData")
-                .expect("Failed to find ExploreViewData class");
-            let j_view_data = env.new_object(j_view_data_class, "(J)V", &[JValue::Long(view_data as jlong).into()])
-                .expect("Failed to create a view data jvm object");
-
-            let j_view = self.view.as_obj();
+                let j_view = self.view.as_obj();
             
-            env.call_method(j_view, "newViewData", "(Lcom/mpiannucci/buoyfinder/core/ExploreViewData;)V", &[JValue::Object(j_view_data).into()])
-                .expect("Failed to call newViewData on the JVM receiver");
+                env.call_method(j_view, "newViewData", "(Lcom/mpiannucci/buoyfinder/core/ExploreViewData;)V", &[JValue::Object(j_view_data).into()])
+                    .expect("Failed to call newViewData on the JVM receiver");
+            } else {
+                let env = self.jvm.attach_current_thread().unwrap();
+                let j_view_data_class = env.find_class("com/mpiannucci/buoyfinder/core/ExploreViewData")
+                    .expect("Failed to find ExploreViewData class");
+                let j_view_data = env.new_object(j_view_data_class, "(J)V", &[JValue::Long(view_data as jlong).into()])
+                    .expect("Failed to create a view data jvm object");
+
+                let j_view = self.view.as_obj();
+            
+                env.call_method(j_view, "newViewData", "(Lcom/mpiannucci/buoyfinder/core/ExploreViewData;)V", &[JValue::Object(j_view_data).into()])
+                    .expect("Failed to call newViewData on the JVM receiver");
+            }
         }
     }
 
