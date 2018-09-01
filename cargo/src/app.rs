@@ -18,8 +18,8 @@ pub struct AppState {
     pub stations_state: DataState<station::BuoyStations>,
 }
 
-impl AppState {
-    pub fn default() -> AppState {
+impl Default for AppState {
+    fn default() -> AppState {
         AppState {
             stations_state: DataState::NoData,
         }
