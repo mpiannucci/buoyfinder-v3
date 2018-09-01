@@ -80,6 +80,15 @@ impl BuoyStations {
     }
 }
 
+impl Default for BuoyStations {
+    fn default() -> BuoyStations {
+        BuoyStations {
+            stations: vec![],
+            station_count: 0,
+        }
+    }
+}
+
 fn bool_from_simple_str<'de, D>(deserializer: D) -> Result<bool, D::Error>
     where D: Deserializer<'de>
 {
