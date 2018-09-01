@@ -4,9 +4,9 @@ class ExploreViewData {
 
     val ptr: Long
 
-    constructor() {
-        ptr = new()
-    }
+//    constructor() {
+//        ptr = new()
+//    }
 
     constructor(rawPtr: Long) {
         ptr = rawPtr

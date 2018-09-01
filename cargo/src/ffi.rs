@@ -240,36 +240,34 @@ pub mod android {
 
     struct ExploreViewJVMWrapper {
         jvm: JavaVM,
-        class: JClass<'static>,
+        view: JObject<'static>,
     }
 
     impl ExploreView for ExploreViewJVMWrapper {
         fn new_view_data(&mut self, view_data: &ExploreViewData) {
             let view_data = Box::into_raw(Box::new(view_data.clone()));
             let env = self.jvm.get_env().expect("Failed to get the JVM environment");
-            let j_view_data = env.new_object("ExploreViewData", "(J)V", &[JValue::Long(view_data as jlong)])
+            let j_view_data_class = env.find_class("com/mpiannucci/buoyfinder/core/ExploreViewData")
+                .expect("Failed to find ExploreViewData class");
+            let j_view_data = env.new_object(j_view_data_class, "(J)V", &[JValue::Long(view_data as jlong).into()])
                 .expect("Failed to create a view data jvm object");
-            let j_view = match env.get_field(JObject::from(self.class), "view", "L")
-                .expect("Failed to find the ExploreView from the handle") {
-                JValue::Object(j_view_field) => j_view_field,
-                _ => JObject::null()
-            };
             
-            env.call_method(j_view, "newViewData", "(L)V", &[JValue::Object(j_view_data)])
+            env.call_method(self.view, "newViewData", "(Lcom/mpiannucci/buoyfinder/core/ExploreViewData;)V", &[JValue::Object(j_view_data).into()])
                 .expect("Failed to call newViewData on the JVM receiver");
         }
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewHandle_bind(env: JNIEnv, class: JClass<'static>, store_ptr: jlong) -> jlong {
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewHandle_bind(env: JNIEnv, _: JClass, callback: JObject<'static>, store_ptr: jlong) -> jlong {
         let explore_view_wrapper = Box::new(ExploreViewJVMWrapper{
             jvm: env.get_java_vm().expect("Failed to get the JVM when registering explore view"),
-            class: class,
+            view: callback,
         });
         let explore_view_model = Arc::new(Mutex::new(ExploreViewModel::new(explore_view_wrapper)));
         let explore_view_model_handle = Box::new(ExploreViewModelHandle(explore_view_model));
         let store = store_ptr as *mut Store<AppState, Actions>;
-        (*store).subscribe(explore_view_model_handle.0.clone());
+        let store = &mut*store;
+        store.subscribe(explore_view_model_handle.0.clone());
         Box::into_raw(explore_view_model_handle) as jlong
     }
 
@@ -278,6 +276,7 @@ pub mod android {
         let view_model_handle = handle_ptr as *mut ExploreViewModelHandle;
         let explore_view_model_handle = Box::from_raw(view_model_handle);
         let store = store_ptr as *mut Store<AppState, Actions>;
-        (*store).unsubscribe(explore_view_model_handle.0);
+        let store = &mut*store;
+        store.unsubscribe(explore_view_model_handle.0);
     }
 }

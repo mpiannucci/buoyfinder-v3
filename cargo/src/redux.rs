@@ -9,7 +9,7 @@ pub trait StoreObserver<T> {
 type Reducer<T, U> = fn(&T, &U) -> T;
 
 pub struct Store<T, U> {
-    state: T,
+    pub state: T,
     observers: Vec<Arc<Mutex<StoreObserver<T>>>>,
     reducer: Reducer<T, U>,
 }
