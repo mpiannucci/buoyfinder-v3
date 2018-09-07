@@ -38,7 +38,7 @@ impl <T, U> Store<T, U> where T: Clone {
     }
 
     pub fn dispatch(&mut self, action: &U) {
-        self.state = (self.reducer)(&self.state, action);
+        //self.state = (self.reducer)(&self.state, action);
         self.notify_observers();
     }
 

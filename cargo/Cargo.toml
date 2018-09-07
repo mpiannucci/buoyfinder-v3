@@ -22,3 +22,6 @@ jni = "*"
 
 [build-dependencies]
 #cbindgen = "*"
+
+[replace]
+"mio-uds:0.6.6" = { git = "https://github.com/alexcrichton/mio-uds"}
