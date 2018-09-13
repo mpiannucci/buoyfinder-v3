@@ -7,7 +7,7 @@ use std::boxed::Box;
 use std::sync::Arc;
 use std::sync::Mutex;
 use redux::{Store};
-use app::{Actions, DataState, AppState, app_reducer, fetch_buoy_stations_remote};
+use app::{Actions, DataState, AppState, AppReducer, fetch_buoy_stations_remote};
 use vm::{ExploreViewData, ExploreView, ExploreViewModel};
 use station::{BuoyStation};
 use location::Location;
@@ -34,6 +34,7 @@ pub fn string_to_c_char(r_string: String) -> *mut c_char {
 #[no_mangle]
 pub extern fn store_new() -> *mut Store<AppState, Actions> {
     let default_state = AppState::default();
+    let app_reducer = Box::new(AppReducer{});
     let store = Store::create(&default_state, app_reducer);
     let boxed_store = Box::new(store);
     Box::into_raw(boxed_store)
@@ -48,7 +49,7 @@ pub unsafe extern fn store_free(store: *mut Store<AppState, Actions>) {
 pub unsafe extern fn fetch_buoy_stations(store: *mut Store<AppState, Actions>) {
     let store = &mut*store;
     let stations = fetch_buoy_stations_remote();
-    store.dispatch(&Actions::SetBuoyStations(stations));
+    store.dispatch(Actions::SetBuoyStations(stations));
 }
 
 #[repr(C)]

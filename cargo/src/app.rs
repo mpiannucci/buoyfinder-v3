@@ -1,5 +1,6 @@
 use station;
 use reqwest;
+use redux::Reducer;
 
 #[derive(Clone)]
 pub enum Actions {
@@ -23,6 +24,18 @@ impl Default for AppState {
         AppState {
             stations_state: DataState::NoData,
         }
+    }
+}
+
+pub struct AppReducer;
+
+impl Reducer<AppState, Actions> for AppReducer {
+    fn reduce(&self, state: AppState, action: Actions) -> AppState {
+        let new_state = state.clone();
+
+        // TODO: Mutate
+
+        new_state
     }
 }
 
