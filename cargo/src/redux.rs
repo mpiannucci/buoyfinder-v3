@@ -40,12 +40,8 @@ impl <T, U> Store<T, U> where T: Clone {
     }
 
     pub fn dispatch(&mut self, action: U) {
-        self.state = self.state.clone();
-        match action {
-            _ => println!("Got an action")
-        };
-        //let new_state = self.reducer.reduce(self.state.clone(), action);
-        //self.notify_observers();
+        self.state = self.reducer.reduce(self.state.clone(), action);
+        self.notify_observers();
     }
 
     fn notify_observers(&mut self) {

@@ -31,22 +31,14 @@ pub struct AppReducer;
 
 impl Reducer<AppState, Actions> for AppReducer {
     fn reduce(&self, state: AppState, action: Actions) -> AppState {
-        let new_state = state.clone();
+        let mut new_state = state.clone();
 
-        // TODO: Mutate
+        match action {
+            Actions::SetBuoyStations(stations) => new_state.stations_state = DataState::DataLoaded(stations),
+        };
 
         new_state
     }
-}
-
-pub fn app_reducer(state: &AppState, action: &Actions) -> AppState {
-    let mut state = state.clone();
-
-    match action {
-        Actions::SetBuoyStations(new_stations) => state.stations_state = DataState::DataLoaded(new_stations.clone()),
-    }
-
-    state
 }
 
 pub fn fetch_buoy_stations_remote() -> station::BuoyStations {
