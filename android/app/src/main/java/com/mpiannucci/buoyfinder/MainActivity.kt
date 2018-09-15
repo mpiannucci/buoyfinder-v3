@@ -14,6 +14,8 @@ class MainActivity : AppCompatActivity(), ExploreView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initLogger()
+
         station_tv.text = "No stations loaded"
 
         store = Store()
@@ -31,6 +33,8 @@ class MainActivity : AppCompatActivity(), ExploreView {
             station_tv.text = viewData.stationCount.toString() + " stations loaded"
         }
     }
+
+    private external fun initLogger()
 
     companion object {
         // Used to load the 'buoyfinder' library on application startup.

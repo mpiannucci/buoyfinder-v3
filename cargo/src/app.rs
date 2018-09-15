@@ -7,14 +7,14 @@ pub enum Actions {
     SetBuoyStations(station::BuoyStations),
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum DataState<T> {
     NoData,
     DataLoading,
     DataLoaded(T),
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct AppState {
     pub stations_state: DataState<station::BuoyStations>,
 }
@@ -31,13 +31,14 @@ pub struct AppReducer;
 
 impl Reducer<AppState, Actions> for AppReducer {
     fn reduce(&self, state: AppState, action: Actions) -> AppState {
-        let mut new_state = state.clone();
+        // let mut new_state = state.clone();
 
-        match action {
-            Actions::SetBuoyStations(stations) => new_state.stations_state = DataState::DataLoaded(stations),
-        };
+        // match action {
+        //     Actions::SetBuoyStations(stations) => new_state.stations_state = DataState::DataLoaded(stations),
+        // };
 
-        new_state
+        // new_state
+        state
     }
 }
 

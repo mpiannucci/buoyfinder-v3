@@ -48,7 +48,13 @@ pub unsafe extern fn store_free(store: *mut Store<AppState, Actions>) {
 #[no_mangle]
 pub unsafe extern fn fetch_buoy_stations(store: *mut Store<AppState, Actions>) {
     let store = &mut*store;
+
+    trace!("Store state: {:?}", store.state);
+
     let stations = fetch_buoy_stations_remote();
+
+    trace!("Got stations! {}", stations.station_count);
+
     store.dispatch(Actions::SetBuoyStations(stations));
 }
 
@@ -158,12 +164,22 @@ pub unsafe extern fn buoy_station_active(buoy_station: *const BuoyStation) -> bo
 #[allow(non_snake_case)]
 pub mod android {
     extern crate jni;
+    extern crate android_log;
+    extern crate log_panics;
 
     use super::*;
     use self::jni::JNIEnv;
     use self::jni::JavaVM;
     use self::jni::objects::{JClass, JString, JValue, JObject, GlobalRef};
     use self::jni::sys::{jlong, jdouble, jboolean, jstring};
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_MainActivity_initLogger(_: JNIEnv, _: JClass) {
+        android_log::init("com.mpiannucci.buoyfinder").unwrap();
+        log_panics::init();
+
+        trace!("Initilized rust logger!")
+    }
 
     #[no_mangle]
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Store_new(_: JNIEnv, _: JClass) -> jlong {

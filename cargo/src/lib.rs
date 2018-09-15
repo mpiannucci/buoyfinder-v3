@@ -8,6 +8,8 @@ extern crate serde_xml_rs;
 extern crate futures;
 extern crate reqwest;
 extern crate tokio;
+#[macro_use]
+extern crate log;
 
 pub mod location;
 pub mod station;
