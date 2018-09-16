@@ -164,7 +164,7 @@ pub unsafe extern fn buoy_station_active(buoy_station: *const BuoyStation) -> bo
 #[allow(non_snake_case)]
 pub mod android {
     extern crate jni;
-    extern crate android_log;
+    extern crate android_logger;
     extern crate log_panics;
 
     use super::*;
@@ -172,11 +172,21 @@ pub mod android {
     use self::jni::JavaVM;
     use self::jni::objects::{JClass, JString, JValue, JObject, GlobalRef};
     use self::jni::sys::{jlong, jdouble, jboolean, jstring};
+    use self::android_logger::Filter;
+
+    use log::Level;
 
     #[no_mangle]
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_MainActivity_initLogger(_: JNIEnv, _: JClass) {
-        android_log::init("com.mpiannucci.buoyfinder").unwrap();
-        log_panics::init();
+        //android_log::init("com.mpiannucci.buoyfinder").unwrap();
+
+        android_logger::init_once(
+            Filter::default()
+                .with_min_level(Level::Trace),
+            Some("com.mpiannucci.buoyfinder")
+        );
+
+        //log_panics::init();
 
         trace!("Initilized rust logger!")
     }
