@@ -21,9 +21,11 @@ class MainActivity : AppCompatActivity(), ExploreView {
         store = Store()
         viewHandle = ExploreViewHandle(this, store)
 
-        println("Fetching buoy stations")
-        store.fetchBuoyStations()
-        println("Fetched buoy stations")
+        Thread().run {
+            println("Fetching buoy stations")
+            store.fetchBuoyStations()
+            println("Fetched buoy stations")
+        }
     }
 
     override fun newViewData(viewData: ExploreViewData) {
