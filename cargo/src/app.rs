@@ -4,7 +4,9 @@ use redux::Reducer;
 
 #[derive(Clone)]
 pub enum Actions {
+    SetBuoyStationsLoading,
     SetBuoyStations(station::BuoyStations),
+    SetBuoyStationLoadError,
 }
 
 #[derive(Clone, Debug)]
@@ -12,6 +14,7 @@ pub enum DataState<T> {
     NoData,
     DataLoading,
     DataLoaded(T),
+    DataError,
 }
 
 #[derive(Clone, Debug)]
@@ -30,11 +33,13 @@ impl Default for AppState {
 pub struct AppReducer;
 
 impl Reducer<AppState, Actions> for AppReducer {
-    fn reduce(&self, state: AppState, action: Actions) -> AppState {
+    fn reduce(&self, state: &AppState, action: &Actions) -> AppState {
         let mut new_state = state.clone();
 
         match action {
-            Actions::SetBuoyStations(stations) => new_state.stations_state = DataState::DataLoaded(stations),
+            Actions::SetBuoyStationsLoading => new_state.stations_state = DataState::DataLoading,
+            Actions::SetBuoyStations(stations) => new_state.stations_state = DataState::DataLoaded(stations.clone()),
+            Actions::SetBuoyStationLoadError => new_state.stations_state = DataState::DataError,
         };
 
         new_state

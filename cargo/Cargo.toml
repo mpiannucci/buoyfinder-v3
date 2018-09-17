@@ -27,4 +27,4 @@ log-panics = "2.0.0"
 #cbindgen = "*"
 
 [replace]
-"mio-uds:0.6.6" = { git = "https://github.com/alexcrichton/mio-uds"}
+#"mio-uds:0.6.6" = { git = "https://github.com/alexcrichton/mio-uds"}

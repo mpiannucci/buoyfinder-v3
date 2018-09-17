@@ -7,7 +7,7 @@ pub trait StoreObserver<T> {
 }
 
 pub trait Reducer<T, U> {
-    fn reduce(&self, state: T, action: U) -> T;
+    fn reduce(&self, state: &T, action: &U) -> T;
 }
 
 pub struct Store<T, U> {
@@ -40,7 +40,7 @@ impl <T, U> Store<T, U> where T: Clone {
     }
 
     pub fn dispatch(&mut self, action: U) {
-        self.state = self.reducer.reduce(self.state.clone(), action);
+        self.state = self.reducer.reduce(&self.state, &action);
         self.notify_observers();
     }
 
