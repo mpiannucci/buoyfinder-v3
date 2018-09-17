@@ -4,7 +4,7 @@ Core BuoyFinder logic and functionality, written in Rust
 
 ## Installing toolchains
 
-**Assumes `rustup` and the android NDK are installed
+**Assumes `rustup` and the android NDK are installed**
 
 * Install `ios` targets
 ```bash
