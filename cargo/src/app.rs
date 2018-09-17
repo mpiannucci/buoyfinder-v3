@@ -31,14 +31,13 @@ pub struct AppReducer;
 
 impl Reducer<AppState, Actions> for AppReducer {
     fn reduce(&self, state: AppState, action: Actions) -> AppState {
-        // let mut new_state = state.clone();
+        let mut new_state = state.clone();
 
-        // match action {
-        //     Actions::SetBuoyStations(stations) => new_state.stations_state = DataState::DataLoaded(stations),
-        // };
+        match action {
+            Actions::SetBuoyStations(stations) => new_state.stations_state = DataState::DataLoaded(stations),
+        };
 
-        // new_state
-        state
+        new_state
     }
 }
 
