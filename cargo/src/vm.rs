@@ -1,15 +1,20 @@
-use station;
+use station::{BuoyStation, BuoyStations};
 use redux;
 use app::{DataState, AppState};
+
+pub struct BuoyStationItem {
+    title: String,
+    subtitle: String
+}
 
 #[derive(Clone, Debug)]
 pub struct ExploreViewData {
     pub is_loading: bool,
-    pub stations: Vec<station::BuoyStation>,
+    pub stations: Vec<BuoyStation>,
 }
 
 impl ExploreViewData {
-    pub fn from_state(state: &DataState<station::BuoyStations>) -> ExploreViewData {
+    pub fn from_state(state: &DataState<BuoyStations>) -> ExploreViewData {
         match state {
             DataState::DataLoading => ExploreViewData{is_loading: true, stations: vec![]},
             DataState::DataLoaded(stations) => ExploreViewData{

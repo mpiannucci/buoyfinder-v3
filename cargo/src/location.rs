@@ -34,8 +34,6 @@ impl Location {
         } else {
             self.latitude
         }
-
-    
     }
 
     pub fn relative_longitude(&self) -> f64 {

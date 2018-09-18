@@ -59,6 +59,19 @@ impl BuoyStation {
             dart: false,
         }
     }
+
+    pub fn name(&mut self) -> String {
+        let name = self.location.name.split("-").map(|s| {
+            s.trim()
+        }).filter(|s| {
+            match s.parse::<i64>() {
+                Ok(_) => false, 
+                _ => s.starts_with("(")
+            }
+        }).collect::<Vec<&str>>().join("");
+
+        name
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -77,6 +90,13 @@ impl BuoyStations {
 
     pub fn from_raw_data(raw_data: &str) -> BuoyStations {
         from_reader(raw_data.as_bytes()).unwrap()
+    }
+
+    pub fn find_station(&self, station_id: &str) -> Option<BuoyStation> {
+        match self.stations.iter().position(|x| x.station_id == station_id) {
+            Some(index) => Some(self.stations[index].clone()),
+            _ => None,
+        }
     }
 }
 
@@ -103,7 +123,6 @@ fn bool_from_simple_str<'de, D>(deserializer: D) -> Result<bool, D::Error>
 mod tests {
     use std::fs::File;
     use std::io::Read;
-    use std;
     use std::path::Path;
     use super::*;
 
@@ -120,6 +139,7 @@ mod tests {
         let raw_station_data = read_stations_mock();
         let buoy_stations: BuoyStations = BuoyStations::from_raw_data(raw_station_data.as_ref());
         println!("{:?}", buoy_stations);
-        assert_eq!(buoy_stations.station_count, buoy_stations.stations.len() as i64 - 1)
+        assert_eq!(buoy_stations.station_count, buoy_stations.stations.len() as i64 - 1);
+        assert_eq!(buoy_stations.find_station("44097").is_some(), true);
     }
 }
