@@ -60,15 +60,23 @@ impl BuoyStation {
         }
     }
 
-    pub fn name(&mut self) -> String {
-        let name = self.location.name.split("-").map(|s| {
+    pub fn name(&self) -> String {
+        let mut name = self.location.name.split("-").map(|s| {
             s.trim()
         }).filter(|s| {
             match s.parse::<i64>() {
                 Ok(_) => false, 
-                _ => s.starts_with("(")
+                _ => true
             }
         }).collect::<Vec<&str>>().join("");
+
+        name = name.split_whitespace().filter(|s| {
+            if s.starts_with("(") {
+                false
+            } else {
+                true
+            }
+        }).collect::<Vec<&str>>().join(" ");
 
         name
     }
@@ -138,8 +146,14 @@ mod tests {
     fn read_stations_xml() {
         let raw_station_data = read_stations_mock();
         let buoy_stations: BuoyStations = BuoyStations::from_raw_data(raw_station_data.as_ref());
-        println!("{:?}", buoy_stations);
+        //println!("{:?}", buoy_stations);
         assert_eq!(buoy_stations.station_count, buoy_stations.stations.len() as i64 - 1);
-        assert_eq!(buoy_stations.find_station("44097").is_some(), true);
+
+        let bi_station_res = buoy_stations.find_station("44097");
+        assert_eq!(bi_station_res.is_some(), true);
+
+        if let Some(bi_station) = bi_station_res {
+            assert_eq!(bi_station.name().as_str(), "Block Island, RI")
+        }
     }
 }
