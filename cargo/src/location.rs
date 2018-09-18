@@ -1,6 +1,7 @@
 use std::string::String;
 use std::f64;
 use serde::de::{self, Deserialize, Deserializer};
+use units::Units;
 
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Location {
@@ -59,6 +60,23 @@ impl Location {
         } else {
             self.longitude
         }
+    }
+
+    pub fn distance(&self, other: &Location, unit: &Units) -> f64 {
+        let source_lat = self.latitude.to_radians();
+        let source_lon = self.longitude.to_radians();
+        let dest_lat = other.latitude.to_radians();
+        let dest_lon = other.longitude.to_radians();
+
+        // Compute using the haversine formula
+        let d_lat = dest_lat - source_lat;
+        let d_lon = dest_lon - source_lon;
+
+        let a = (d_lat*0.5).powf(2.0).sin() + source_lat.cos() * dest_lat.cos() * (d_lon * 0.5).powf(2.0).sin();
+        let c = 2.0 * a.sqrt().asin();
+        let r = unit.earths_radius();
+
+        c * r
     }
 }
 
