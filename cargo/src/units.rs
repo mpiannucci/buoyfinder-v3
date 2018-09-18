@@ -1,4 +1,3 @@
-use num_traits::Float;
 
 pub enum Measurement {
     Length, 
@@ -73,38 +72,38 @@ impl Units {
         }
     }
 
-    pub fn convert<T>(&self, measurement: &Measurement, destination: &Units, value: T) -> T where T:Float, f64: Into<T> {
+    pub fn convert(&self, measurement: &Measurement, destination: &Units, value: f64) -> f64 {
         let unit_tuple = (self, measurement, destination);
         match unit_tuple {
-            (Units::Metric, Measurement::Length, Units::English) => value * 3.28.into(),
-            (Units::Metric, Measurement::Speed, Units::English) => value * 2.237.into(),
-            (Units::Metric, Measurement::Speed, Units::Knots) => value * 1.944.into(),
-            (Units::Metric, Measurement::Temperature, Units::English) => (value * (9.0 / 5.0).into()) + 32.0.into(),
-            (Units::Metric, Measurement::Temperature, Units::Kelvin) => value + 273.0.into(),
-            (Units::Metric, Measurement::Pressure, Units::English) => value / 33.8638.into(),
+            (Units::Metric, Measurement::Length, Units::English) => value * 3.28,
+            (Units::Metric, Measurement::Speed, Units::English) => value * 2.237,
+            (Units::Metric, Measurement::Speed, Units::Knots) => value * 1.944,
+            (Units::Metric, Measurement::Temperature, Units::English) => value * (9.0 / 5.0) + 32.0,
+            (Units::Metric, Measurement::Temperature, Units::Kelvin) => value + 273.0,
+            (Units::Metric, Measurement::Pressure, Units::English) => value / 33.8638,
 
-            (Units::English, Measurement::Length, Units::Metric) => value / 3.28.into(),
-            (Units::English, Measurement::Speed, Units::Metric) => value / 2.237.into(),
-            (Units::English, Measurement::Speed, Units::Knots) => value / 1.15.into(),
-            (Units::English, Measurement::Temperature, Units::Metric) => (value - 32.0.into()) * (5.0 / 9.0).into(),
-            (Units::English, Measurement::Temperature, Units::Kelvin) => (value + 459.67.into()) * (5.0 / 9.0).into(),
-            (Units::English, Measurement::Pressure, Units::Metric) => value * 33.8638.into(),
+            (Units::English, Measurement::Length, Units::Metric) => value / 3.28,
+            (Units::English, Measurement::Speed, Units::Metric) => value / 2.237,
+            (Units::English, Measurement::Speed, Units::Knots) => value / 1.15,
+            (Units::English, Measurement::Temperature, Units::Metric) => value - 32.0 * (5.0 / 9.0),
+            (Units::English, Measurement::Temperature, Units::Kelvin) => (value + 459.67) * (5.0 / 9.0),
+            (Units::English, Measurement::Pressure, Units::Metric) => value * 33.8638,
 
-            (Units::Knots, Measurement::Speed, Units::Metric) => value * 0.514.into(),
-            (Units::Knots, Measurement::Speed, Units::English) => value * 1.15.into(),
+            (Units::Knots, Measurement::Speed, Units::Metric) => value * 0.514,
+            (Units::Knots, Measurement::Speed, Units::English) => value * 1.15,
 
-            (Units::Kelvin, Measurement::Temperature, Units::Metric) => value - 273.0.into(),
-            (Units::Kelvin, Measurement::Temperature, Units::English) => value * (9.0 / 5.0).into() - 459.67.into(),
+            (Units::Kelvin, Measurement::Temperature, Units::Metric) => value - 273.0,
+            (Units::Kelvin, Measurement::Temperature, Units::English) => value * (9.0 / 5.0) - 459.67,
 
             _ => value
         }
     }
 
-    pub fn earths_radius<T>(&self) -> T where T: Float, f64: Into<T> {
+    pub fn earths_radius(&self) -> f64 {
         match self {
-            Units::Metric => 6371.0.into(),
-            Units::English => 3956.0.into(),
-            _ => 0.0.into(),
+            Units::Metric => 6371.0,
+            Units::English => 3956.0,
+            _ => 0.0,
         }
     }
 }
@@ -130,7 +129,7 @@ pub enum Direction {
 
 impl Direction {
 
-    pub fn from_degree<T>(degree: T) -> Direction where T: Float, f64: Into<T> {
+    pub fn from_degree(degree: f64) -> Direction {
         Direction::North
     }
 

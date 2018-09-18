@@ -10,7 +10,6 @@ extern crate reqwest;
 extern crate tokio;
 #[macro_use]
 extern crate log;
-extern crate num_traits;
 
 pub mod units;
 pub mod location;
