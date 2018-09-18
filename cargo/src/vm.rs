@@ -2,16 +2,21 @@ use station;
 use redux;
 use app::{DataState, AppState};
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct ExploreViewData {
-    pub stations: Vec<station::BuoyStation>
+    pub is_loading: bool,
+    pub stations: Vec<station::BuoyStation>,
 }
 
 impl ExploreViewData {
     pub fn from_state(state: &DataState<station::BuoyStations>) -> ExploreViewData {
         match state {
-            DataState::DataLoaded(stations) => ExploreViewData{stations: stations.stations.clone()},
-            _ => ExploreViewData{stations: vec![]}
+            DataState::DataLoading => ExploreViewData{is_loading: true, stations: vec![]},
+            DataState::DataLoaded(stations) => ExploreViewData{
+                    is_loading: false,
+                    stations: stations.stations.clone(),
+                },
+            _ => ExploreViewData{is_loading: false, stations: vec![]}
         }
     }
 }

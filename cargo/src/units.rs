@@ -1,3 +1,4 @@
+use num_traits::Float;
 
 pub enum Measurement {
     Length, 
@@ -69,6 +70,33 @@ impl Units {
             (_, Measurement::Visibility, false) => "nautical miles",
             (_, Measurement::Direction, _) => "°",
             _ => ""
+        }
+    }
+
+    pub fn convert<T>(&self, measurement: &Measurement, destination: &Units, value: T) -> T where T:Float, f64: Into<T> {
+        let unit_tuple = (self, measurement, destination);
+        match unit_tuple {
+            (Units::Metric, Measurement::Length, Units::English) => value * 3.28.into(),
+            (Units::Metric, Measurement::Speed, Units::English) => value * 2.237.into(),
+            (Units::Metric, Measurement::Speed, Units::Knots) => value * 1.944.into(),
+            (Units::Metric, Measurement::Temperature, Units::English) => (value * (9.0 / 5.0).into()) + 32.0.into(),
+            (Units::Metric, Measurement::Temperature, Units::Kelvin) => value + 273.0.into(),
+            (Units::Metric, Measurement::Pressure, Units::English) => value / 33.8638.into(),
+
+            (Units::English, Measurement::Length, Units::Metric) => value / 3.28.into(),
+            (Units::English, Measurement::Speed, Units::Metric) => value / 2.237.into(),
+            (Units::English, Measurement::Speed, Units::Knots) => value / 1.15.into(),
+            (Units::English, Measurement::Temperature, Units::Metric) => (value - 32.0.into()) * (5.0 / 9.0).into(),
+            (Units::English, Measurement::Temperature, Units::Kelvin) => (value + 459.67.into()) * (5.0 / 9.0).into(),
+            (Units::English, Measurement::Pressure, Units::Metric) => value * 33.8638.into(),
+
+            (Units::Knots, Measurement::Speed, Units::Metric) => value * 0.514.into(),
+            (Units::Knots, Measurement::Speed, Units::English) => value * 1.15.into(),
+
+            (Units::Kelvin, Measurement::Temperature, Units::Metric) => value - 273.0.into(),
+            (Units::Kelvin, Measurement::Temperature, Units::English) => value * (9.0 / 5.0).into() - 459.67.into(),
+
+            _ => value
         }
     }
 }
