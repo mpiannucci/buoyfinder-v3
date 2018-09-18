@@ -39,7 +39,7 @@ impl Units {
         }
     }
 
-    pub fn unit(&self, measurement: &Measurement, abbrev: bool) -> &'static str {
+    pub fn label(&self, measurement: &Measurement, abbrev: bool) -> &'static str {
         let unit_tuple = (self, measurement, abbrev);
         match unit_tuple {
             (Units::Metric, Measurement::Length, true) => "m",
@@ -98,5 +98,77 @@ impl Units {
 
             _ => value
         }
+    }
+
+    pub fn earths_radius<T>(&self) -> T where T: Float, f64: Into<T> {
+        match self {
+            Units::Metric => 6371.0.into(),
+            Units::English => 3956.0.into(),
+            _ => 0.0.into(),
+        }
+    }
+}
+
+pub enum Direction {
+    North,
+    NorthNorthEast,
+    NorthEast,
+    EastNorthEast,
+    East,
+    EastSouthEast,
+    SouthEast,
+    SouthSouthEast,
+    South,
+    SouthSouthWest,
+    SouthWest,
+    WestSouthWest,
+    West,
+    WestNorthWest,
+    NorthWest,
+    NorthNorthWest,
+}
+
+impl Direction {
+
+    pub fn from_degree<T>(degree: T) -> Direction where T: Float, f64: Into<T> {
+        Direction::North
+    }
+
+    pub fn label(&self, abbrev: bool) -> &'static str {
+         let dir_tuple = (self, abbrev);
+         match dir_tuple {
+             (Direction::North, true) => "n",
+             (Direction::North, false) => "north",
+             (Direction::NorthNorthEast, true) => "nne",
+             (Direction::NorthNorthEast, false) => "north-northeast",
+             (Direction::NorthEast, true) => "ne",
+             (Direction::NorthEast, false) => "northeast",
+             (Direction::EastNorthEast, true) => "ene",
+             (Direction::EastNorthEast, false) => "east-northeast",
+             (Direction::East, true) => "e",
+             (Direction::East, false) => "east",
+             (Direction::EastSouthEast, true) => "ese",
+             (Direction::EastSouthEast, false) => "east-southeast",
+             (Direction::SouthEast, true) => "se",
+             (Direction::SouthEast, false) => "southeast",
+             (Direction::SouthSouthEast, true) => "sse",
+             (Direction::SouthSouthEast, false) => "south-southeast",
+             (Direction::South, true) => "s",
+             (Direction::South, false) => "south",
+             (Direction::SouthSouthWest, true) => "ssw",
+             (Direction::SouthSouthWest, false) => "south-southwest",
+             (Direction::SouthWest, true) => "sw",
+             (Direction::SouthWest, false) => "southwest",
+             (Direction::WestSouthWest, true) => "wsw",
+             (Direction::WestSouthWest, false) => "west-southwest",
+             (Direction::West, true) => "w",
+             (Direction::West, false) => "west",
+             (Direction::WestNorthWest, true) => "wnw",
+             (Direction::WestNorthWest, false) => "west-northwest",
+             (Direction::NorthWest, true) => "nw",
+             (Direction::NorthWest, false) => "northwest",
+             (Direction::NorthNorthWest, true) => "nnw",
+             (Direction::NorthNorthWest, false) => "north-northwest",
+         }
     }
 }
