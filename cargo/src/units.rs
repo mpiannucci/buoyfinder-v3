@@ -125,12 +125,31 @@ pub enum Direction {
     WestNorthWest,
     NorthWest,
     NorthNorthWest,
+    Invalid,
 }
 
 impl Direction {
 
-    pub fn from_degree(degree: f64) -> Direction {
-        Direction::North
+    pub fn from_degree(degree: i64) -> Direction {
+        match degree {
+            349 ... 360 | 0 ... 11 => Direction::North,
+            12 ... 33 => Direction::NorthNorthEast,
+            34 ... 56 => Direction::NorthEast,
+            57 ... 78 => Direction::EastNorthEast,
+            79 ... 101 => Direction::East,
+            102 ... 123 => Direction::EastSouthEast,
+            124 ... 146 => Direction::SouthEast,
+            147 ... 168 => Direction::SouthSouthEast,
+            169 ... 191 => Direction::South,
+            192 ... 213 => Direction::SouthSouthWest,
+            214 ... 236 => Direction::SouthWest,
+            237 ... 258 => Direction::WestSouthWest,
+            259 ... 281 => Direction::West,
+            282 ... 303 => Direction::WestNorthWest,
+            304 ... 326 => Direction::NorthWest,
+            327 ... 348 => Direction::NorthNorthWest,
+            _ => Direction::Invalid,
+        }
     }
 
     pub fn label(&self, abbrev: bool) -> &'static str {
@@ -168,6 +187,7 @@ impl Direction {
              (Direction::NorthWest, false) => "northwest",
              (Direction::NorthNorthWest, true) => "nnw",
              (Direction::NorthNorthWest, false) => "north-northwest",
+             _ => ""
          }
     }
 }
