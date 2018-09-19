@@ -2,6 +2,7 @@ use station::{BuoyStation, BuoyStations};
 use redux;
 use app::{DataState, AppState};
 use location::Location;
+use palette::Color;
 
 #[derive(Clone, Debug)]
 pub struct BuoyStationItemViewData {
