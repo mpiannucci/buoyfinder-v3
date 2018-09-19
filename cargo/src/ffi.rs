@@ -221,7 +221,7 @@ pub unsafe extern fn buoy_station_name(buoy_station: *const BuoyStation) -> *con
 #[no_mangle]
 pub unsafe extern fn buoy_station_active(buoy_station: *const BuoyStation) -> bool {
     let buoy_station = &*buoy_station;
-    buoy_station.active
+    buoy_station.is_active()
 }
 
 /// Expose the JNI interface for android below

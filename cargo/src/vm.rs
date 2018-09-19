@@ -1,8 +1,18 @@
-use station::{BuoyStation, BuoyStations};
+use station::{BuoyStation, BuoyStations, BuoyType};
 use redux;
 use app::{DataState, AppState};
 use location::Location;
-use palette::Color;
+use palette::{named, Color, Srgb};
+
+#[repr(C)]
+#[derive(Clone, Debug)]
+pub enum BuoyStationIcon {
+    FixedStation,
+    Buoy,
+    Tides,
+    Tsunami,
+    Unknown,
+}
 
 #[derive(Clone, Debug)]
 pub struct BuoyStationItemViewData {
@@ -10,6 +20,8 @@ pub struct BuoyStationItemViewData {
     pub subtitle: String,
     pub location: Location,
     pub on_click_id: String,
+    pub icon: BuoyStationIcon,
+    pub color: Color,
 }
 
 impl BuoyStationItemViewData {
@@ -19,6 +31,16 @@ impl BuoyStationItemViewData {
             subtitle: format!("{} • {} • {}", buoy.station_id, buoy.program, buoy.owner),
             location: buoy.location.clone(),
             on_click_id: buoy.station_id.clone(),
+            icon: match buoy.buoy_type { 
+                BuoyType::Fixed | BuoyType::OilRig => BuoyStationIcon::FixedStation,
+                BuoyType::Buoy => BuoyStationIcon::Buoy,
+                BuoyType::Dart => BuoyStationIcon::Tsunami,
+                _ => BuoyStationIcon::Unknown,
+            },
+            color: match buoy.is_active() {
+                true => Srgb::<f32>::from_format(named::FIREBRICK).into_linear().into(),
+                false => Srgb::<f32>::from_format(named::FORESTGREEN).into_linear().into(),
+            },
         }
     }
 }

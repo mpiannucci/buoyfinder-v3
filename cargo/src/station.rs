@@ -3,6 +3,7 @@ use std::string::String;
 use serde::de::{Deserialize, Deserializer};
 use serde_xml_rs::de::from_reader;
 
+#[repr(C)]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum BuoyType {
@@ -30,16 +31,16 @@ pub struct BuoyStation {
     pub buoy_type: BuoyType,
 
     #[serde(rename = "met", deserialize_with = "bool_from_simple_str", default)]
-    pub active: bool,
+    pub has_meteorological_data: bool,
 
-    #[serde(default, deserialize_with = "bool_from_simple_str")]
-    pub currents: bool,
+    #[serde(rename="currents", deserialize_with = "bool_from_simple_str")]
+    pub has_currents_data: bool,
 
     #[serde(rename = "waterquality", deserialize_with = "bool_from_simple_str", default)]
-    pub water_quality: bool,
+    pub has_water_quality_data: bool,
 
-    #[serde(default, deserialize_with = "bool_from_simple_str")]
-    pub dart: bool,
+    #[serde(rename="dart", deserialize_with = "bool_from_simple_str")]
+    pub has_tsnuami_data: bool,
 
     #[serde(flatten)]
     pub location: Location,
@@ -53,10 +54,10 @@ impl BuoyStation {
             owner: String::from(""),
             program: String::from(""),
             buoy_type: BuoyType::Buoy,
-            active: true,
-            currents: false,
-            water_quality: false,
-            dart: false,
+            has_meteorological_data: true,
+            has_currents_data: false,
+            has_water_quality_data: false,
+            has_tsnuami_data: false,
         }
     }
 
@@ -79,6 +80,13 @@ impl BuoyStation {
         }).collect::<Vec<&str>>().join(" ");
 
         name
+    }
+
+    pub fn is_active(&self) -> bool {
+        self.has_meteorological_data || 
+        self.has_currents_data || 
+        self.has_water_quality_data || 
+        self.has_water_quality_data
     }
 }
 
