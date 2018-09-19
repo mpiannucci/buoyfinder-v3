@@ -9,7 +9,10 @@ struct ExampleExploreView;
 
 impl vm::ExploreView for ExampleExploreView {
     fn new_view_data(&mut self, view_data: &vm::ExploreViewData) {
-        println!("Example Explore View got new state: {} stations", view_data.stations.len());
+        match view_data.is_loading {
+            true => println!("Example Explore View got new state: loading stations"),
+            _ => println!("Example Explore View got new state: {} stations", view_data.stations.len()),
+        };
     }
 }
 
@@ -20,6 +23,7 @@ fn main() {
     let explore_vm = Arc::new(Mutex::new(vm::ExploreViewModel::new(explore_view)));
     store.subscribe(explore_vm.clone());
     
+    store.dispatch(app::Actions::SetBuoyStationsLoading);
     let stations = app::fetch_buoy_stations_remote();
     store.dispatch(app::Actions::SetBuoyStations(stations));
     store.unsubscribe(explore_vm);

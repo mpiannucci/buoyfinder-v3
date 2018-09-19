@@ -8,7 +8,7 @@ use std::sync::Arc;
 use std::sync::Mutex;
 use redux::{Store};
 use app::{Actions, DataState, AppState, AppReducer, fetch_buoy_stations_remote};
-use vm::{ExploreViewData, ExploreView, ExploreViewModel};
+use vm::{ExploreViewData, ExploreView, ExploreViewModel, BuoyStationItemViewData};
 use station::{BuoyStation};
 use location::Location;
 
@@ -119,10 +119,65 @@ pub unsafe extern fn explore_view_data_station_count(data: *const ExploreViewDat
 }
 
 #[no_mangle]
-pub unsafe extern fn explore_view_data_station_index(data: *const ExploreViewData, index: i64) -> *mut BuoyStation {
+pub unsafe extern fn explore_view_data_station_index(data: *const ExploreViewData, index: i64) -> *mut BuoyStationItemViewData {
     let view_data = &*data;
     let boxed_station = Box::new(view_data.stations[index as usize].clone());
     Box::into_raw(boxed_station)
+}
+
+#[no_mangle]
+pub unsafe extern fn location_new(latitude: f64, longitude: f64, name: *const c_char) -> *mut Location {
+    let boxed_location = Box::new(Location::new(latitude, longitude, c_char_to_string(name)));
+    Box::into_raw(boxed_location)
+}
+
+#[no_mangle]
+pub unsafe extern fn location_name(data: *const Location) -> *const c_char {
+    let data = &*data;
+    string_to_c_char(data.name.clone())
+}
+
+#[no_mangle]
+pub unsafe extern fn location_latitude(data: *const Location) -> f64 {
+    let data = &*data;
+    data.latitude
+}
+
+#[no_mangle]
+pub unsafe extern fn location_longitude(data: *const Location) -> f64 {
+    let data = &*data;
+    data.longitude
+}
+
+#[no_mangle]
+pub unsafe extern fn location_altitude(data: *const Location) -> f64 {
+    let data = &*data;
+    data.altitude
+}
+
+#[no_mangle]
+pub unsafe extern fn buoy_station_item_view_data_title(data: *const BuoyStationItemViewData) -> *const c_char {
+    let data = &*data;
+    string_to_c_char(data.title.clone())
+}
+
+#[no_mangle]
+pub unsafe extern fn buoy_station_item_view_data_subtitle(data: *const BuoyStationItemViewData) -> *const c_char {
+    let data = &*data;
+    string_to_c_char(data.subtitle.clone())
+}
+
+#[no_mangle]
+pub unsafe extern fn buoy_station_item_view_data_location(data: *const BuoyStationItemViewData) -> *mut Location {
+    let data = &*data;
+    let boxed_location = Box::new(data.location.clone());
+    Box::into_raw(boxed_location)
+}
+
+#[no_mangle]
+pub unsafe extern fn buoy_station_item_view_data_on_click_id(data: *const BuoyStationItemViewData) -> *const c_char {
+    let data = &*data;
+    string_to_c_char(data.on_click_id.clone())
 }
 
 #[no_mangle]
@@ -178,15 +233,13 @@ pub mod android {
 
     #[no_mangle]
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_MainActivity_initLogger(_: JNIEnv, _: JClass) {
-        //android_log::init("com.mpiannucci.buoyfinder").unwrap();
-
         android_logger::init_once(
             Filter::default()
                 .with_min_level(Level::Trace),
             Some("com.mpiannucci.buoyfinder")
         );
 
-        //log_panics::init();
+        log_panics::init();
 
         trace!("Initilized rust logger!")
     }
@@ -263,6 +316,58 @@ pub mod android {
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewData_stationAtIndex(_: JNIEnv, _: JClass, ptr: jlong, index: jlong) -> jlong {
         let view_data = ptr as *mut ExploreViewData;
         explore_view_data_station_index(view_data, index as i64) as jlong
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_name(env: JNIEnv, _: JClass, ptr: jlong) -> jstring {
+        let location = ptr as *mut Location;
+        let output = env.new_string((*location).name.as_str()).expect("Failed to create location name string");
+        output.into_inner()
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_latitude(env: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+        let location = ptr as *mut Location;
+        location.latitude as jdouble
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_latitude(env: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+        let location = ptr as *mut Location;
+        location.longitude as jdouble
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_altitude(env: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+        let location = ptr as *mut Location;
+        location.altitude as jdouble
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_BuoyStationItemViewData_title(env: JNIEnv, _: JClass, ptr: jlong) -> jstring {
+        let buoy_station = ptr as *mut BuoyStationItemViewData;
+        let output = env.new_string((*buoy_station).title.as_str()).expect("Failed to create buoy title string");
+        output.into_inner()
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_BuoyStationItemViewData_subtitle(env: JNIEnv, _: JClass, ptr: jlong) -> jstring {
+        let buoy_station = ptr as *mut BuoyStationItemViewData;
+        let output = env.new_string((*buoy_station).subtitle.as_str()).expect("Failed to create buoy subtitle string");
+        output.into_inner()
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_BuoyStationItemViewData_location(env: JNIEnv, _: JClass, ptr: jlong) -> jlong {
+        let buoy_station = ptr as *mut BuoyStationItemViewData;
+        buoy_station_item_view_data_location(buoy_station) as jlong
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_BuoyStationItemViewData_onClickId(env: JNIEnv, _: JClass, ptr: jlong) -> jstring {
+        let buoy_station = ptr as *mut BuoyStationItemViewData;
+        let output = env.new_string((*buoy_station).title.as_str()).expect("Failed to create buoy title string");
+        output.into_inner()
     }
 
     struct ExploreViewJVMWrapper {

@@ -1,16 +1,31 @@
 use station::{BuoyStation, BuoyStations};
 use redux;
 use app::{DataState, AppState};
+use location::Location;
 
-pub struct BuoyStationItem {
-    title: String,
-    subtitle: String
+#[derive(Clone, Debug)]
+pub struct BuoyStationItemViewData {
+    pub title: String,
+    pub subtitle: String,
+    pub location: Location,
+    pub on_click_id: String,
+}
+
+impl BuoyStationItemViewData {
+    pub fn from_buoy_station(buoy: &BuoyStation) -> BuoyStationItemViewData {
+        BuoyStationItemViewData {
+            title: buoy.name(),
+            subtitle: format!("{} • {} • {}", buoy.station_id, buoy.program, buoy.owner),
+            location: buoy.location.clone(),
+            on_click_id: buoy.station_id.clone(),
+        }
+    }
 }
 
 #[derive(Clone, Debug)]
 pub struct ExploreViewData {
     pub is_loading: bool,
-    pub stations: Vec<BuoyStation>,
+    pub stations: Vec<BuoyStationItemViewData>,
 }
 
 impl ExploreViewData {
@@ -19,7 +34,7 @@ impl ExploreViewData {
             DataState::DataLoading => ExploreViewData{is_loading: true, stations: vec![]},
             DataState::DataLoaded(stations) => ExploreViewData{
                     is_loading: false,
-                    stations: stations.stations.clone(),
+                    stations: stations.stations.iter().map(|b| BuoyStationItemViewData::from_buoy_station(b)).collect(),
                 },
             _ => ExploreViewData{is_loading: false, stations: vec![]}
         }
