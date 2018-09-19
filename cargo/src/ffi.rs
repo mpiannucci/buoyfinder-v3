@@ -132,6 +132,11 @@ pub unsafe extern fn location_new(latitude: f64, longitude: f64, name: *const c_
 }
 
 #[no_mangle]
+pub unsafe extern fn location_free(data: *mut Location) {
+    let _ = Box::from_raw(data);
+}
+
+#[no_mangle]
 pub unsafe extern fn location_name(data: *const Location) -> *const c_char {
     let data = &*data;
     string_to_c_char(data.name.clone())
@@ -153,6 +158,11 @@ pub unsafe extern fn location_longitude(data: *const Location) -> f64 {
 pub unsafe extern fn location_altitude(data: *const Location) -> f64 {
     let data = &*data;
     data.altitude
+}
+
+#[no_mangle]
+pub unsafe extern fn buoy_station_item_view_data_free(data: *mut BuoyStationItemViewData) {
+    let _ = Box::from_raw(data);
 }
 
 #[no_mangle]
@@ -319,6 +329,18 @@ pub mod android {
     }
 
     #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_new(env: JNIEnv, _: JClass, lat: jdouble, lon: jdouble, name: JString) -> jlong {
+        let name = env.get_string(name).expect("Invalid location name string");
+        location_new(lat, lon, name.as_ptr()) as jlong
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_free(_: JNIEnv, _: JClass, ptr: jlong) {
+        let loc = ptr as *mut Location;
+        location_free(loc);
+    }
+
+    #[no_mangle]
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_name(env: JNIEnv, _: JClass, ptr: jlong) -> jstring {
         let location = ptr as *mut Location;
         let output = env.new_string((*location).name.as_str()).expect("Failed to create location name string");
@@ -341,6 +363,12 @@ pub mod android {
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_altitude(env: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
         let location = ptr as *mut Location;
         location.altitude as jdouble
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_BuoyStationItemViewData_free(_: JNIEnv, _: JClass, ptr: jlong) {
+        let data = ptr as *mut BuoyStationItemViewData;
+        buoy_station_item_view_data_free(data);
     }
 
     #[no_mangle]
