@@ -49,13 +49,7 @@ pub unsafe extern fn store_free(store: *mut Store<AppState, Actions>) {
 #[no_mangle]
 pub unsafe extern fn fetch_buoy_stations(store: *mut Store<AppState, Actions>) {
     let store = &mut*store;
-
-    trace!("Store state: {:?}", store.state);
-
     let stations = fetch_buoy_stations_remote();
-
-    trace!("Got stations! {}", stations.station_count);
-
     store.dispatch(Actions::SetBuoyStations(stations));
 }
 
