@@ -2,7 +2,14 @@ use station::{BuoyStation, BuoyStations, BuoyType};
 use redux;
 use app::{DataState, AppState};
 use location::Location;
-use palette::{named, Color, Srgb};
+
+#[repr(C)]
+#[derive(Clone, Debug)]
+pub struct Color {
+    pub red: f64,
+    pub green: f64,
+    pub blue: f64,
+}
 
 #[repr(C)]
 #[derive(Clone, Debug)]
@@ -38,8 +45,8 @@ impl BuoyStationItemViewData {
                 _ => BuoyStationIcon::Unknown,
             },
             color: match buoy.is_active() {
-                true => Srgb::<f32>::from_format(named::FIREBRICK).into_linear().into(),
-                false => Srgb::<f32>::from_format(named::FORESTGREEN).into_linear().into(),
+                true => Color { red: 0.0, green: 1.0, blue: 0.0 },
+                false => Color { red: 1.0, green: 0.0, blue: 0.0 },
             },
         }
     }

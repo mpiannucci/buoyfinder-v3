@@ -8,9 +8,10 @@ use std::sync::Arc;
 use std::sync::Mutex;
 use redux::{Store};
 use app::{Actions, DataState, AppState, AppReducer, fetch_buoy_stations_remote};
-use vm::{ExploreViewData, ExploreView, ExploreViewModel, BuoyStationItemViewData};
+use vm::{ExploreViewData, ExploreView, ExploreViewModel, BuoyStationItemViewData, BuoyStationIcon, Color};
 use station::{BuoyStation};
 use location::Location;
+use palette;
 
 #[repr(C)]
 pub struct RustByteSlice {
@@ -191,6 +192,18 @@ pub unsafe extern fn buoy_station_item_view_data_on_click_id(data: *const BuoySt
 }
 
 #[no_mangle]
+pub unsafe extern fn buoy_station_item_view_data_icon(data: *const BuoyStationItemViewData) -> BuoyStationIcon {
+    let data = &*data;
+    data.icon.clone()
+}
+
+#[no_mangle]
+pub unsafe extern fn buoy_station_item_view_data_color(data: *const BuoyStationItemViewData) -> Color {
+    let data = &*data;
+    data.color.clone()
+}
+
+#[no_mangle]
 pub unsafe extern fn buoy_station_new(station_id: *const c_char, name: *const c_char, lat: f64, lon: f64) -> *mut BuoyStation {
     let station_id = c_char_to_string(station_id);
     let name = c_char_to_string(name);
@@ -236,7 +249,7 @@ pub mod android {
     use self::jni::JNIEnv;
     use self::jni::JavaVM;
     use self::jni::objects::{JClass, JString, JValue, JObject, GlobalRef};
-    use self::jni::sys::{jlong, jdouble, jboolean, jstring};
+    use self::jni::sys::{jint, jlong, jdouble, jboolean, jstring};
     use self::android_logger::Filter;
 
     use log::Level;
@@ -386,7 +399,7 @@ pub mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_BuoyStationItemViewData_location(env: JNIEnv, _: JClass, ptr: jlong) -> jlong {
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_BuoyStationItemViewData_location(_: JNIEnv, _: JClass, ptr: jlong) -> jlong {
         let buoy_station = ptr as *mut BuoyStationItemViewData;
         buoy_station_item_view_data_location(buoy_station) as jlong
     }
@@ -396,6 +409,46 @@ pub mod android {
         let buoy_station = ptr as *mut BuoyStationItemViewData;
         let output = env.new_string((*buoy_station).title.as_str()).expect("Failed to create buoy title string");
         output.into_inner()
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_BuoyStationItemViewData_onClickId(_: JNIEnv, _: JClass, ptr: jlong) -> jint {
+        let buoy_station = ptr as *mut BuoyStationItemViewData;
+        buoy_station.icon.clone() as jint
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_BuoyStationItemViewData_color(_: JNIEnv, _: JClass, ptr: jlong) -> jlong {
+        let buoy_station = ptr as *mut BuoyStationItemViewData;
+        let boxed_color = Box::new(buoy_station.color.clone());
+        Box::into_raw(boxed_color) as jlong
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Color_free(_: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+        let color = ptr as *mut Color;
+        let _ = Box::from_raw(color);
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Color_red(_: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+        let color = ptr as *mut Color;
+        let color = &*color;
+        color.red as jdouble
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Color_green(_: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+        let color = ptr as *mut Color;
+        let color = &*color;
+        color.green as jdouble
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Color_blue(_: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+        let color = ptr as *mut Color;
+        let color = &*color;
+        color.blue as jdouble
     }
 
     struct ExploreViewJVMWrapper {
