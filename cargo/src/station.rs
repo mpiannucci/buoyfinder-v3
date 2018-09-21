@@ -33,13 +33,13 @@ pub struct BuoyStation {
     #[serde(rename = "met", deserialize_with = "bool_from_simple_str", default)]
     pub has_meteorological_data: bool,
 
-    #[serde(rename="currents", deserialize_with = "bool_from_simple_str")]
+    #[serde(default, rename="currents", deserialize_with = "bool_from_simple_str")]
     pub has_currents_data: bool,
 
     #[serde(rename = "waterquality", deserialize_with = "bool_from_simple_str", default)]
     pub has_water_quality_data: bool,
 
-    #[serde(rename="dart", deserialize_with = "bool_from_simple_str")]
+    #[serde(default, rename="dart", deserialize_with = "bool_from_simple_str")]
     pub has_tsnuami_data: bool,
 
     #[serde(flatten)]

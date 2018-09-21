@@ -30,19 +30,8 @@ class ExploreViewData {
         }
     }
     
-    func station(at index: Int) -> BuoyStation {
+    func station(at index: Int) -> BuoyStationItemViewData {
         let rawStation = explore_view_data_station_index(raw, Int64(index))
-        return BuoyStation(rawStation!)
-    }
-    
-    var stations: [BuoyStation] {
-        get {
-            var stations: [BuoyStation] = []
-            for i in 0..<stationCount {
-                let buoy = station(at: i)
-                stations.append(buoy)
-            }
-            return stations
-        }
+        return BuoyStationItemViewData(ptr: rawStation!)
     }
 }
