@@ -39,6 +39,12 @@ class Location {
             return location_longitude(raw)
         }
     }
+
+    public var altitude: Double {
+        get {
+            return location_altitude(raw)
+        }
+    }
     
     public var name: String {
         get {
