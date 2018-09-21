@@ -1,6 +1,9 @@
-use station;
+pub mod redux;
+pub mod vm;
+
+use data::station;
 use reqwest;
-use redux::Reducer;
+use app::redux::Reducer;
 
 #[derive(Clone)]
 pub enum Actions {

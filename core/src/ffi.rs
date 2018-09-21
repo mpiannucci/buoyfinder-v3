@@ -6,11 +6,11 @@ use std::ops::Deref;
 use std::boxed::Box;
 use std::sync::Arc;
 use std::sync::Mutex;
-use redux::{Store};
+use app::redux::{Store};
 use app::{Actions, DataState, AppState, AppReducer, fetch_buoy_stations_remote};
-use vm::{ExploreViewData, ExploreView, ExploreViewModel, BuoyStationItemViewData, BuoyStationIcon, Color};
-use station::{BuoyStation};
-use location::Location;
+use app::vm::{ExploreViewData, ExploreView, ExploreViewModel, BuoyStationItemViewData, BuoyStationIcon, Color};
+use data::station::{BuoyStation};
+use data::location::Location;
 
 #[repr(C)]
 pub struct RustByteSlice {

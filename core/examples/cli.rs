@@ -1,9 +1,9 @@
 extern crate buoyfinder;
 
 use std::sync::{Arc, Mutex};
-use buoyfinder::redux;
+use buoyfinder::app::redux;
 use buoyfinder::app;
-use buoyfinder::vm;
+use buoyfinder::app::vm;
 
 struct ExampleExploreView;
 

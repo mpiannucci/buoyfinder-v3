@@ -1,4 +1,4 @@
-use location::Location;
+use data::location::Location;
 use std::string::String;
 use serde::de::{Deserialize, Deserializer};
 use serde_xml_rs::de::from_reader;

@@ -1,7 +1,7 @@
-use station::{BuoyStation, BuoyStations, BuoyType};
-use redux;
+use data::station::{BuoyStation, BuoyStations, BuoyType};
+use app::redux;
 use app::{DataState, AppState};
-use location::Location;
+use data::location::Location;
 use std::str::FromStr;
 use std::num::ParseIntError;
 
