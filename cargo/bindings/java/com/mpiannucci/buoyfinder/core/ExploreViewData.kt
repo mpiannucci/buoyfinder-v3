@@ -4,10 +4,6 @@ class ExploreViewData {
 
     val ptr: Long
 
-//    constructor() {
-//        ptr = new()
-//    }
-
     constructor(rawPtr: Long) {
         ptr = rawPtr
     }
@@ -16,16 +12,20 @@ class ExploreViewData {
         free(ptr)
     }
 
+    val isLoading: Boolean
+        get() = isLoading(ptr)
+
     val stationCount: Long
         get() = stationCount(ptr)
 
-    fun station(index: Long): BuoyStation {
+    fun station(index: Long): BuoyStationItemViewData {
         val rawStation = stationAtIndex(ptr, index)
-        return BuoyStation(rawStation)
+        return BuoyStationItemViewData(rawStation)
     }
 
     private external fun new(): Long
     private external fun free(ptr: Long)
+    private external fun isLoading(ptr: Long): Boolean
     private external fun stationCount(ptr: Long): Long
     private external fun stationAtIndex(ptr: Long, index: Long): Long
 }
