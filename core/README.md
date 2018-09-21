@@ -28,7 +28,7 @@ bash create-ndk-standalone.sh
 
 * Install the android cargo configuration
 ```bash
-cp cargo-config.toml ~/.cargo/config
+cp cargo-config.toml ./.cargo/config
 ```
 
 ## Building
