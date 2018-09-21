@@ -20,6 +20,7 @@
 		34E5466D2136E9F8006BD19A /* WeakHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E5466C2136E9F8006BD19A /* WeakHandle.swift */; };
 		34E5466F2136EA83006BD19A /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E5466E2136EA83006BD19A /* ExploreView.swift */; };
 		34E8EB0B2154748C002B0B14 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E8EB0A2154748C002B0B14 /* Location.swift */; };
+		34E8EB0D2154752A002B0B14 /* BuoyStationItemViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E8EB0C2154752A002B0B14 /* BuoyStationItemViewData.swift */; };
 		88A71018C67BA1F3B02DEAAC /* Pods_BuoyFinder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60073CF8ABBD33A64897B6B2 /* Pods_BuoyFinder.framework */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		34E5466C2136E9F8006BD19A /* WeakHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WeakHandle.swift; path = ../cargo/bindings/swift/WeakHandle.swift; sourceTree = "<group>"; };
 		34E5466E2136EA83006BD19A /* ExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExploreView.swift; path = ../cargo/bindings/swift/ExploreView.swift; sourceTree = "<group>"; };
 		34E8EB0A2154748C002B0B14 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Location.swift; path = ../cargo/bindings/swift/Location.swift; sourceTree = "<group>"; };
+		34E8EB0C2154752A002B0B14 /* BuoyStationItemViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BuoyStationItemViewData.swift; path = ../cargo/bindings/swift/BuoyStationItemViewData.swift; sourceTree = "<group>"; };
 		3CE07B93C8787DDA24740BE4 /* Pods-BuoyFinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuoyFinder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BuoyFinder/Pods-BuoyFinder.debug.xcconfig"; sourceTree = "<group>"; };
 		60073CF8ABBD33A64897B6B2 /* Pods_BuoyFinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BuoyFinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96EB73D73B3488B0F204E11B /* Pods-BuoyFinder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuoyFinder.release.xcconfig"; path = "Pods/Target Support Files/Pods-BuoyFinder/Pods-BuoyFinder.release.xcconfig"; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				34E5466C2136E9F8006BD19A /* WeakHandle.swift */,
 				34E5466E2136EA83006BD19A /* ExploreView.swift */,
 				34E8EB0A2154748C002B0B14 /* Location.swift */,
+				34E8EB0C2154752A002B0B14 /* BuoyStationItemViewData.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				34E5466D2136E9F8006BD19A /* WeakHandle.swift in Sources */,
 				34799A0D212E48D000BEB05F /* ViewController.swift in Sources */,
 				34E5466B21361B0C006BD19A /* ExploreViewData.swift in Sources */,
+				34E8EB0D2154752A002B0B14 /* BuoyStationItemViewData.swift in Sources */,
 				34799A0B212E48D000BEB05F /* AppDelegate.swift in Sources */,
 				34E54669213619C1006BD19A /* Store.swift in Sources */,
 			);
