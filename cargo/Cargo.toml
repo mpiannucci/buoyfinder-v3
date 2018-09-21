@@ -18,7 +18,6 @@ futures-cpupool = "~0.1"
 tokio = "0.1"
 log = "0.4"
 mio-uds = "0.6.7"
-palette = "0.4"
 
 [target.'cfg(target_os="android")'.dependencies]
 jni = "0.10"

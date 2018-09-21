@@ -11,7 +11,6 @@ use app::{Actions, DataState, AppState, AppReducer, fetch_buoy_stations_remote};
 use vm::{ExploreViewData, ExploreView, ExploreViewModel, BuoyStationItemViewData, BuoyStationIcon, Color};
 use station::{BuoyStation};
 use location::Location;
-use palette;
 
 #[repr(C)]
 pub struct RustByteSlice {
