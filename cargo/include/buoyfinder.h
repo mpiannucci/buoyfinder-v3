@@ -61,6 +61,8 @@ ExploreViewModelHandle *explore_view_bind(explore_view view, Store_AppState__Act
 
 void explore_view_data_free(ExploreViewData *data);
 
+bool explore_view_data_is_loading(const ExploreViewData *data);
+
 ExploreViewData *explore_view_data_new(void);
 
 int64_t explore_view_data_station_count(const ExploreViewData *data);

@@ -23,6 +23,12 @@ class ExploreViewData {
     deinit {
         explore_view_data_free(raw)
     }
+
+    var isLoading: Bool {
+        get {
+            return explore_view_data_is_loading(raw)
+        }
+    }
     
     var stationCount: Int {
         get {

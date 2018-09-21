@@ -108,6 +108,12 @@ pub unsafe extern fn explore_view_data_free(data: *mut ExploreViewData) {
 }
 
 #[no_mangle]
+pub unsafe extern fn explore_view_data_is_loading(data: *const ExploreViewData) -> bool {
+    let view_data = &*data;
+    view_data.is_loading
+}
+
+#[no_mangle]
 pub unsafe extern fn explore_view_data_station_count(data: *const ExploreViewData) -> i64 {
     let view_data = &*data;
     view_data.stations.len() as i64
@@ -324,6 +330,12 @@ pub mod android {
     }
 
     #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewData_isLoading(_: JNIEnv, _: JClass, ptr: jlong) -> jboolean {
+        let view_data = ptr as *mut ExploreViewData;
+        explore_view_data_is_loading(view_data) as jboolean
+    }
+
+    #[no_mangle]
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewData_stationCount(_: JNIEnv, _: JClass, ptr: jlong) -> jlong {
         let view_data = ptr as *mut ExploreViewData;
         explore_view_data_station_count(view_data) as jlong
@@ -357,18 +369,21 @@ pub mod android {
     #[no_mangle]
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_latitude(env: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
         let location = ptr as *mut Location;
+        let location = &*location;
         location.latitude as jdouble
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_latitude(env: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_longitude(env: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
         let location = ptr as *mut Location;
+        let location = &*location;
         location.longitude as jdouble
     }
 
     #[no_mangle]
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_altitude(env: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
         let location = ptr as *mut Location;
+        let location = &*location;
         location.altitude as jdouble
     }
 
@@ -406,20 +421,22 @@ pub mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_BuoyStationItemViewData_onClickId(_: JNIEnv, _: JClass, ptr: jlong) -> jint {
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_BuoyStationItemViewData_icon(_: JNIEnv, _: JClass, ptr: jlong) -> jint {
         let buoy_station = ptr as *mut BuoyStationItemViewData;
+        let buoy_station = &*buoy_station;
         buoy_station.icon.clone() as jint
     }
 
     #[no_mangle]
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_BuoyStationItemViewData_color(_: JNIEnv, _: JClass, ptr: jlong) -> jlong {
         let buoy_station = ptr as *mut BuoyStationItemViewData;
+        let buoy_station = &*buoy_station;
         let boxed_color = Box::new(buoy_station.color.clone());
         Box::into_raw(boxed_color) as jlong
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Color_free(_: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Color_free(_: JNIEnv, _: JClass, ptr: jlong) {
         let color = ptr as *mut Color;
         let _ = Box::from_raw(color);
     }
