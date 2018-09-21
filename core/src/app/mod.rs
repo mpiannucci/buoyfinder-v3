@@ -1,5 +1,6 @@
 pub mod redux;
 pub mod vm;
+pub mod color;
 
 use data::station;
 use reqwest;

@@ -6,9 +6,10 @@ use std::ops::Deref;
 use std::boxed::Box;
 use std::sync::Arc;
 use std::sync::Mutex;
-use app::redux::{Store};
+use app::redux::Store;
+use app::color::Color;
 use app::{Actions, DataState, AppState, AppReducer, fetch_buoy_stations_remote};
-use app::vm::{ExploreViewData, ExploreView, ExploreViewModel, BuoyStationItemViewData, BuoyStationIcon, Color};
+use app::vm::{ExploreViewData, ExploreView, ExploreViewModel, BuoyStationItemViewData, BuoyStationIcon};
 use data::station::{BuoyStation};
 use data::location::Location;
 
