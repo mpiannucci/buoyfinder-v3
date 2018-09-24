@@ -1,38 +1,15 @@
 pub mod redux;
-pub mod vm;
 pub mod color;
+pub mod actions;
+pub mod state;
+pub mod vm;
 
 use data::station;
 use reqwest;
 use app::redux::Reducer;
-
-#[derive(Clone)]
-pub enum Actions {
-    SetBuoyStationsLoading,
-    SetBuoyStations(station::BuoyStations),
-    SetBuoyStationLoadError,
-}
-
-#[derive(Clone, Debug)]
-pub enum DataState<T> {
-    NoData,
-    DataLoading,
-    DataLoaded(T),
-    DataError,
-}
-
-#[derive(Clone, Debug)]
-pub struct AppState {
-    pub stations_state: DataState<station::BuoyStations>,
-}
-
-impl Default for AppState {
-    fn default() -> AppState {
-        AppState {
-            stations_state: DataState::NoData,
-        }
-    }
-}
+use app::state::data_state::DataState;
+use app::state::app_state::AppState;
+use app::actions::Actions;
 
 pub struct AppReducer;
 
