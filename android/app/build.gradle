@@ -25,7 +25,7 @@ android {
             java {
                 srcDirs = [
                         "src/main/java",
-                        "../../cargo/bindings/java"
+                        "../../core/bindings/java"
                 ]
             }
         }
