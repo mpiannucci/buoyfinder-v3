@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GoogleMaps
 
 let store = Store()
 
@@ -18,6 +19,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        // Google Maps Auth
+        GMSServices.provideAPIKey("AIzaSyB5StrjG3MFFOVVdd9y3c1AxNEyU1La1X4")
+        
+        // Load buoy stations
+        DispatchQueue.global().async {
+            store.fetchBuoyStations()
+        }
+        
         return true
     }
 
