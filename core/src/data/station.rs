@@ -88,6 +88,38 @@ impl BuoyStation {
         self.has_water_quality_data || 
         self.has_water_quality_data
     }
+
+    pub fn latest_obs_data_url(&self) -> String {
+        format!("https://ndbc.noaa.gov/data/latest_obs/{}.txt", self.station_id)
+    }
+
+    pub fn meteorological_data_url(&self) -> String {
+        format!("https://www.ndbc.noaa.gov/data/realtime2/{}.txt", self.station_id)
+    }
+
+    pub fn wave_data_url(&self) -> String {
+        format!("https://www.ndbc.noaa.gov/data/realtime2/{}.spec", self.station_id)
+    }
+
+    pub fn spectral_wave_data_url(&self) -> String {
+        format!("https://www.ndbc.noaa.gov/data/realtime2/{}.data_spec", self.station_id)
+    }
+
+    pub fn primary_spectral_wave_direction_data_url(&self) -> String {
+        format!("https://www.ndbc.noaa.gov/data/realtime2/{}.swdir", self.station_id)
+    }
+
+    pub fn secondary_spectral_wave_direction_data_url(&self) -> String {
+        format!("https://www.ndbc.noaa.gov/data/realtime2/{}.swdir2", self.station_id)
+    }
+
+    pub fn primary_spectral_wave_energy_data_url(&self) -> String {
+        format!("https://www.ndbc.noaa.gov/data/realtime2/{}.swr1", self.station_id)
+    }
+
+    pub fn secondary_spectral_wave_energy_data_url(&self) -> String {
+        format!("https://www.ndbc.noaa.gov/data/realtime2/{}.swr2", self.station_id)
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
