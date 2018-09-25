@@ -18,13 +18,13 @@ impl vm::ExploreView for ExampleExploreView {
 
 fn main() {
     let app_reducer = Box::new(app::AppReducer{});
-    let mut store = redux::Store::create(&app::AppState::default(), app_reducer);
+    let mut store = redux::Store::create(&app::state::app_state::AppState::default(), app_reducer);
     let explore_view = Box::new(ExampleExploreView{});
     let explore_vm = Arc::new(Mutex::new(vm::ExploreViewModel::new(explore_view)));
     store.subscribe(explore_vm.clone());
     
-    store.dispatch(app::Actions::SetBuoyStationsLoading);
+    store.dispatch(app::actions::Actions::SetBuoyStationsLoading);
     let stations = app::fetch_buoy_stations_remote();
-    store.dispatch(app::Actions::SetBuoyStations(stations));
+    store.dispatch(app::actions::Actions::SetBuoyStations(stations));
     store.unsubscribe(explore_vm);
 }
