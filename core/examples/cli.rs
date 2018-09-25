@@ -1,6 +1,5 @@
 extern crate buoyfinder;
 
-use std::sync::{Arc, Mutex};
 use buoyfinder::app::redux;
 use buoyfinder::app;
 use buoyfinder::app::vm;
@@ -20,11 +19,11 @@ fn main() {
     let app_reducer = Box::new(app::AppReducer{});
     let mut store = redux::Store::create(&app::state::app_state::AppState::default(), app_reducer);
     let explore_view = Box::new(ExampleExploreView{});
-    let explore_vm = Arc::new(Mutex::new(vm::ExploreViewModel::new(explore_view)));
-    store.subscribe(explore_vm.clone());
+    let explore_vm = Box::new(vm::ExploreViewModel::new(explore_view));
+    let explore_vm_id = store.subscribe(explore_vm);
     
     store.dispatch(app::actions::Actions::SetBuoyStationsLoading);
     let stations = app::fetch_buoy_stations_remote();
     store.dispatch(app::actions::Actions::SetBuoyStations(stations));
-    store.unsubscribe(explore_vm);
+    store.unsubscribe(explore_vm_id);
 }

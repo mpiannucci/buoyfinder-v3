@@ -16,8 +16,6 @@ typedef struct BuoyStationItemViewData BuoyStationItemViewData;
 
 typedef struct ExploreViewData ExploreViewData;
 
-typedef struct ExploreViewModelHandle ExploreViewModelHandle;
-
 typedef struct Location Location;
 
 typedef struct Store_AppState__Actions Store_AppState__Actions;
@@ -57,7 +55,7 @@ const char *buoy_station_name(const BuoyStation *buoy_station);
 
 BuoyStation *buoy_station_new(const char *station_id, const char *name, double lat, double lon);
 
-ExploreViewModelHandle *explore_view_bind(explore_view view, Store_AppState__Actions *store);
+uint8_t explore_view_bind(explore_view view, Store_AppState__Actions *store);
 
 void explore_view_data_free(ExploreViewData *data);
 
@@ -70,7 +68,7 @@ int64_t explore_view_data_station_count(const ExploreViewData *data);
 BuoyStationItemViewData *explore_view_data_station_index(const ExploreViewData *data,
                                                          int64_t index);
 
-void explore_view_unbind(ExploreViewModelHandle *view_model_handle, Store_AppState__Actions *store);
+void explore_view_unbind(uint8_t view_observer_id, Store_AppState__Actions *store);
 
 void fetch_buoy_stations(Store_AppState__Actions *store);
 

@@ -4,8 +4,6 @@ use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 use std::ops::Deref;
 use std::boxed::Box;
-use std::sync::Arc;
-use std::sync::Mutex;
 use app::redux::Store;
 use app::color::Color;
 use app::state::app_state::AppState;
@@ -80,23 +78,18 @@ impl ExploreView for ExploreViewWrapper {
     }
 }
 
-pub struct ExploreViewModelHandle(pub Arc<Mutex<ExploreViewModel>>);
-
 #[no_mangle]
-pub unsafe extern fn explore_view_bind(view: explore_view, store: *mut Store<AppState, Actions>) -> *mut ExploreViewModelHandle {
+pub unsafe extern fn explore_view_bind(view: explore_view, store: *mut Store<AppState, Actions>) -> i32 {
     let explore_view_wrapper = Box::new(ExploreViewWrapper(view));
-    let explore_view_model = Arc::new(Mutex::new(ExploreViewModel::new(explore_view_wrapper)));
-    let explore_view_model_handle = Box::new(ExploreViewModelHandle(explore_view_model));
+    let explore_view_model = Box::new(ExploreViewModel::new(explore_view_wrapper));
     let store = &mut*store;
-    store.subscribe(explore_view_model_handle.0.clone());
-    Box::into_raw(explore_view_model_handle)
+    store.subscribe(explore_view_model)
 }
 
 #[no_mangle]
-pub unsafe extern fn explore_view_unbind(view_model_handle: *mut ExploreViewModelHandle, store: *mut Store<AppState, Actions>) {
-    let explore_view_model_handle = Box::from_raw(view_model_handle);
+pub unsafe extern fn explore_view_unbind(view_observer_id: i32, store: *mut Store<AppState, Actions>) {
     let store = &mut*store;
-    store.unsubscribe(explore_view_model_handle.0);
+    store.unsubscribe(view_observer_id);
 }
 
 #[no_mangle]
@@ -371,21 +364,21 @@ pub mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_latitude(env: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_latitude(_: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
         let location = ptr as *mut Location;
         let location = &*location;
         location.latitude as jdouble
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_longitude(env: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_longitude(_: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
         let location = ptr as *mut Location;
         let location = &*location;
         location.longitude as jdouble
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_altitude(env: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Location_altitude(_: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
         let location = ptr as *mut Location;
         let location = &*location;
         location.altitude as jdouble
@@ -503,25 +496,21 @@ pub mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewHandle_bind(env: JNIEnv, _: JClass, callback: JObject<'static>, store_ptr: jlong) -> jlong {
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewHandle_bind(env: JNIEnv, _: JClass, callback: JObject<'static>, store_ptr: jlong) -> jint {
         let explore_view_wrapper = Box::new(ExploreViewJVMWrapper{
             jvm: env.get_java_vm().expect("Failed to get the JVM when registering explore view"),
             view: env.new_global_ref(callback).expect("Failed to get a global ref from explore view callback"),
         });
-        let explore_view_model = Arc::new(Mutex::new(ExploreViewModel::new(explore_view_wrapper)));
-        let explore_view_model_handle = Box::new(ExploreViewModelHandle(explore_view_model));
+        let explore_view_model = Box::new(ExploreViewModel::new(explore_view_wrapper));
         let store = store_ptr as *mut Store<AppState, Actions>;
         let store = &mut*store;
-        store.subscribe(explore_view_model_handle.0.clone());
-        Box::into_raw(explore_view_model_handle) as jlong
+        store.subscribe(explore_view_model)
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewHandle_unbind(_: JNIEnv, _: JClass, handle_ptr: jlong, store_ptr: jlong) {
-        let view_model_handle = handle_ptr as *mut ExploreViewModelHandle;
-        let explore_view_model_handle = Box::from_raw(view_model_handle);
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_ExploreViewHandle_unbind(_: JNIEnv, _: JClass, view_observer_id: jint, store_ptr: jlong) {
         let store = store_ptr as *mut Store<AppState, Actions>;
         let store = &mut*store;
-        store.unsubscribe(explore_view_model_handle.0);
+        store.unsubscribe(view_observer_id);
     }
 }

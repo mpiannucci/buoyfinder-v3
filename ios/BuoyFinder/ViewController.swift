@@ -32,6 +32,10 @@ class ViewController: UIViewController {
 
 extension ViewController: ExploreView {
     func newViewData(viewData: ExploreViewData) {
-        stationLabel.text = "\(viewData.stationCount) stations loaded"
+        if viewData.isLoading {
+            stationLabel.text = "Loading stations..."
+        } else {
+            stationLabel.text = "\(viewData.stationCount) stations loaded"
+        }
     }
 }

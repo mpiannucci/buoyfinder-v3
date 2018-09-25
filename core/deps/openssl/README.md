@@ -14,5 +14,5 @@ ANDROID_NDK_ROOT=$ANDROID_NDK_HOME sh build-openssl-android.sh 21 21
 
 * Copy them to this directory
 ```bash
-cp -r build-openssl-android/openssl-libs/* .
+cp -r build-openssl-android/openssl-lib/* .
 ```

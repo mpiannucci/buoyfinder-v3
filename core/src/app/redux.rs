@@ -1,6 +1,4 @@
 use std::clone::Clone;
-use std::sync::Arc;
-use std::sync::Mutex;
 
 pub trait StoreObserver<T> {
     fn new_state(&mut self, state: &T);
@@ -12,7 +10,9 @@ pub trait Reducer<T, U> {
 
 pub struct Store<T, U> {
     pub state: T,
-    observers: Vec<Arc<Mutex<StoreObserver<T>>>>,
+    observers: Vec<Box<StoreObserver<T>>>,
+    observer_ids: Vec<i32>,
+    observer_id_factory: i32,
     reducer: Box<Reducer<T, U>>,
 }
 
@@ -22,19 +22,24 @@ impl <T, U> Store<T, U> where T: Clone {
         Store {
             state: initial_state.clone(),
             observers: Vec::new(),
+            observer_ids: Vec::new(),
+            observer_id_factory: 0,
             reducer: reducer,
+
         }
     }
 
-    pub fn subscribe(&mut self, new_observer: Arc<Mutex<StoreObserver<T>>>) {
-        new_observer.lock().unwrap().new_state(&self.state);
+    pub fn subscribe(&mut self, mut new_observer: Box<StoreObserver<T>>) -> i32 {
+        new_observer.new_state(&self.state);
         self.observers.push(new_observer);
+        let observer_id = self.observer_id_factory;
+        self.observer_ids.push(observer_id);
+        self.observer_id_factory += 1;
+        observer_id
     }
 
-    pub fn unsubscribe(&mut self, observer: Arc<Mutex<StoreObserver<T>>>) {
-        if let Some(position) = self.observers.iter().position(|x| {
-            Arc::ptr_eq(&x, &observer)
-        }) {
+    pub fn unsubscribe(&mut self, observer_id: i32) {
+        if let Some(position) = self.observer_ids.iter().position(|x| x == &observer_id) {
             self.observers.remove(position);
         }
     }
@@ -46,7 +51,7 @@ impl <T, U> Store<T, U> where T: Clone {
 
     fn notify_observers(&mut self) {
         for mut observer in self.observers.iter_mut() {
-            observer.lock().unwrap().new_state(&self.state);
+            observer.new_state(&self.state);
         }
     }
 }
