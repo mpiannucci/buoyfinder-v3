@@ -3,22 +3,22 @@ using System.Runtime.InteropServices;
 
 internal class LocationNativeInterface {
     [DllImport("buoyfinder")]
-    internal extern static LocationHandle location_new(double lat, double lon, string name);
+    internal extern static LocationHandle location_new(Double lat, Double lon, String name);
 
     [DllImport("buoyfinder")]
     internal extern static void location_free(IntPtr location);
 
     [DllImport("buoyfinder")]
-    internal extern static double location_latitude(LocationHandle location);
+    internal extern static Double location_latitude(LocationHandle location);
 
     [DllImport("buoyfinder")]
-    internal extern static double location_longitude(LocationHandle location);
+    internal extern static Double location_longitude(LocationHandle location);
 
     [DllImport("buoyfinder")]
-    internal extern static double location_altitude(LocationHandle location);
+    internal extern static Double location_altitude(LocationHandle location);
 
     [DllImport("buoyfinder")]
-    internal extern static string location_name(LocationHandle location);
+    internal extern static String location_name(LocationHandle location);
 }
 
 public class LocationHandle : SafeHandle {

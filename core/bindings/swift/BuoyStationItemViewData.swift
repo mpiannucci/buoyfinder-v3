@@ -49,4 +49,10 @@ class BuoyStationItemViewData {
             return buoy_station_item_view_data_color(raw)
         }
     }
+
+    public var location: Location {
+        get {
+            return Location(ptr: buoy_station_item_view_data_location(raw))
+        }
+    }
 }
