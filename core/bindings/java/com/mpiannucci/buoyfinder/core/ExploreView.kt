@@ -7,17 +7,17 @@ interface ExploreView {
 class ExploreViewHandle(val view: ExploreView, store: Store) {
 
     private val storePtr: Long
-    private val ptr: Long
+    private val view_id: Int
 
     init {
         storePtr = store.rawStore
-        ptr = bind(view, storePtr)
+        view_id = bind(view, storePtr)
     }
 
     fun finalize() {
-        unbind(ptr, storePtr)
+        unbind(view_id, storePtr)
     }
 
-    private external fun bind(view: ExploreView, store_ptr: Long): Long
-    private external fun unbind(ptr: Long, store_ptr: Long)
+    private external fun bind(view: ExploreView, store_ptr: Long): Int
+    private external fun unbind(view_id: Int, store_ptr: Long)
 }

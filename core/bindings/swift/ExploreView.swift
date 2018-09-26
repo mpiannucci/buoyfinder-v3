@@ -16,7 +16,7 @@ class ExploreViewHandle {
     
     weak var view: ExploreView?
     
-    private var raw: OpaquePointer!
+    private var view_id: Int32 = 0
     private weak var store: Store?
     
     init(store: Store?, view: ExploreView?) {
@@ -25,11 +25,11 @@ class ExploreViewHandle {
         
         let weakSelf = UnsafeMutableRawPointer(Unmanaged.passRetained(WeakHandle(self)).toOpaque())
         let raw_view = explore_view(view: weakSelf, new_view_data: handleNewExploreViewData)
-        raw = explore_view_bind(raw_view, store?.raw)
+        view_id = explore_view_bind(raw_view, store?.raw)
     }
     
     deinit {
-        explore_view_unbind(raw, store?.raw ?? nil)
+        explore_view_unbind(view_id, store?.raw ?? nil)
     }
 }
 

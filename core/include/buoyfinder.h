@@ -55,7 +55,7 @@ const char *buoy_station_name(const BuoyStation *buoy_station);
 
 BuoyStation *buoy_station_new(const char *station_id, const char *name, double lat, double lon);
 
-uint8_t explore_view_bind(explore_view view, Store_AppState__Actions *store);
+int32_t explore_view_bind(explore_view view, Store_AppState__Actions *store);
 
 void explore_view_data_free(ExploreViewData *data);
 
@@ -68,7 +68,7 @@ int64_t explore_view_data_station_count(const ExploreViewData *data);
 BuoyStationItemViewData *explore_view_data_station_index(const ExploreViewData *data,
                                                          int64_t index);
 
-void explore_view_unbind(uint8_t view_observer_id, Store_AppState__Actions *store);
+void explore_view_unbind(int32_t view_observer_id, Store_AppState__Actions *store);
 
 void fetch_buoy_stations(Store_AppState__Actions *store);
 
