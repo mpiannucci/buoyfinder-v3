@@ -1,3 +1,6 @@
+use std::str::FromStr;
+use std::string::ParseError;
+
 #[derive(Clone, Debug)]
 pub enum Measurement {
     Length, 
@@ -198,6 +201,43 @@ impl From<Direction> for Measurement {
     fn from(_: Direction) -> Measurement {
         Measurement::Direction
     }
+}
+
+#[derive(Clone, Debug)]
+pub enum Steepness {
+    VerySteep,
+    Steep,
+    Average,
+    Swell,
+}
+
+impl Steepness {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Steepness::VerySteep => "VERY_STEEP",
+            Steepness::Steep => "STEEP",
+            Steepness::Average => "AVERAGE",
+            Steepness::Swell => "SWELL"
+        }
+    }
+}
+
+impl FromStr for Steepness {
+    type Err = SteepnessParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "VERY_STEEP" => Ok(Steepness::VerySteep),
+            "STEEP" => Ok(Steepness::Steep),
+            "Average" => Ok(Steepness::Average),
+            "SWELL" => Ok(Steepness::Swell),
+            _ => Err(SteepnessParseError::InvalidString)
+        }
+    }
+}
+
+pub enum SteepnessParseError {
+    InvalidString,
 }
 
 pub trait UnitConvertible<T> {
