@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use std::string::ParseError;
+use std::fmt;
 
 #[derive(Clone, Debug)]
 pub enum Measurement {
@@ -9,6 +9,7 @@ pub enum Measurement {
     Pressure,
     Visibility,
     Direction,
+    Time,
 }
 
 impl Measurement {
@@ -19,7 +20,8 @@ impl Measurement {
             Measurement::Temperature => "temperature",
             Measurement::Pressure => "pressure",
             Measurement::Visibility => "visibility",
-            Measurement::Direction => "direction"
+            Measurement::Direction => "direction",
+            Measurement::Time => "time"
         }
     }
 }
@@ -71,6 +73,8 @@ impl Units {
 
             (_, Measurement::Visibility, true) => "nmi",
             (_, Measurement::Visibility, false) => "nautical miles",
+            (_, Measurement::Time, true) => "s",
+            (_, Measurement::Time, false) => "seconds",
             (_, Measurement::Direction, _) => "°",
             _ => ""
         }
@@ -112,88 +116,102 @@ impl Units {
     }
 }
 
+impl fmt::Display for Units {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.as_str())
+    }
+}
+
 #[derive(Clone, Debug)]
-pub enum Direction {
-    North(i64),
-    NorthNorthEast(i64),
-    NorthEast(i64),
-    EastNorthEast(i64),
-    East(i64),
-    EastSouthEast(i64),
-    SouthEast(i64),
-    SouthSouthEast(i64),
-    South(i64),
-    SouthSouthWest(i64),
-    SouthWest(i64),
-    WestSouthWest(i64),
-    West(i64),
-    WestNorthWest(i64),
-    NorthWest(i64),
-    NorthNorthWest(i64),
-    Invalid(i64),
+pub enum CardinalDirection {
+    North,
+    NorthNorthEast,
+    NorthEast,
+    EastNorthEast,
+    East,
+    EastSouthEast,
+    SouthEast,
+    SouthSouthEast,
+    South,
+    SouthSouthWest,
+    SouthWest,
+    WestSouthWest,
+    West,
+    WestNorthWest,
+    NorthWest,
+    NorthNorthWest,
+    Invalid,
+}
+
+impl CardinalDirection {
+    pub fn from_degree(degree: i64) -> CardinalDirection {
+        match degree {
+            349 ... 360 | 0 ... 11 => CardinalDirection::North,
+            12 ... 33 => CardinalDirection::NorthNorthEast,
+            34 ... 56 => CardinalDirection::NorthEast,
+            57 ... 78 => CardinalDirection::EastNorthEast,
+            79 ... 101 => CardinalDirection::East,
+            102 ... 123 => CardinalDirection::EastSouthEast,
+            124 ... 146 => CardinalDirection::SouthEast,
+            147 ... 168 => CardinalDirection::SouthSouthEast,
+            169 ... 191 => CardinalDirection::South,
+            192 ... 213 => CardinalDirection::SouthSouthWest,
+            214 ... 236 => CardinalDirection::SouthWest,
+            237 ... 258 => CardinalDirection::WestSouthWest,
+            259 ... 281 => CardinalDirection::West,
+            282 ... 303 => CardinalDirection::WestNorthWest,
+            304 ... 326 => CardinalDirection::NorthWest,
+            327 ... 348 => CardinalDirection::NorthNorthWest,
+            _ => CardinalDirection::Invalid,
+        }
+    }
+}
+
+impl fmt::Display for CardinalDirection {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", match self {
+            CardinalDirection::North => "n",
+            CardinalDirection::NorthNorthEast => "nne",
+            CardinalDirection::NorthEast => "ne",
+            CardinalDirection::EastNorthEast => "ene",
+            CardinalDirection::East => "e",
+            CardinalDirection::EastSouthEast => "ese",
+            CardinalDirection::SouthEast => "se",
+            CardinalDirection::SouthSouthEast => "sse",
+            CardinalDirection::South => "s",
+            CardinalDirection::SouthSouthWest => "ssw",
+            CardinalDirection::SouthWest => "sw",
+            CardinalDirection::WestSouthWest => "wsw",
+            CardinalDirection::West => "w",
+            CardinalDirection::WestNorthWest => "wnw",
+            CardinalDirection::NorthWest => "nw",
+            CardinalDirection::NorthNorthWest => "nnw",
+            CardinalDirection::Invalid => ""
+        })
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct Direction {
+    pub direction: CardinalDirection,
+    pub degree: Option<i64>,
 }
 
 impl Direction {
-
     pub fn from_degree(degree: i64) -> Direction {
-        match degree {
-            349 ... 360 | 0 ... 11 => Direction::North(degree),
-            12 ... 33 => Direction::NorthNorthEast(degree),
-            34 ... 56 => Direction::NorthEast(degree),
-            57 ... 78 => Direction::EastNorthEast(degree),
-            79 ... 101 => Direction::East(degree),
-            102 ... 123 => Direction::EastSouthEast(degree),
-            124 ... 146 => Direction::SouthEast(degree),
-            147 ... 168 => Direction::SouthSouthEast(degree),
-            169 ... 191 => Direction::South(degree),
-            192 ... 213 => Direction::SouthSouthWest(degree),
-            214 ... 236 => Direction::SouthWest(degree),
-            237 ... 258 => Direction::WestSouthWest(degree),
-            259 ... 281 => Direction::West(degree),
-            282 ... 303 => Direction::WestNorthWest(degree),
-            304 ... 326 => Direction::NorthWest(degree),
-            327 ... 348 => Direction::NorthNorthWest(degree),
-            _ => Direction::Invalid(degree),
+        Direction {
+            direction: CardinalDirection::from_degree(degree),
+            degree: Some(degree),
         }
     }
+}
 
-    pub fn label(&self, abbrev: bool) -> &'static str {
-         let dir_tuple = (self, abbrev);
-         match dir_tuple {
-             (Direction::North(_), true) => "n",
-             (Direction::North(_), false) => "north",
-             (Direction::NorthNorthEast(_), true) => "nne",
-             (Direction::NorthNorthEast(_), false) => "north-northeast",
-             (Direction::NorthEast(_), true) => "ne",
-             (Direction::NorthEast(_), false) => "northeast",
-             (Direction::EastNorthEast(_), true) => "ene",
-             (Direction::EastNorthEast(_), false) => "east-northeast",
-             (Direction::East(_), true) => "e",
-             (Direction::East(_), false) => "east",
-             (Direction::EastSouthEast(_), true) => "ese",
-             (Direction::EastSouthEast(_), false) => "east-southeast",
-             (Direction::SouthEast(_), true) => "se",
-             (Direction::SouthEast(_), false) => "southeast",
-             (Direction::SouthSouthEast(_), true) => "sse",
-             (Direction::SouthSouthEast(_), false) => "south-southeast",
-             (Direction::South(_), true) => "s",
-             (Direction::South(_), false) => "south",
-             (Direction::SouthSouthWest(_), true) => "ssw",
-             (Direction::SouthSouthWest(_), false) => "south-southwest",
-             (Direction::SouthWest(_), true) => "sw",
-             (Direction::SouthWest(_), false) => "southwest",
-             (Direction::WestSouthWest(_), true) => "wsw",
-             (Direction::WestSouthWest(_), false) => "west-southwest",
-             (Direction::West(_), true) => "w",
-             (Direction::West(_), false) => "west",
-             (Direction::WestNorthWest(_), true) => "wnw",
-             (Direction::WestNorthWest(_), false) => "west-northwest",
-             (Direction::NorthWest(_), true) => "nw",
-             (Direction::NorthWest(_), false) => "northwest",
-             (Direction::NorthNorthWest(_), true) => "nnw",
-             (Direction::NorthNorthWest(_), false) => "north-northwest",
-             _ => ""
-         }
+impl fmt::Display for Direction {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self.degree {
+            Some(degree) => write!(f, "{}{} {}", degree, Units::Metric.label(&Measurement::Direction, true), self.direction),
+            None => write!(f, "{}", self.direction)
+        }
     }
 }
 
@@ -233,6 +251,12 @@ impl FromStr for Steepness {
             "SWELL" => Ok(Steepness::Swell),
             _ => Err(SteepnessParseError::InvalidString)
         }
+    }
+}
+
+impl fmt::Display for Steepness {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.as_str())
     }
 }
 

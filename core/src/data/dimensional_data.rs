@@ -1,5 +1,6 @@
 use data::units::{Units, Measurement, Direction, UnitConvertible};
 use std::option::Option;
+use std::fmt;
 
 #[derive(Clone, Debug)]
 pub struct DimensionalData<T> {
@@ -44,4 +45,13 @@ impl UnitConvertible<DimensionalData<Direction>> for DimensionalData<Direction> 
     }
 }
 
+impl <T> fmt::Display for DimensionalData<T> where T: fmt::Display {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self.value {
+            Some(ref val) => write!(f, "{} {}", val, self.unit.label(&self.measurement, true)),
+            None => write!(f, "N/A"),
+        }
+        
+    }
+}
 
