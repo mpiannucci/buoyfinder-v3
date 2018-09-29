@@ -5,7 +5,7 @@ use data::location::Location;
 use app::color::Color;
 
 #[repr(C)]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum BuoyStationIcon {
     FixedStation,
     Buoy,
@@ -14,7 +14,7 @@ pub enum BuoyStationIcon {
     Unknown,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct BuoyStationItemViewData {
     pub title: String,
     pub subtitle: String,
@@ -45,7 +45,7 @@ impl BuoyStationItemViewData {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ExploreViewData {
     pub is_loading: bool,
     pub stations: Vec<BuoyStationItemViewData>,
@@ -69,13 +69,15 @@ pub trait ExploreView {
 }
 
 pub struct ExploreViewModel {
-    pub view: Box<ExploreView>,
+    view: Box<ExploreView>,
+    last_state: ExploreViewData,
 }
 
 impl ExploreViewModel {
     pub fn new(explore_view: Box<ExploreView>) -> ExploreViewModel {
         ExploreViewModel {
             view: explore_view,
+            last_state: ExploreViewData::from_state(&DataState::NoData),
         }
     }
 }
@@ -83,6 +85,8 @@ impl ExploreViewModel {
 impl redux::StoreObserver<AppState> for ExploreViewModel {
     fn new_state(&mut self, new_state: &AppState) {
         let new_view_data = ExploreViewData::from_state(&new_state.stations_state);
-        self.view.new_view_data(&new_view_data);
+        if new_view_data != self.last_state {
+            self.view.new_view_data(&new_view_data);
+        }
     }
 }

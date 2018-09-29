@@ -2,7 +2,7 @@ use std::str::FromStr;
 use std::num::ParseIntError;
 
 #[repr(C)]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Color {
     pub red: f64,
     pub green: f64,
