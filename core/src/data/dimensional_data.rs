@@ -1,8 +1,9 @@
 use data::units::{Units, Measurement, Direction, UnitConvertible};
+use std::option::Option;
 
 #[derive(Clone, Debug)]
 pub struct DimensionalData<T> {
-    pub value: T,
+    pub value: Option<T>,
     pub measurement: Measurement,
     pub unit: Units,
 }
@@ -10,7 +11,10 @@ pub struct DimensionalData<T> {
 impl UnitConvertible<DimensionalData<f64>> for DimensionalData<f64> {
     fn to_units(&self, new_units: &Units) -> Self {
         DimensionalData {
-            value: self.unit.convert(&self.measurement, new_units, self.value),
+            value: match self.value {
+                Some(val) => Some(self.unit.convert(&self.measurement, new_units, val)),
+                None => None,
+            },
             measurement: self.measurement.clone(),
             unit: new_units.clone(),
         }
@@ -20,7 +24,10 @@ impl UnitConvertible<DimensionalData<f64>> for DimensionalData<f64> {
 impl UnitConvertible<DimensionalData<i64>> for DimensionalData<i64> {
     fn to_units(&self, new_units: &Units) -> Self {
         DimensionalData {
-            value: self.unit.convert(&self.measurement, new_units, self.value as f64) as i64,
+            value: match self.value {
+               Some(val) => Some(self.unit.convert(&self.measurement, new_units, val as f64) as i64),
+               None => None,
+            },
             measurement: self.measurement.clone(),
             unit: new_units.clone(),
         }
