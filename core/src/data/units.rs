@@ -1,4 +1,4 @@
-
+#[derive(Clone, Debug)]
 pub enum Measurement {
     Length, 
     Speed,
@@ -21,6 +21,7 @@ impl Measurement {
     }
 }
 
+#[derive(Clone, Debug)]
 pub enum Units {
     Metric,
     English,
@@ -108,86 +109,93 @@ impl Units {
     }
 }
 
+#[derive(Clone, Debug)]
 pub enum Direction {
-    North,
-    NorthNorthEast,
-    NorthEast,
-    EastNorthEast,
-    East,
-    EastSouthEast,
-    SouthEast,
-    SouthSouthEast,
-    South,
-    SouthSouthWest,
-    SouthWest,
-    WestSouthWest,
-    West,
-    WestNorthWest,
-    NorthWest,
-    NorthNorthWest,
-    Invalid,
+    North(i64),
+    NorthNorthEast(i64),
+    NorthEast(i64),
+    EastNorthEast(i64),
+    East(i64),
+    EastSouthEast(i64),
+    SouthEast(i64),
+    SouthSouthEast(i64),
+    South(i64),
+    SouthSouthWest(i64),
+    SouthWest(i64),
+    WestSouthWest(i64),
+    West(i64),
+    WestNorthWest(i64),
+    NorthWest(i64),
+    NorthNorthWest(i64),
+    Invalid(i64),
 }
 
 impl Direction {
 
     pub fn from_degree(degree: i64) -> Direction {
         match degree {
-            349 ... 360 | 0 ... 11 => Direction::North,
-            12 ... 33 => Direction::NorthNorthEast,
-            34 ... 56 => Direction::NorthEast,
-            57 ... 78 => Direction::EastNorthEast,
-            79 ... 101 => Direction::East,
-            102 ... 123 => Direction::EastSouthEast,
-            124 ... 146 => Direction::SouthEast,
-            147 ... 168 => Direction::SouthSouthEast,
-            169 ... 191 => Direction::South,
-            192 ... 213 => Direction::SouthSouthWest,
-            214 ... 236 => Direction::SouthWest,
-            237 ... 258 => Direction::WestSouthWest,
-            259 ... 281 => Direction::West,
-            282 ... 303 => Direction::WestNorthWest,
-            304 ... 326 => Direction::NorthWest,
-            327 ... 348 => Direction::NorthNorthWest,
-            _ => Direction::Invalid,
+            349 ... 360 | 0 ... 11 => Direction::North(degree),
+            12 ... 33 => Direction::NorthNorthEast(degree),
+            34 ... 56 => Direction::NorthEast(degree),
+            57 ... 78 => Direction::EastNorthEast(degree),
+            79 ... 101 => Direction::East(degree),
+            102 ... 123 => Direction::EastSouthEast(degree),
+            124 ... 146 => Direction::SouthEast(degree),
+            147 ... 168 => Direction::SouthSouthEast(degree),
+            169 ... 191 => Direction::South(degree),
+            192 ... 213 => Direction::SouthSouthWest(degree),
+            214 ... 236 => Direction::SouthWest(degree),
+            237 ... 258 => Direction::WestSouthWest(degree),
+            259 ... 281 => Direction::West(degree),
+            282 ... 303 => Direction::WestNorthWest(degree),
+            304 ... 326 => Direction::NorthWest(degree),
+            327 ... 348 => Direction::NorthNorthWest(degree),
+            _ => Direction::Invalid(degree),
         }
     }
 
     pub fn label(&self, abbrev: bool) -> &'static str {
          let dir_tuple = (self, abbrev);
          match dir_tuple {
-             (Direction::North, true) => "n",
-             (Direction::North, false) => "north",
-             (Direction::NorthNorthEast, true) => "nne",
-             (Direction::NorthNorthEast, false) => "north-northeast",
-             (Direction::NorthEast, true) => "ne",
-             (Direction::NorthEast, false) => "northeast",
-             (Direction::EastNorthEast, true) => "ene",
-             (Direction::EastNorthEast, false) => "east-northeast",
-             (Direction::East, true) => "e",
-             (Direction::East, false) => "east",
-             (Direction::EastSouthEast, true) => "ese",
-             (Direction::EastSouthEast, false) => "east-southeast",
-             (Direction::SouthEast, true) => "se",
-             (Direction::SouthEast, false) => "southeast",
-             (Direction::SouthSouthEast, true) => "sse",
-             (Direction::SouthSouthEast, false) => "south-southeast",
-             (Direction::South, true) => "s",
-             (Direction::South, false) => "south",
-             (Direction::SouthSouthWest, true) => "ssw",
-             (Direction::SouthSouthWest, false) => "south-southwest",
-             (Direction::SouthWest, true) => "sw",
-             (Direction::SouthWest, false) => "southwest",
-             (Direction::WestSouthWest, true) => "wsw",
-             (Direction::WestSouthWest, false) => "west-southwest",
-             (Direction::West, true) => "w",
-             (Direction::West, false) => "west",
-             (Direction::WestNorthWest, true) => "wnw",
-             (Direction::WestNorthWest, false) => "west-northwest",
-             (Direction::NorthWest, true) => "nw",
-             (Direction::NorthWest, false) => "northwest",
-             (Direction::NorthNorthWest, true) => "nnw",
-             (Direction::NorthNorthWest, false) => "north-northwest",
+             (Direction::North(_), true) => "n",
+             (Direction::North(_), false) => "north",
+             (Direction::NorthNorthEast(_), true) => "nne",
+             (Direction::NorthNorthEast(_), false) => "north-northeast",
+             (Direction::NorthEast(_), true) => "ne",
+             (Direction::NorthEast(_), false) => "northeast",
+             (Direction::EastNorthEast(_), true) => "ene",
+             (Direction::EastNorthEast(_), false) => "east-northeast",
+             (Direction::East(_), true) => "e",
+             (Direction::East(_), false) => "east",
+             (Direction::EastSouthEast(_), true) => "ese",
+             (Direction::EastSouthEast(_), false) => "east-southeast",
+             (Direction::SouthEast(_), true) => "se",
+             (Direction::SouthEast(_), false) => "southeast",
+             (Direction::SouthSouthEast(_), true) => "sse",
+             (Direction::SouthSouthEast(_), false) => "south-southeast",
+             (Direction::South(_), true) => "s",
+             (Direction::South(_), false) => "south",
+             (Direction::SouthSouthWest(_), true) => "ssw",
+             (Direction::SouthSouthWest(_), false) => "south-southwest",
+             (Direction::SouthWest(_), true) => "sw",
+             (Direction::SouthWest(_), false) => "southwest",
+             (Direction::WestSouthWest(_), true) => "wsw",
+             (Direction::WestSouthWest(_), false) => "west-southwest",
+             (Direction::West(_), true) => "w",
+             (Direction::West(_), false) => "west",
+             (Direction::WestNorthWest(_), true) => "wnw",
+             (Direction::WestNorthWest(_), false) => "west-northwest",
+             (Direction::NorthWest(_), true) => "nw",
+             (Direction::NorthWest(_), false) => "northwest",
+             (Direction::NorthNorthWest(_), true) => "nnw",
+             (Direction::NorthNorthWest(_), false) => "north-northwest",
              _ => ""
          }
+    }
+}
+
+impl From<Direction> for Measurement {
+    fn from(_: Direction) -> Measurement {
+        Measurement::Direction
     }
 }
