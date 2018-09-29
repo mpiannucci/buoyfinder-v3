@@ -1,6 +1,6 @@
 use data::dimensional_data::DimensionalData;
 use data::units::{Units, Measurement, Direction, UnitConvertible};
-use std::fmt::Display;
+use std::fmt;
 
 #[derive(Clone)]
 pub struct Swell {
@@ -41,7 +41,7 @@ impl UnitConvertible<Swell> for Swell {
     }
 }
 
-impl Display for Swell {
+impl fmt::Display for Swell {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{} @ {} {}", self.wave_height, self.period, self.direction)
     }
