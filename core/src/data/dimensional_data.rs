@@ -1,15 +1,39 @@
-use data::units::{Units, Measurement};
+use data::units::{Units, Measurement, Direction, UnitConvertible};
 
-pub struct DimensionalData {
-    pub value: f64,
+#[derive(Clone, Debug)]
+pub struct DimensionalData<T> {
+    pub value: T,
     pub measurement: Measurement,
     pub unit: Units,
 }
 
-impl DimensionalData {
-    fn change_units(&mut self, new_units: &Units) {
-        self.value = self.unit.convert(&self.measurement, new_units, self.value);
-        self.unit = new_units.clone();
+impl UnitConvertible<DimensionalData<f64>> for DimensionalData<f64> {
+    fn to_units(&self, new_units: &Units) -> Self {
+        DimensionalData {
+            value: self.unit.convert(&self.measurement, new_units, self.value),
+            measurement: self.measurement.clone(),
+            unit: new_units.clone(),
+        }
+    }
+}
+
+impl UnitConvertible<DimensionalData<i64>> for DimensionalData<i64> {
+    fn to_units(&self, new_units: &Units) -> Self {
+        DimensionalData {
+            value: self.unit.convert(&self.measurement, new_units, self.value as f64) as i64,
+            measurement: self.measurement.clone(),
+            unit: new_units.clone(),
+        }
+    }
+}
+
+impl UnitConvertible<DimensionalData<Direction>> for DimensionalData<Direction> {
+    fn to_units(&self, new_units: &Units) -> Self {
+        DimensionalData {
+            value: self.value.clone(),
+            measurement: self.measurement.clone(),
+            unit: new_units.clone(),
+        }
     }
 }
 

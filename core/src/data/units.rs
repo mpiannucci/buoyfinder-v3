@@ -199,3 +199,7 @@ impl From<Direction> for Measurement {
         Measurement::Direction
     }
 }
+
+pub trait UnitConvertible<T> {
+    fn to_units(&self, new_units: &Units) -> T;
+}

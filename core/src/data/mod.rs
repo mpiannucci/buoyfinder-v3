@@ -6,6 +6,3 @@ pub mod buoy_data;
 
 use data::units::Units;
 
-pub trait DataRecord {
-    fn change_units(&mut self, new_units: &Units);
-}
