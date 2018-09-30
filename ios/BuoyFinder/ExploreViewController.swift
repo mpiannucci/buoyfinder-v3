@@ -26,6 +26,10 @@ class ExploreViewController: UIViewController {
 
 extension ExploreViewController: ExploreView {
     func newViewData(viewData: ExploreViewData) {
+        guard !viewData.isLoading else {
+            return
+        }
+        
         // TODO: Update the map view with all of the new buoys
         DispatchQueue.main.async {
             for stationIndex in 0..<viewData.stationCount {

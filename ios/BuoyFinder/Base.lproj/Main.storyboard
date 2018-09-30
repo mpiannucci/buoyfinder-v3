@@ -79,17 +79,47 @@
             </objects>
             <point key="canvasLocation" x="1764" y="229"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Nearby Buoys Table View Controller-->
         <scene sceneID="mbp-Mn-kEE">
             <objects>
-                <tableViewController id="eND-vF-PKO" sceneMemberID="viewController">
+                <tableViewController automaticallyAdjustsScrollViewInsets="NO" id="eND-vF-PKO" customClass="NearbyBuoysTableViewController" customModule="BuoyFinder" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="NjC-wC-q1Y">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="331"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="D7h-G6-zaN">
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="50"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFi-rr-Agv">
+                                    <rect key="frame" x="36" y="0.0" width="48" height="48"/>
+                                    <color key="tintColor" red="0.2470588235" green="0.31764705879999999" blue="0.70980392160000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <state key="normal" image="star_white_24pt"/>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y5E-Xw-X0C">
+                                    <rect key="frame" x="172" y="0.0" width="48" height="48"/>
+                                    <color key="tintColor" red="0.2470588235" green="0.31764705879999999" blue="0.70980392160000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <state key="normal" image="search_white_24pt"/>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CtR-rP-ffr">
+                                    <rect key="frame" x="309" y="0.0" width="48" height="48"/>
+                                    <color key="tintColor" red="0.2470588235" green="0.31764705879999999" blue="0.70980392160000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <state key="normal" image="settings_white_24pt"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="y5E-Xw-X0C" firstAttribute="centerX" secondItem="D7h-G6-zaN" secondAttribute="centerX" id="Hwk-7S-i4D"/>
+                                <constraint firstItem="y5E-Xw-X0C" firstAttribute="top" secondItem="CtR-rP-ffr" secondAttribute="top" id="KQg-RR-3Ny"/>
+                                <constraint firstItem="pFi-rr-Agv" firstAttribute="top" secondItem="y5E-Xw-X0C" secondAttribute="top" id="bUh-f6-9fL"/>
+                                <constraint firstAttribute="trailing" secondItem="CtR-rP-ffr" secondAttribute="trailing" constant="36" id="lhJ-Yt-UVS"/>
+                                <constraint firstItem="pFi-rr-Agv" firstAttribute="leading" secondItem="D7h-G6-zaN" secondAttribute="leading" constant="36" id="wtP-ob-hl1"/>
+                                <constraint firstAttribute="bottom" secondItem="pFi-rr-Agv" secondAttribute="bottom" constant="2" id="xpF-aL-wEU"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="5C6-H0-WBJ">
-                                <rect key="frame" x="0.0" y="28" width="393" height="44"/>
+                                <rect key="frame" x="0.0" y="78" width="393" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5C6-H0-WBJ" id="5KY-pD-U0q">
                                     <rect key="frame" x="0.0" y="0.0" width="393" height="43.5"/>
@@ -102,10 +132,16 @@
                             <outlet property="delegate" destination="eND-vF-PKO" id="z2G-nQ-Ofd"/>
                         </connections>
                     </tableView>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wc6-xJ-EvQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1791" y="942"/>
+            <point key="canvasLocation" x="1789.5999999999999" y="941.37931034482767"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="search_white_24pt" width="48" height="48"/>
+        <image name="settings_white_24pt" width="48" height="48"/>
+        <image name="star_white_24pt" width="48" height="48"/>
+    </resources>
 </document>

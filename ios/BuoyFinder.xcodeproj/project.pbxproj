@@ -10,6 +10,8 @@
 		3454647B2160352600173192 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3454647A2160352600173192 /* ExploreViewController.swift */; };
 		3454647F2160395000173192 /* BuoyStationItemViewData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3454647E2160395000173192 /* BuoyStationItemViewData+Extensions.swift */; };
 		3454648121611A8E00173192 /* Color+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3454648021611A8E00173192 /* Color+UIColor.swift */; };
+		345464852161225800173192 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345464842161225800173192 /* Theme.swift */; };
+		345464872161235600173192 /* NearbyBuoysTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345464862161235600173192 /* NearbyBuoysTableViewController.swift */; };
 		34799A0B212E48D000BEB05F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34799A0A212E48D000BEB05F /* AppDelegate.swift */; };
 		34799A10212E48D000BEB05F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34799A0E212E48D000BEB05F /* Main.storyboard */; };
 		34799A12212E48D100BEB05F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34799A11212E48D100BEB05F /* Assets.xcassets */; };
@@ -30,6 +32,8 @@
 		3454647A2160352600173192 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		3454647E2160395000173192 /* BuoyStationItemViewData+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BuoyStationItemViewData+Extensions.swift"; sourceTree = "<group>"; };
 		3454648021611A8E00173192 /* Color+UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+UIColor.swift"; sourceTree = "<group>"; };
+		345464842161225800173192 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		345464862161235600173192 /* NearbyBuoysTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyBuoysTableViewController.swift; sourceTree = "<group>"; };
 		34799A07212E48D000BEB05F /* BuoyFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuoyFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34799A0A212E48D000BEB05F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		34799A0F212E48D000BEB05F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -116,6 +120,8 @@
 				3454647A2160352600173192 /* ExploreViewController.swift */,
 				3454647E2160395000173192 /* BuoyStationItemViewData+Extensions.swift */,
 				3454648021611A8E00173192 /* Color+UIColor.swift */,
+				345464842161225800173192 /* Theme.swift */,
+				345464862161235600173192 /* NearbyBuoysTableViewController.swift */,
 			);
 			path = BuoyFinder;
 			sourceTree = "<group>";
@@ -284,11 +290,13 @@
 				34E546602135EF62006BD19A /* BuoyStation.swift in Sources */,
 				3454647B2160352600173192 /* ExploreViewController.swift in Sources */,
 				34E8EB0B2154748C002B0B14 /* Location.swift in Sources */,
+				345464852161225800173192 /* Theme.swift in Sources */,
 				34E5466D2136E9F8006BD19A /* WeakHandle.swift in Sources */,
 				3454648121611A8E00173192 /* Color+UIColor.swift in Sources */,
 				34E5466B21361B0C006BD19A /* ExploreViewData.swift in Sources */,
 				34E8EB0D2154752A002B0B14 /* BuoyStationItemViewData.swift in Sources */,
 				34799A0B212E48D000BEB05F /* AppDelegate.swift in Sources */,
+				345464872161235600173192 /* NearbyBuoysTableViewController.swift in Sources */,
 				34E54669213619C1006BD19A /* Store.swift in Sources */,
 				3454647F2160395000173192 /* BuoyStationItemViewData+Extensions.swift in Sources */,
 			);
