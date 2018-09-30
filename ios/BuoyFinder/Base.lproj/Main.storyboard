@@ -95,16 +95,25 @@
                                     <rect key="frame" x="36" y="0.0" width="48" height="48"/>
                                     <color key="tintColor" red="0.2470588235" green="0.31764705879999999" blue="0.70980392160000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <state key="normal" image="star_white_24pt"/>
+                                    <connections>
+                                        <action selector="openFavoritesView:" destination="eND-vF-PKO" eventType="touchUpInside" id="LEO-hh-Qgp"/>
+                                    </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y5E-Xw-X0C">
                                     <rect key="frame" x="172" y="0.0" width="48" height="48"/>
                                     <color key="tintColor" red="0.2470588235" green="0.31764705879999999" blue="0.70980392160000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <state key="normal" image="search_white_24pt"/>
+                                    <connections>
+                                        <action selector="openSearchView:" destination="eND-vF-PKO" eventType="touchUpInside" id="FFS-GH-rvH"/>
+                                    </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CtR-rP-ffr">
                                     <rect key="frame" x="309" y="0.0" width="48" height="48"/>
                                     <color key="tintColor" red="0.2470588235" green="0.31764705879999999" blue="0.70980392160000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <state key="normal" image="settings_white_24pt"/>
+                                    <connections>
+                                        <action selector="openSettingsView:" destination="eND-vF-PKO" eventType="touchUpInside" id="y9f-Rc-TEK"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

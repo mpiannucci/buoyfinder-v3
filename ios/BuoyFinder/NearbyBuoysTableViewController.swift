@@ -14,6 +14,15 @@ class NearbyBuoysTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    @IBAction func openFavoritesView(_ sender: Any) {
+    }
+    
+    @IBAction func openSearchView(_ sender: Any) {
+    }
+    
+    @IBAction func openSettingsView(_ sender: Any) {
+    }
 }
 
 extension NearbyBuoysTableViewController: PulleyDrawerViewControllerDelegate {
@@ -28,6 +37,4 @@ extension NearbyBuoysTableViewController: PulleyDrawerViewControllerDelegate {
     func supportedDrawerPositions() -> [PulleyPosition] {
         return PulleyPosition.all
     }
-    
-    
 }
