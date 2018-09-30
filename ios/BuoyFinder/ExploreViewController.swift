@@ -15,13 +15,12 @@ class ExploreViewController: UIViewController {
     
     private var exploreViewHandle: ExploreViewHandle!
     
-    private let buoyMarker = GMSMarker.markerImage(with: .blue)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Attach the view to the store
         exploreViewHandle = ExploreViewHandle(store: store, view: self)
+        store.fetchBuoyStations()
     }
 }
 
@@ -32,25 +31,13 @@ extension ExploreViewController: ExploreView {
             for stationIndex in 0..<viewData.stationCount {
                 let station = viewData.station(at: stationIndex)
                 let marker = GMSMarker()
-                
-                
-                
-                if station.active {
-                    if station.stationType.uppercased() == "BUOY" || station.program.contains("NDBC") {
-                        marker.icon = self.validBuoyMarker
-                    } else {
-                        marker.icon = self.validFixedMarker
-                    }
-                } else {
-                    marker.icon = self.invalidMarker
-                }
+                marker.icon = station.mapIcon
                 marker.position = station.location.coreLocation
                 marker.title = station.title
                 marker.snippet = station.subtitle
                 marker.map = self.mapView
             }
         }
-    }
     }
 }
 

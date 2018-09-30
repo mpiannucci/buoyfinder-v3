@@ -9,12 +9,18 @@
 import Foundation
 import GoogleMaps
 
+let redMarkerIcon = GMSMarker.markerImage(with: .red)
+let blueMarkerIcon = GMSMarker.markerImage(with: .blue)
+let greenMarkerIcon = GMSMarker.markerImage(with: .green)
+
 extension BuoyStationItemViewData {
-//    public var mapIcon: UIImage {
-//        get {
-//            switch self.icon {
-//                
-//            }
-//        }
-//    }
+    public var mapIcon: UIImage {
+        get {
+            if color.red > color.green {
+                return redMarkerIcon
+            } else {
+                return greenMarkerIcon
+            }
+        }
+    }
 }
