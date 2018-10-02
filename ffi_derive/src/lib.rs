@@ -44,3 +44,7 @@ pub fn ffi(_metadata: TokenStream, input: TokenStream) -> TokenStream {
 
     output.into()
 }
+
+fn gen_struct_ffi(struct_item: &syn::ItemStruct) -> TokenStream {
+    
+}
