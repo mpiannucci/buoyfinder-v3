@@ -1,0 +1,47 @@
+
+class Ident:
+    def __init__(self, name):
+        self.name = name
+
+class EnumValue:
+    def __init__(self, ident, val):
+        self.ident = ident
+        self.val = val
+
+class Constant: 
+    def __init__(self, ident, typ, val):
+        self.ident = ident
+        self.typ = typ
+        self.val = val
+
+class Field: 
+    def __init__(self, ident, typ):
+        self.ident = ident
+        self.typ = typ
+
+class Enum:
+    def __init__(self, ident, variants):
+        self.ident = ident
+        self.variants = variants
+
+class Record:
+    def __init__(self, ident, fields, constants, ext_lang):
+        self.ident = ident
+        self.fields = fields
+        self.constants = constants
+
+class Method:
+    def __init__(self, ident, params, static, const, ret_typ):
+        self.ident = ident
+        self.params = params
+        self.static = static
+        self.const = const
+        self.ret_type = ret_typ
+
+class Interface:
+    def __init__(self, ident, methods, props, consts, ext_lang):
+        self.ident = ident
+        self.methods = methods
+        self.props = props
+        self.consts = consts
+        self.ext_lang = ext_lang
