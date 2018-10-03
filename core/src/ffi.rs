@@ -4,15 +4,15 @@ use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 use std::ops::Deref;
 use std::boxed::Box;
-use app::redux::Store;
-use app::color::Color;
-use app::state::app_state::AppState;
-use app::state::data_state::DataState;
-use app::actions::Actions;
-use app::{AppReducer, fetch_buoy_stations_remote};
-use app::vm::{ExploreViewData, ExploreView, ExploreViewModel, BuoyStationItemViewData, BuoyStationIcon};
-use data::station::{BuoyStation};
-use data::location::Location;
+use crate::app::redux::Store;
+use crate::app::color::Color;
+use crate::app::state::app_state::AppState;
+use crate::app::state::data_state::DataState;
+use crate::app::actions::Actions;
+use crate::app::{AppReducer, fetch_buoy_stations_remote};
+use crate::app::vm::{ExploreViewData, ExploreView, ExploreViewModel, BuoyStationItemViewData, BuoyStationIcon};
+use crate::data::station::{BuoyStation};
+use crate::data::location::Location;
 
 #[repr(C)]
 pub struct RustByteSlice {
@@ -24,7 +24,7 @@ pub fn c_char_to_string(cchar: *const c_char) -> String {
     let c_str = unsafe { CStr::from_ptr(cchar) };
     let r_str = match c_str.to_str() {
         Err(_) => "",
-        Ok(string) => string,
+        Ok(string) => string, 
     };
     r_str.to_string()
 }

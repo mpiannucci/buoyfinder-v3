@@ -1,5 +1,5 @@
-use app::state::data_state::DataState;
-use data::station::BuoyStations;
+use crate::app::state::data_state::DataState;
+use crate::data::station::BuoyStations;
 
 #[derive(Clone, Debug)]
 pub struct AppState {

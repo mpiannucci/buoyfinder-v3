@@ -1,8 +1,8 @@
-use data::station::{BuoyStation, BuoyStations, BuoyType};
-use app::redux;
-use app::{DataState, AppState};
-use data::location::Location;
-use app::color::Color;
+use crate::data::station::{BuoyStation, BuoyStations, BuoyType};
+use crate::app::redux;
+use crate::app::{DataState, AppState};
+use crate::data::location::Location;
+use crate::app::color::Color;
 
 #[repr(C)]
 #[derive(Clone, Debug, PartialEq)]

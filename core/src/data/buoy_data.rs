@@ -1,6 +1,6 @@
-use data::units::*;
+use crate::data::units::*;
 use chrono::prelude::*;
-use data::dimensional_data::DimensionalData;
+use crate::data::dimensional_data::DimensionalData;
 
 pub struct MeteorologicalDataRecord {
     pub year: i32,

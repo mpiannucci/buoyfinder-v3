@@ -1,4 +1,4 @@
-use data::station::BuoyStations;
+use crate::data::station::BuoyStations;
 
 #[derive(Clone)]
 pub enum Actions {

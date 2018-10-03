@@ -4,12 +4,12 @@ pub mod actions;
 pub mod state;
 pub mod vm;
 
-use data::station;
+use crate::data::station;
 use reqwest;
-use app::redux::Reducer;
-use app::state::data_state::DataState;
-use app::state::app_state::AppState;
-use app::actions::Actions;
+use crate::app::redux::Reducer;
+use crate::app::state::data_state::DataState;
+use crate::app::state::app_state::AppState;
+use crate::app::actions::Actions;
 
 pub struct AppReducer;
 
