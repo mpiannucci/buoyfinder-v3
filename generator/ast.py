@@ -25,10 +25,11 @@ class Enum:
         self.variants = variants
 
 class Record:
-    def __init__(self, ident, fields, constants, ext_lang):
+    def __init__(self, ident, fields, constants, ext_langs):
         self.ident = ident
         self.fields = fields
         self.constants = constants
+        self.ext_langs = ext_langs
 
 class Method:
     def __init__(self, ident, params, static, const, ret_typ):
@@ -39,9 +40,14 @@ class Method:
         self.ret_type = ret_typ
 
 class Interface:
-    def __init__(self, ident, methods, props, consts, ext_lang):
+    def __init__(self, ident, methods, props, consts, ext_langs):
         self.ident = ident
         self.methods = methods
         self.props = props
         self.consts = consts
-        self.ext_lang = ext_lang
+        self.ext_langs = ext_langs
+
+class IDLFile:
+    def __init__(self, filename, user_types):
+        self.filename = filename
+        self.user_types = user_types
