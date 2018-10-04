@@ -47,10 +47,11 @@ class Method:
 
 
 class Interface:
-    def __init__(self, ident, methods, props, consts, ext_langs):
+    def __init__(self, ident, methods, gets, sets, consts, ext_langs):
         self.ident = ident
         self.methods = methods
-        self.props = props
+        self.gets = gets
+        self.sets = sets
         self.consts = consts
         self.ext_langs = ext_langs
 

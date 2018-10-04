@@ -22,7 +22,23 @@ class IDLParser:
                     decl = breakdown[0]
                     body = breakdown[1]
 
-                    if 'record' in decl:
+                    if 'enum' in decl:
+                        decl_split = decl.split('=')
+
+                        enum_name = idl_ast.Ident(decl_split[0].strip())
+
+                        enum_index = 0
+                        variants = [x.strip() for x in body.strip().split(';') if x]
+                        enum_variants = []
+                        for variant in variants:
+                            enum_variants.append(idl_ast.EnumValue(idl_ast.Ident(variant), enum_index))
+                            enum_index += 1
+
+                        new_enum = idl_ast.Enum(enum_name, enum_variants)
+                        typemap[enum_name.name] = idl_meta.MetaTypeOpaque(enum_name.name, [])
+                        idl_file.user_types.append(new_enum)
+
+                    elif 'record' in decl:
                         decl_split = decl.split('=')
 
                         # Record Name
@@ -64,8 +80,6 @@ class IDLParser:
                         typemap[record_name.name] = idl_meta.MetaTypeOpaque(record_name.name, [])
                         idl_file.user_types.append(new_record)
                     elif 'interface' in decl:
-                        pass
-                    elif 'enum' in decl:
                         pass
 
                 self.idl_files.append(idl_file)
