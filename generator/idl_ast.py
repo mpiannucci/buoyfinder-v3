@@ -3,10 +3,12 @@ class Ident:
     def __init__(self, name):
         self.name = name
 
+
 class EnumValue:
     def __init__(self, ident, val):
         self.ident = ident
         self.val = val
+
 
 class Constant: 
     def __init__(self, ident, typ, val):
@@ -14,15 +16,18 @@ class Constant:
         self.typ = typ
         self.val = val
 
+
 class Field: 
     def __init__(self, ident, typ):
         self.ident = ident
         self.typ = typ
 
+
 class Enum:
     def __init__(self, ident, variants):
         self.ident = ident
         self.variants = variants
+
 
 class Record:
     def __init__(self, ident, fields, constants, ext_langs):
@@ -30,6 +35,7 @@ class Record:
         self.fields = fields
         self.constants = constants
         self.ext_langs = ext_langs
+
 
 class Method:
     def __init__(self, ident, params, static, const, ret_typ):
@@ -39,6 +45,7 @@ class Method:
         self.const = const
         self.ret_type = ret_typ
 
+
 class Interface:
     def __init__(self, ident, methods, props, consts, ext_langs):
         self.ident = ident
@@ -46,6 +53,7 @@ class Interface:
         self.props = props
         self.consts = consts
         self.ext_langs = ext_langs
+
 
 class IDLFile:
     def __init__(self, filename, user_types):
