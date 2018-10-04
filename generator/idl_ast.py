@@ -3,6 +3,28 @@ class Ident:
     def __init__(self, name):
         self.name = name
 
+    @property
+    def snake_case(self):
+        return self.name
+
+    @property
+    def camel_case(self):
+        chunks = self.name.split('_')
+        if len(chunks) < 2:
+            return self.name
+        return ''.join([chunks[0], ''.join([x.capitalize() for x in chunks[1:]])])
+    
+    @property
+    def pascal_case(self):
+        chunks = self.name.split('_')
+        if len(chunks) < 2:
+            return self.name
+        return ''.join([x.capitalize() for x in chunks])
+    
+    @property
+    def screaming_snake_case(self):
+        return self.name.upper()
+
 
 class EnumValue:
     def __init__(self, ident, val):
@@ -38,11 +60,10 @@ class Record:
 
 
 class Method:
-    def __init__(self, ident, params, static, const, ret_typ):
+    def __init__(self, ident, params, static, ret_typ):
         self.ident = ident
         self.params = params
         self.static = static
-        self.const = const
         self.ret_type = ret_typ
 
 
