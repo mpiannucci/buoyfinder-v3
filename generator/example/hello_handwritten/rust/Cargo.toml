@@ -6,3 +6,4 @@ edition = "2018"
 
 [dependencies]
 libc = "*"
+jni = "0.10"
