@@ -1,3 +1,10 @@
+from mako.template import Template
+from mako.lookup import TemplateLookup
+
+cpp_template_lookup = TemplateLookup(directories=['./templates/cpp'], encoding_errors='replace')
+rust_template_lookup = TemplateLookup(directories=['./templates/rust'], encoding_errors='replace')
+swift_template_lookup = TemplateLookup(directories=['./templates/swift'], encoding_errors='replace')
+kotlin_template_lookup = TemplateLookup(directories=['./templates/kotlin'], encoding_errors='replace')
 
 class Ident:
     def __init__(self, name):
@@ -17,8 +24,6 @@ class Ident:
     @property
     def pascal_case(self):
         chunks = self.name.split('_')
-        if len(chunks) < 2:
-            return self.name
         return ''.join([x.capitalize() for x in chunks])
     
     @property
@@ -30,7 +35,6 @@ class EnumValue:
     def __init__(self, ident, val):
         self.ident = ident
         self.val = val
-
 
 class Constant: 
     def __init__(self, ident, typ, val):
@@ -50,6 +54,18 @@ class Enum:
         self.ident = ident
         self.variants = variants
 
+    def to_rust(self):
+        return rust_template_lookup.get_template("enum.txt").render(enum=self)
+
+    def to_swift(self):
+        return swift_template_lookup.get_template("enum.txt").render(enum=self)
+    
+    def to_kotlin(self):
+        return kotlin_template_lookup.get_template("enum.txt").render(enum=self)
+
+    def to_cpp(self):
+        return cpp_template_lookup.get_template("enum.txt").render(enum=self)
+
 
 class Record:
     def __init__(self, ident, fields, constants, ext_langs):
@@ -58,13 +74,17 @@ class Record:
         self.constants = constants
         self.ext_langs = ext_langs
 
+    def to_rust(self):
+        return ''
 
-class Method:
-    def __init__(self, ident, params, static, ret_typ):
-        self.ident = ident
-        self.params = params
-        self.static = static
-        self.ret_type = ret_typ
+    def to_swift(self):
+        return ''
+    
+    def to_kotlin(self):
+        return ''
+
+    def to_cpp(self):
+        return ''
 
 
 class Interface:
@@ -75,6 +95,18 @@ class Interface:
         self.sets = sets
         self.consts = consts
         self.ext_langs = ext_langs
+
+    def to_rust(self):
+        return ''
+
+    def to_swift(self):
+        return ''
+    
+    def to_kotlin(self):
+        return ''
+
+    def to_cpp(self):
+        return ''
 
 
 class IDLFile:

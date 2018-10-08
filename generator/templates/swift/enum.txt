@@ -1,0 +1,5 @@
+public enum ${enum.ident.pascal_case}: Int {
+% for variant in enum.variants:
+    case ${variant.ident.camel_case} = ${variant.val}
+% endfor
+}

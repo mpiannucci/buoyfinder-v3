@@ -1,0 +1,5 @@
+pub enum ${enum.ident.pascal_case} {
+% for variant in enum.variants:
+    ${variant.ident.pascal_case} = ${variant.val},
+% endfor
+};

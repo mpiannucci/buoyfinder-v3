@@ -1,0 +1,17 @@
+enum class ${enum.ident.pascal_case} {
+% for i in range(0, len(enum.variants)-1):
+    ${enum.variants[i].ident.pascal_case},
+% endfor
+    ${enum.variants[-1].ident.pascal_case};
+
+    companion object {
+        fun fromInt(intValue: Int): ${enum.ident.pascal_case} {
+            return when (intValue) {
+            % for i in range(0, len(enum.variants)-1):
+                ${enum.variants[i].val} -> ${enum.variants[i].ident.pascal_case},
+            % endfor
+                else -> ${enum.variants[-1].ident.pascal_case};
+            }
+        }
+    }
+}
