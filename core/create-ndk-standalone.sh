@@ -37,10 +37,10 @@ create_ndk() {
 }
 
 create_ndk arm64 21
-create_ndk arm 14
-create_ndk x86 14
+create_ndk arm 21
+create_ndk x86 21
 
-echo 'Updating cargo-config.toml...'
+#echo 'Updating cargo-config.toml...'
 
-sed 's|$PWD|'"${PWD}"'|g' cargo-config.toml.template > cargo-config.toml
+#sed 's|$PWD|'"${PWD}"'|g' cargo-config.toml.template > cargo-config.toml
 
