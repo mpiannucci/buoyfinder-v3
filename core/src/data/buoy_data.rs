@@ -2,6 +2,26 @@ use crate::data::units::*;
 use chrono::prelude::*;
 use crate::data::dimensional_data::DimensionalData;
 
+#[derive(Clone, Debug)]
+pub enum BuoyDataRecord {
+    Latest(MeteorologicalDataRecord, WaveDataRecord),
+    Meteorological(MeteorologicalDataRecord),
+    Wave(WaveDataRecord),
+    SprectralWave(SprectralWaveDataRecord),
+}
+
+impl UnitConvertible<BuoyDataRecord> for BuoyDataRecord {
+    fn to_units(&self, new_units: &Units) -> BuoyDataRecord {
+        match self {
+            BuoyDataRecord::Latest(met_data, wave_data) => BuoyDataRecord::Latest(met_data.to_units(new_units), wave_data.to_units(new_units)),
+            BuoyDataRecord::Meteorological(data) => BuoyDataRecord::Meteorological(data.to_units(new_units)),
+            BuoyDataRecord::Wave(data) => BuoyDataRecord::Wave(data.to_units(new_units)),
+            BuoyDataRecord::SprectralWave(data) => BuoyDataRecord::SprectralWave(data.to_units(new_units)),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
 pub struct MeteorologicalDataRecord {
     pub year: i32,
     pub month: i32,
@@ -50,7 +70,8 @@ impl UnitConvertible<MeteorologicalDataRecord> for MeteorologicalDataRecord {
     }
 }
 
-pub struct DetailedWaveDataRecord {
+#[derive(Clone, Debug)]
+pub struct WaveDataRecord {
     pub year: i32,
     pub month: i32,
     pub day: i32,
@@ -68,9 +89,9 @@ pub struct DetailedWaveDataRecord {
     pub steepness: Steepness,
 }
 
-impl UnitConvertible<DetailedWaveDataRecord> for DetailedWaveDataRecord {
-    fn to_units(&self, new_units: &Units) -> DetailedWaveDataRecord {
-        DetailedWaveDataRecord {
+impl UnitConvertible<WaveDataRecord> for WaveDataRecord {
+    fn to_units(&self, new_units: &Units) -> WaveDataRecord {
+        WaveDataRecord {
             year: self.year.clone(),
             month: self.month.clone(), 
             day: self.day.clone(),
@@ -90,6 +111,7 @@ impl UnitConvertible<DetailedWaveDataRecord> for DetailedWaveDataRecord {
     }
 }
 
+#[derive(Clone, Debug)]
 pub struct SprectralWaveDataRecord {
     pub year: i32,
     pub month: i32,
@@ -99,4 +121,20 @@ pub struct SprectralWaveDataRecord {
     pub separation_frequency: f64,
     pub value: Vec<f64>,
     pub frequency: Vec<f64>,
+}
+
+impl UnitConvertible<SprectralWaveDataRecord> for SprectralWaveDataRecord {
+    fn to_units(&self, new_units: &Units) -> SprectralWaveDataRecord {
+        // TODO: Maybe some conversion
+        SprectralWaveDataRecord{
+            year: self.year.clone(),
+            month: self.month.clone(),
+            day: self.day.clone(),
+            hour: self.hour.clone(),
+            minute: self.minute.clone(),
+            separation_frequency: self.separation_frequency.clone(),
+            value: self.value.clone(), 
+            frequency: self.frequency.clone(),
+        }
+    }
 }

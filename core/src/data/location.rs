@@ -62,10 +62,10 @@ impl Location {
     }
 
     pub fn distance(&self, other: &Location, unit: &Units) -> f64 {
-        let source_lat = self.latitude.to_radians();
-        let source_lon = self.longitude.to_radians();
-        let dest_lat = other.latitude.to_radians();
-        let dest_lon = other.longitude.to_radians();
+        let source_lat = self.absolute_latitude().to_radians();
+        let source_lon = self.absolute_longitude().to_radians();
+        let dest_lat = other.absolute_latitude().to_radians();
+        let dest_lon = other.absolute_longitude().to_radians();
 
         // Compute using the haversine formula
         let d_lat = dest_lat - source_lat;
