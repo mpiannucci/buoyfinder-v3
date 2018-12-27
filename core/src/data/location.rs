@@ -2,6 +2,7 @@ use std::string::String;
 use std::f64;
 use serde::de::{self, Deserialize, Deserializer};
 use crate::data::units::Units;
+use serde_derive::*;
 
 #[derive(Debug, Default, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Location {

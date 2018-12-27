@@ -2,6 +2,7 @@ use crate::data::location::Location;
 use std::string::String;
 use serde::de::{Deserialize, Deserializer};
 use serde_xml_rs::de::from_reader;
+use serde_derive::*;
 
 #[repr(C)]
 #[derive(Debug, Clone, Serialize, Deserialize)]
