@@ -9,6 +9,7 @@ use crate::app::color::Color;
 pub enum BuoyStationIcon {
     FixedStation,
     Buoy,
+    OilRig,
     Tides,
     Tsunami,
     Unknown,
@@ -32,14 +33,15 @@ impl BuoyStationItemViewData {
             location: buoy.location.clone(),
             on_click_id: buoy.station_id.clone(),
             icon: match buoy.buoy_type { 
-                BuoyType::Fixed | BuoyType::OilRig => BuoyStationIcon::FixedStation,
+                BuoyType::Fixed => BuoyStationIcon::FixedStation,
+                BuoyType::OilRig => BuoyStationIcon::OilRig,
                 BuoyType::Buoy => BuoyStationIcon::Buoy,
                 BuoyType::Dart => BuoyStationIcon::Tsunami,
                 _ => BuoyStationIcon::Unknown,
             },
             color: match buoy.is_active() {
-                true => Color { red: 0.0, green: 1.0, blue: 0.0 },
-                false => Color { red: 1.0, green: 0.0, blue: 0.0 },
+                true => Color { red: 0, green: 255, blue: 0, alpha: 255 },
+                false => Color { red: 255, green: 0, blue: 0, alpha: 255 },
             },
         }
     }

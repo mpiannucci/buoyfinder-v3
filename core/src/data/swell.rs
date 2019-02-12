@@ -1,5 +1,5 @@
-use data::dimensional_data::DimensionalData;
-use data::units::{Units, Measurement, Direction, UnitConvertible};
+use crate::data::dimensional_data::DimensionalData;
+use crate::data::units::{Units, Measurement, Direction, UnitConvertible};
 use std::fmt;
 
 #[derive(Clone)]
@@ -12,32 +12,33 @@ pub struct Swell {
 impl Swell {
     pub fn new(units: &Units, wave_height: f64, period: f64, direction: Direction) -> Swell {
         Swell {
-            wave_height: DimensionalData<f64> {
+            wave_height: DimensionalData {
                 value: Some(wave_height),
+                variable_name: "wave height",
                 measurement: Measurement::Length,
-                units: units.clone(),
+                unit: units.clone(),
             },
-            period: DimensionalData<f64> {
+            period: DimensionalData {
                 value: Some(period),
+                variable_name: "period",
                 measurement: Measurement::Time,
-                units: units.clone(),
+                unit: units.clone(),
             },
-            direction: DimensionalData<Direction> {
+            direction: DimensionalData {
                 value: Some(direction),
+                variable_name: "direction",
                 measurement: Measurement::Direction,
-                units: units.clone(),
+                unit: units.clone(),
             }
         }
     }
 }
 
 impl UnitConvertible<Swell> for Swell {
-    fn to_units(&self, new_units: &Units) -> Swell {
-        Swell {
-            wave_height: self.wave_height.to_units(new_units),
-            period: self.wave_height.to_units(new_units),
-            direction: self.wave_height.to_units(new_units),
-        }
+    fn to_units(&mut self, new_units: &Units) {
+        self.wave_height.to_units(new_units);
+        self.wave_height.to_units(new_units);
+        self.wave_height.to_units(new_units);
     }
 }
 

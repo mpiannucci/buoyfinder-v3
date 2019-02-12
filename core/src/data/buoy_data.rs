@@ -11,12 +11,15 @@ pub enum BuoyDataRecord {
 }
 
 impl UnitConvertible<BuoyDataRecord> for BuoyDataRecord {
-    fn to_units(&self, new_units: &Units) -> BuoyDataRecord {
+    fn to_units(&mut self, new_units: &Units) {
         match self {
-            BuoyDataRecord::Latest(met_data, wave_data) => BuoyDataRecord::Latest(met_data.to_units(new_units), wave_data.to_units(new_units)),
-            BuoyDataRecord::Meteorological(data) => BuoyDataRecord::Meteorological(data.to_units(new_units)),
-            BuoyDataRecord::Wave(data) => BuoyDataRecord::Wave(data.to_units(new_units)),
-            BuoyDataRecord::SprectralWave(data) => BuoyDataRecord::SprectralWave(data.to_units(new_units)),
+            BuoyDataRecord::Latest(met_data, wave_data) => {
+                met_data.to_units(new_units); 
+                wave_data.to_units(new_units);
+            },
+            BuoyDataRecord::Meteorological(data) => data.to_units(new_units),
+            BuoyDataRecord::Wave(data) => data.to_units(new_units),
+            BuoyDataRecord::SprectralWave(data) => data.to_units(new_units),
         }
     }
 }
@@ -45,28 +48,21 @@ pub struct MeteorologicalDataRecord {
 }
 
 impl UnitConvertible<MeteorologicalDataRecord> for MeteorologicalDataRecord {
-    fn to_units(&self, new_units: &Units) -> MeteorologicalDataRecord {
-        MeteorologicalDataRecord {
-            year: self.year.clone(),
-            month: self.month.clone(), 
-            day: self.day.clone(),
-            hour: self.hour.clone(), 
-            minute: self.minute.clone(),
-            wind_direction: self.wind_direction.to_units(new_units),
-            wind_speed: self.wind_speed.to_units(new_units),
-            wind_gust_speed: self.wind_gust_speed.to_units(new_units),
-            wave_height: self.wave_height.to_units(new_units),
-            dominant_wave_period: self.dominant_wave_period.to_units(new_units),
-            average_wave_period: self.average_wave_period.to_units(new_units),
-            mean_wave_direction: self.mean_wave_direction.to_units(new_units),
-            air_pressure: self.air_pressure.to_units(new_units),
-            air_pressure_tendency: self.air_pressure_tendency.to_units(new_units),
-            air_temperature: self.air_temperature.to_units(new_units),
-            water_temperature: self.water_temperature.to_units(new_units),
-            dewpoint_temperature: self.dewpoint_temperature.to_units(new_units),
-            visibility: self.visibility.to_units(new_units),
-            tide: self.tide.to_units(new_units),
-        }
+    fn to_units(&mut self, new_units: &Units) {
+        self.wind_direction.to_units(new_units);
+        self.wind_speed.to_units(new_units);
+        self.wind_gust_speed.to_units(new_units);
+        self.wave_height.to_units(new_units);
+        self.dominant_wave_period.to_units(new_units);
+        self.average_wave_period.to_units(new_units);
+        self.mean_wave_direction.to_units(new_units);
+        self.air_pressure.to_units(new_units);
+        self.air_pressure_tendency.to_units(new_units);
+        self.air_temperature.to_units(new_units);
+        self.water_temperature.to_units(new_units);
+        self.dewpoint_temperature.to_units(new_units);
+        self.visibility.to_units(new_units);
+        self.tide.to_units(new_units);
     }
 }
 
@@ -90,24 +86,16 @@ pub struct WaveDataRecord {
 }
 
 impl UnitConvertible<WaveDataRecord> for WaveDataRecord {
-    fn to_units(&self, new_units: &Units) -> WaveDataRecord {
-        WaveDataRecord {
-            year: self.year.clone(),
-            month: self.month.clone(), 
-            day: self.day.clone(),
-            hour: self.hour.clone(), 
-            minute: self.minute.clone(),
-            wave_height: self.wave_height.to_units(new_units),
-            average_wave_period: self.average_wave_period.to_units(new_units),
-            mean_wave_direction: self.mean_wave_direction.to_units(new_units),
-            swell_wave_height: self.swell_wave_height.to_units(new_units),
-            swell_period: self.swell_period.to_units(new_units),
-            swell_direction: self.swell_direction.to_units(new_units),
-            wind_wave_height: self.wind_wave_height.to_units(new_units),
-            wind_wave_period: self.wind_wave_period.to_units(new_units),
-            wind_wave_direction: self.wind_wave_direction.to_units(new_units),
-            steepness: self.steepness.clone(),
-        }
+    fn to_units(&mut self, new_units: &Units) {
+        self.wave_height.to_units(new_units);
+        self.average_wave_period.to_units(new_units);
+        self.mean_wave_direction.to_units(new_units);
+        self.swell_wave_height.to_units(new_units);
+        self.swell_period.to_units(new_units);
+        self.swell_direction.to_units(new_units);
+        self.wind_wave_height.to_units(new_units);
+        self.wind_wave_period.to_units(new_units);
+        self.wind_wave_direction.to_units(new_units);
     }
 }
 
@@ -124,17 +112,7 @@ pub struct SprectralWaveDataRecord {
 }
 
 impl UnitConvertible<SprectralWaveDataRecord> for SprectralWaveDataRecord {
-    fn to_units(&self, new_units: &Units) -> SprectralWaveDataRecord {
+    fn to_units(&mut self, new_units: &Units) {
         // TODO: Maybe some conversion
-        SprectralWaveDataRecord{
-            year: self.year.clone(),
-            month: self.month.clone(),
-            day: self.day.clone(),
-            hour: self.hour.clone(),
-            minute: self.minute.clone(),
-            separation_frequency: self.separation_frequency.clone(),
-            value: self.value.clone(), 
-            frequency: self.frequency.clone(),
-        }
     }
 }

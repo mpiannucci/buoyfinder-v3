@@ -4,17 +4,19 @@ use std::num::ParseIntError;
 #[repr(C)]
 #[derive(Clone, Debug, PartialEq)]
 pub struct Color {
-    pub red: f64,
-    pub green: f64,
-    pub blue: f64,
+    pub red: u8,
+    pub green: u8,
+    pub blue: u8,
+    pub alpha: u8,
 }
 
 impl Color {
-    pub fn new(r: f64, g: f64, b: f64) -> Self {
+    pub fn new(r: u8, g: u8, b: u8, a: u8) -> Self {
         Color {
             red: r, 
             green: g,
             blue: b,
+            alpha: a,
         }
     }
 }
@@ -22,9 +24,10 @@ impl Color {
 impl From<i64> for Color {
     fn from(value: i64) -> Self {
         Color {
-            red: (((value >> 16) & 0xff) as f64) / 255.0,
-            green: (((value >> 8) & 0xff) as f64) / 255.0, 
-            blue: ((value & 0xff) as f64) / 255.0,
+            red: ((value >> 24) & 0xff) as u8,
+            green: ((value >> 16) & 0xff) as u8, 
+            blue: ((value >> 8) & 0xff) as u8,
+            alpha: (value & 0xff) as u8,
         }
     }
 }

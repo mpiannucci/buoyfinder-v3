@@ -265,5 +265,5 @@ pub enum SteepnessParseError {
 }
 
 pub trait UnitConvertible<T> {
-    fn to_units(&self, new_units: &Units) -> T;
+    fn to_units(&mut self, new_units: &Units);
 }

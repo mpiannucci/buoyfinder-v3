@@ -439,24 +439,31 @@ pub mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Color_red(_: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Color_red(_: JNIEnv, _: JClass, ptr: jlong) -> jint {
         let color = ptr as *mut Color;
         let color = &*color;
-        color.red as jdouble
+        color.red as jint
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Color_green(_: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Color_green(_: JNIEnv, _: JClass, ptr: jlong) -> jint {
         let color = ptr as *mut Color;
         let color = &*color;
-        color.green as jdouble
+        color.green as jint
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Color_blue(_: JNIEnv, _: JClass, ptr: jlong) -> jdouble {
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Color_blue(_: JNIEnv, _: JClass, ptr: jlong) -> jint {
         let color = ptr as *mut Color;
         let color = &*color;
-        color.blue as jdouble
+        color.blue as jint
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Color_alpha(_: JNIEnv, _: JClass, ptr: jlong) -> jint {
+        let color = ptr as *mut Color;
+        let color = &*color;
+        color.alpha as jint
     }
 
     struct ExploreViewJVMWrapper {
