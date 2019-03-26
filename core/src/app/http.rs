@@ -1,10 +1,14 @@
 
 pub struct HttpResponse {
-    error_code: Option<i32>,
-    url: String,
-    data: String,
+    pub error_code: Option<i32>,
+    pub url: String,
+    pub data: String,
+}
+
+pub trait HttpListener {
+    fn on_completed(&mut self, response: HttpResponse);
 }
 
 pub trait HttpClient {
-    fn fetch<F>(url: String, completion: F) where F: Fn(HttpResponse);
+    fn fetch<T>(&mut self, url: &str, completion: &mut T) where T: HttpListener;
 }

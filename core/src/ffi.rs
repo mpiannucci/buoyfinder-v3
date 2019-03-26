@@ -9,7 +9,6 @@ use crate::app::color::Color;
 use crate::app::state::app_state::AppState;
 use crate::app::state::data_state::DataState;
 use crate::app::actions::Actions;
-use crate::app::{fetch_buoy_stations_remote};
 use crate::app::vm::{ExploreViewData, ExploreView, ExploreViewModel, BuoyStationItemViewData, BuoyStationIcon};
 use crate::data::station::{BuoyStation};
 use crate::data::location::Location;
@@ -50,8 +49,8 @@ pub unsafe extern fn store_free(store: *mut Store<AppState>) {
 pub unsafe extern fn fetch_buoy_stations(store: *mut Store<AppState>) {
     let store = &mut*store;
     store.dispatch(Actions::SetBuoyStationsLoading);
-    let stations = fetch_buoy_stations_remote();
-    store.dispatch(Actions::SetBuoyStations(stations));
+    // let stations = fetch_buoy_stations_remote();
+    // store.dispatch(Actions::SetBuoyStations(stations));
 }
 
 #[repr(C)]
