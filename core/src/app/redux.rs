@@ -4,28 +4,26 @@ pub trait StoreObserver<T> {
     fn new_state(&mut self, state: &T);
 }
 
-pub trait Reducer<T, U> {
-    fn reduce(&self, state: &T, action: &U) -> T;
+pub trait Reducer: Default + Clone {
+    type Action;
+    fn reduce(&mut self, action: Self::Action);
 }
 
-pub struct Store<T, U> {
+pub struct Store<T> where T: Reducer {
     pub state: T,
     observers: Vec<Box<StoreObserver<T>>>,
     observer_ids: Vec<i32>,
     observer_id_factory: i32,
-    reducer: Box<Reducer<T, U>>,
 }
 
-impl <T, U> Store<T, U> where T: Clone {
+impl <T> Store<T> where T: Reducer {
 
-    pub fn create(initial_state: &T, reducer: Box<Reducer<T, U>>) -> Store<T, U> {
+    pub fn create(initial_state: T) -> Store<T> {
         Store {
-            state: initial_state.clone(),
+            state: initial_state,
             observers: Vec::new(),
             observer_ids: Vec::new(),
             observer_id_factory: 0,
-            reducer: reducer,
-
         }
     }
 
@@ -44,8 +42,8 @@ impl <T, U> Store<T, U> where T: Clone {
         }
     }
 
-    pub fn dispatch(&mut self, action: U) {
-        self.state = self.reducer.reduce(&self.state, &action);
+    pub fn dispatch(&mut self, action: T::Action) {
+        self.state.reduce(action);
         self.notify_observers();
     }
 

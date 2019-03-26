@@ -16,8 +16,7 @@ impl vm::ExploreView for ExampleExploreView {
 }
 
 fn main() {
-    let app_reducer = Box::new(app::AppReducer{});
-    let mut store = redux::Store::create(&app::state::app_state::AppState::default(), app_reducer);
+    let mut store = redux::Store::create(app::state::app_state::AppState::default());
     let explore_view = Box::new(ExampleExploreView{});
     let explore_vm = Box::new(vm::ExploreViewModel::new(explore_view));
     let explore_vm_id = store.subscribe(explore_vm);

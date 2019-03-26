@@ -7,26 +7,6 @@ pub mod http;
 
 use crate::data::station;
 use reqwest;
-use crate::app::redux::Reducer;
-use crate::app::state::data_state::DataState;
-use crate::app::state::app_state::AppState;
-use crate::app::actions::Actions;
-
-pub struct AppReducer;
-
-impl Reducer<AppState, Actions> for AppReducer {
-    fn reduce(&self, state: &AppState, action: &Actions) -> AppState {
-        let mut new_state = state.clone();
-
-        match action {
-            Actions::SetBuoyStationsLoading => new_state.stations_state = DataState::DataLoading,
-            Actions::SetBuoyStations(stations) => new_state.stations_state = DataState::DataLoaded(stations.clone()),
-            Actions::SetBuoyStationLoadError => new_state.stations_state = DataState::DataError,
-        };
-
-        new_state
-    }
-}
 
 pub fn fetch_buoy_stations_remote() -> station::BuoyStations {
     let mut res = reqwest::get("https://ndbc.noaa.gov/activestations.xml").unwrap();

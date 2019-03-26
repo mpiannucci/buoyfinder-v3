@@ -9,7 +9,7 @@ use crate::app::color::Color;
 use crate::app::state::app_state::AppState;
 use crate::app::state::data_state::DataState;
 use crate::app::actions::Actions;
-use crate::app::{AppReducer, fetch_buoy_stations_remote};
+use crate::app::{fetch_buoy_stations_remote};
 use crate::app::vm::{ExploreViewData, ExploreView, ExploreViewModel, BuoyStationItemViewData, BuoyStationIcon};
 use crate::data::station::{BuoyStation};
 use crate::data::location::Location;
@@ -34,21 +34,20 @@ pub fn string_to_c_char(r_string: String) -> *mut c_char {
 }
 
 #[no_mangle]
-pub extern fn store_new() -> *mut Store<AppState, Actions> {
+pub extern fn store_new() -> *mut Store<AppState> {
     let default_state = AppState::default();
-    let app_reducer = Box::new(AppReducer{});
-    let store = Store::create(&default_state, app_reducer);
+    let store = Store::create(default_state);
     let boxed_store = Box::new(store);
     Box::into_raw(boxed_store)
 }
 
 #[no_mangle]
-pub unsafe extern fn store_free(store: *mut Store<AppState, Actions>) {
+pub unsafe extern fn store_free(store: *mut Store<AppState>) {
     let _ = Box::from_raw(store);
 }
 
 #[no_mangle]
-pub unsafe extern fn fetch_buoy_stations(store: *mut Store<AppState, Actions>) {
+pub unsafe extern fn fetch_buoy_stations(store: *mut Store<AppState>) {
     let store = &mut*store;
     store.dispatch(Actions::SetBuoyStationsLoading);
     let stations = fetch_buoy_stations_remote();
@@ -79,7 +78,7 @@ impl ExploreView for ExploreViewWrapper {
 }
 
 #[no_mangle]
-pub unsafe extern fn explore_view_bind(view: explore_view, store: *mut Store<AppState, Actions>) -> i32 {
+pub unsafe extern fn explore_view_bind(view: explore_view, store: *mut Store<AppState>) -> i32 {
     let explore_view_wrapper = Box::new(ExploreViewWrapper(view));
     let explore_view_model = Box::new(ExploreViewModel::new(explore_view_wrapper));
     let store = &mut*store;
@@ -87,7 +86,7 @@ pub unsafe extern fn explore_view_bind(view: explore_view, store: *mut Store<App
 }
 
 #[no_mangle]
-pub unsafe extern fn explore_view_unbind(view_observer_id: i32, store: *mut Store<AppState, Actions>) {
+pub unsafe extern fn explore_view_unbind(view_observer_id: i32, store: *mut Store<AppState>) {
     let store = &mut*store;
     store.unsubscribe(view_observer_id);
 }

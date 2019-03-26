@@ -1,6 +1,7 @@
 use crate::data::station::{BuoyStation, BuoyStations, BuoyType};
 use crate::app::redux;
-use crate::app::{DataState, AppState};
+use crate::app::state::app_state::AppState;
+use crate::app::state::data_state::DataState;
 use crate::data::location::Location;
 use crate::app::color::Color;
 
