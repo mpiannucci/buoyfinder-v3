@@ -1,9 +1,9 @@
-use std::str::FromStr;
 use std::fmt;
+use std::str::FromStr;
 
 #[derive(Clone, Debug)]
 pub enum Measurement {
-    Length, 
+    Length,
     Speed,
     Temperature,
     Pressure,
@@ -21,7 +21,7 @@ impl Measurement {
             Measurement::Pressure => "pressure",
             Measurement::Visibility => "visibility",
             Measurement::Direction => "direction",
-            Measurement::Time => "time"
+            Measurement::Time => "time",
         }
     }
 }
@@ -40,7 +40,7 @@ impl Units {
             Units::Metric => "metric",
             Units::English => "english",
             Units::Knots => "knots",
-            Units::Kelvin => "kelvin"
+            Units::Kelvin => "kelvin",
         }
     }
 
@@ -76,7 +76,7 @@ impl Units {
             (_, Measurement::Time, true) => "s",
             (_, Measurement::Time, false) => "seconds",
             (_, Measurement::Direction, _) => "°",
-            _ => ""
+            _ => "",
         }
     }
 
@@ -94,16 +94,20 @@ impl Units {
             (Units::English, Measurement::Speed, Units::Metric) => value / 2.237,
             (Units::English, Measurement::Speed, Units::Knots) => value / 1.15,
             (Units::English, Measurement::Temperature, Units::Metric) => value - 32.0 * (5.0 / 9.0),
-            (Units::English, Measurement::Temperature, Units::Kelvin) => (value + 459.67) * (5.0 / 9.0),
+            (Units::English, Measurement::Temperature, Units::Kelvin) => {
+                (value + 459.67) * (5.0 / 9.0)
+            }
             (Units::English, Measurement::Pressure, Units::Metric) => value * 33.8638,
 
             (Units::Knots, Measurement::Speed, Units::Metric) => value * 0.514,
             (Units::Knots, Measurement::Speed, Units::English) => value * 1.15,
 
             (Units::Kelvin, Measurement::Temperature, Units::Metric) => value - 273.0,
-            (Units::Kelvin, Measurement::Temperature, Units::English) => value * (9.0 / 5.0) - 459.67,
+            (Units::Kelvin, Measurement::Temperature, Units::English) => {
+                value * (9.0 / 5.0) - 459.67
+            }
 
-            _ => value
+            _ => value,
         }
     }
 
@@ -146,22 +150,22 @@ pub enum CardinalDirection {
 impl CardinalDirection {
     pub fn from_degree(degree: i64) -> CardinalDirection {
         match degree {
-            349 ..= 360 | 0 ..= 11 => CardinalDirection::North,
-            12 ..= 33 => CardinalDirection::NorthNorthEast,
-            34 ..= 56 => CardinalDirection::NorthEast,
-            57 ..= 78 => CardinalDirection::EastNorthEast,
-            79 ..= 101 => CardinalDirection::East,
-            102 ..= 123 => CardinalDirection::EastSouthEast,
-            124 ..= 146 => CardinalDirection::SouthEast,
-            147 ..= 168 => CardinalDirection::SouthSouthEast,
-            169 ..= 191 => CardinalDirection::South,
-            192 ..= 213 => CardinalDirection::SouthSouthWest,
-            214 ..= 236 => CardinalDirection::SouthWest,
-            237 ..= 258 => CardinalDirection::WestSouthWest,
-            259 ..= 281 => CardinalDirection::West,
-            282 ..= 303 => CardinalDirection::WestNorthWest,
-            304 ..= 326 => CardinalDirection::NorthWest,
-            327 ..= 348 => CardinalDirection::NorthNorthWest,
+            349..=360 | 0..=11 => CardinalDirection::North,
+            12..=33 => CardinalDirection::NorthNorthEast,
+            34..=56 => CardinalDirection::NorthEast,
+            57..=78 => CardinalDirection::EastNorthEast,
+            79..=101 => CardinalDirection::East,
+            102..=123 => CardinalDirection::EastSouthEast,
+            124..=146 => CardinalDirection::SouthEast,
+            147..=168 => CardinalDirection::SouthSouthEast,
+            169..=191 => CardinalDirection::South,
+            192..=213 => CardinalDirection::SouthSouthWest,
+            214..=236 => CardinalDirection::SouthWest,
+            237..=258 => CardinalDirection::WestSouthWest,
+            259..=281 => CardinalDirection::West,
+            282..=303 => CardinalDirection::WestNorthWest,
+            304..=326 => CardinalDirection::NorthWest,
+            327..=348 => CardinalDirection::NorthNorthWest,
             _ => CardinalDirection::Invalid,
         }
     }
@@ -169,25 +173,55 @@ impl CardinalDirection {
 
 impl fmt::Display for CardinalDirection {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", match self {
-            CardinalDirection::North => "n",
-            CardinalDirection::NorthNorthEast => "nne",
-            CardinalDirection::NorthEast => "ne",
-            CardinalDirection::EastNorthEast => "ene",
-            CardinalDirection::East => "e",
-            CardinalDirection::EastSouthEast => "ese",
-            CardinalDirection::SouthEast => "se",
-            CardinalDirection::SouthSouthEast => "sse",
-            CardinalDirection::South => "s",
-            CardinalDirection::SouthSouthWest => "ssw",
-            CardinalDirection::SouthWest => "sw",
-            CardinalDirection::WestSouthWest => "wsw",
-            CardinalDirection::West => "w",
-            CardinalDirection::WestNorthWest => "wnw",
-            CardinalDirection::NorthWest => "nw",
-            CardinalDirection::NorthNorthWest => "nnw",
-            CardinalDirection::Invalid => ""
-        })
+        write!(
+            f,
+            "{}",
+            match self {
+                CardinalDirection::North => "n",
+                CardinalDirection::NorthNorthEast => "nne",
+                CardinalDirection::NorthEast => "ne",
+                CardinalDirection::EastNorthEast => "ene",
+                CardinalDirection::East => "e",
+                CardinalDirection::EastSouthEast => "ese",
+                CardinalDirection::SouthEast => "se",
+                CardinalDirection::SouthSouthEast => "sse",
+                CardinalDirection::South => "s",
+                CardinalDirection::SouthSouthWest => "ssw",
+                CardinalDirection::SouthWest => "sw",
+                CardinalDirection::WestSouthWest => "wsw",
+                CardinalDirection::West => "w",
+                CardinalDirection::WestNorthWest => "wnw",
+                CardinalDirection::NorthWest => "nw",
+                CardinalDirection::NorthNorthWest => "nnw",
+                CardinalDirection::Invalid => "",
+            }
+        )
+    }
+}
+
+impl FromStr for CardinalDirection {
+    type Err = DataParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_ascii_lowercase().as_str() {
+            "n" => Ok(CardinalDirection::North),
+            "nne" => Ok(CardinalDirection::NorthNorthEast),
+            "ne" => Ok(CardinalDirection::NorthNorthEast),
+            "ene" => Ok(CardinalDirection::NorthNorthEast),
+            "e" => Ok(CardinalDirection::NorthNorthEast),
+            "ese" => Ok(CardinalDirection::NorthNorthEast),
+            "se" => Ok(CardinalDirection::NorthNorthEast),
+            "sse" => Ok(CardinalDirection::NorthNorthEast),
+            "s" => Ok(CardinalDirection::NorthNorthEast),
+            "ssw" => Ok(CardinalDirection::NorthNorthEast),
+            "sw" => Ok(CardinalDirection::NorthNorthEast),
+            "wsw" => Ok(CardinalDirection::NorthNorthEast),
+            "w" => Ok(CardinalDirection::NorthNorthEast),
+            "wnw" => Ok(CardinalDirection::NorthNorthEast),
+            "nw" => Ok(CardinalDirection::NorthNorthEast),
+            "nnw" => Ok(CardinalDirection::NorthNorthEast),
+            _ => Err(DataParseError::InvalidString),
+        }
     }
 }
 
@@ -209,8 +243,35 @@ impl Direction {
 impl fmt::Display for Direction {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self.degree {
-            Some(degree) => write!(f, "{}{} {}", degree, Units::Metric.label(&Measurement::Direction, true), self.direction),
-            None => write!(f, "{}", self.direction)
+            Some(degree) => write!(
+                f,
+                "{}{} {}",
+                degree,
+                Units::Metric.label(&Measurement::Direction, true),
+                self.direction
+            ),
+            None => write!(f, "{}", self.direction),
+        }
+    }
+}
+
+impl FromStr for Direction {
+    type Err = DataParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let parse_cardinal: Result<CardinalDirection, DataParseError> = s.parse();
+        match parse_cardinal {
+            Ok(dir) => Ok(Direction {
+                direction: dir,
+                degree: None,
+            }),
+            Err(_) => {
+                let parse_direction = s.parse::<i64>();
+                match parse_direction {
+                    Ok(dir) => Ok(Direction::from_degree(dir)),
+                    Err(_) => Err(DataParseError::InvalidString),
+                }
+            }
         }
     }
 }
@@ -235,13 +296,13 @@ impl Steepness {
             Steepness::VerySteep => "VERY_STEEP",
             Steepness::Steep => "STEEP",
             Steepness::Average => "AVERAGE",
-            Steepness::Swell => "SWELL"
+            Steepness::Swell => "SWELL",
         }
     }
 }
 
 impl FromStr for Steepness {
-    type Err = SteepnessParseError;
+    type Err = DataParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
@@ -249,7 +310,7 @@ impl FromStr for Steepness {
             "STEEP" => Ok(Steepness::Steep),
             "Average" => Ok(Steepness::Average),
             "SWELL" => Ok(Steepness::Swell),
-            _ => Err(SteepnessParseError::InvalidString)
+            _ => Err(DataParseError::InvalidString),
         }
     }
 }
@@ -260,7 +321,7 @@ impl fmt::Display for Steepness {
     }
 }
 
-pub enum SteepnessParseError {
+pub enum DataParseError {
     InvalidString,
 }
 
