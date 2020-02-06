@@ -288,6 +288,7 @@ pub enum Steepness {
     Steep,
     Average,
     Swell,
+    NA,
 }
 
 impl Steepness {
@@ -297,6 +298,7 @@ impl Steepness {
             Steepness::Steep => "STEEP",
             Steepness::Average => "AVERAGE",
             Steepness::Swell => "SWELL",
+            Steepness::NA => "NA",
         }
     }
 }
@@ -310,6 +312,7 @@ impl FromStr for Steepness {
             "STEEP" => Ok(Steepness::Steep),
             "Average" => Ok(Steepness::Average),
             "SWELL" => Ok(Steepness::Swell),
+            "NA" => Ok(Steepness::NA),
             _ => Err(DataParseError::InvalidString),
         }
     }
