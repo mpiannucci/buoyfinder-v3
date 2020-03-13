@@ -13,9 +13,7 @@ libc = "0.2"
 serde = { version = "1.0", features = ["derive"] }
 serde_derive = "1.0"
 serde-xml-rs = { git = "https://github.com/RReverser/serde-xml-rs.git" }
-reqwest = "0.9"
 log = "0.4"
-mio-uds = "0.6.7"
 csv = "1"
 
 [target.'cfg(target_os="android")'.dependencies]

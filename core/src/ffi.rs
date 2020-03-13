@@ -10,7 +10,7 @@ use crate::app::state::app_state::AppState;
 use crate::app::state::data_state::DataState;
 use crate::app::actions::Actions;
 use crate::app::vm::{ExploreViewData, ExploreView, ExploreViewModel, BuoyStationItemViewData, BuoyStationIcon};
-use crate::data::station::{BuoyStation};
+use crate::data::station::{BuoyStation, BuoyStations};
 use crate::data::location::Location;
 
 #[repr(C)]
@@ -46,11 +46,8 @@ pub unsafe extern fn store_free(store: *mut Store<AppState>) {
 }
 
 #[no_mangle]
-pub unsafe extern fn fetch_buoy_stations(store: *mut Store<AppState>) {
-    let store = &mut*store;
-    store.dispatch(Actions::SetBuoyStationsLoading);
-    // let stations = fetch_buoy_stations_remote();
-    // store.dispatch(Actions::SetBuoyStations(stations));
+pub unsafe extern fn fetch_buoy_stations_url() -> *const c_char {
+    string_to_c_char(BuoyStations::active_stations_url().clone())
 }
 
 #[repr(C)]

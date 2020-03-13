@@ -72,12 +72,12 @@ pub trait ExploreView {
 }
 
 pub struct ExploreViewModel {
-    view: Box<ExploreView>,
+    view: Box<dyn ExploreView>,
     last_state: ExploreViewData,
 }
 
 impl ExploreViewModel {
-    pub fn new(explore_view: Box<ExploreView>) -> ExploreViewModel {
+    pub fn new(explore_view: Box<dyn ExploreView>) -> ExploreViewModel {
         ExploreViewModel {
             view: explore_view,
             last_state: ExploreViewData::from_state(&DataState::NoData),
