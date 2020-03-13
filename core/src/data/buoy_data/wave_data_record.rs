@@ -51,3 +51,22 @@ impl UnitConvertible<WaveDataRecord> for WaveDataRecord {
         self.wind_wave_direction.to_units(new_units);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_wave_data_row_parse() {
+        let raw_data = "2018 09 25 00 43  2.0  0.4 12.5  1.9  6.2   E   E VERY_STEEP  5.0 101";
+        let data_row: Vec<&str> = raw_data.split_whitespace().collect();
+
+        let wave_data = WaveDataRecord::from_data_row(&data_row);
+        
+        assert_eq!(wave_data.steepness, Steepness::VerySteep);
+        assert_eq!(wave_data.swell_wave_direction.value.unwrap_or(Direction::from_degree(270)).direction, CardinalDirection::East);
+        assert_eq!(wave_data.wind_wave_direction.value.unwrap_or(Direction::from_degree(270)).direction, CardinalDirection::East);
+        assert!((wave_data.wave_height.value.unwrap_or(0.0) - 2.0).abs() < 0.0001);
+        assert!((wave_data.swell_wave_height.value.unwrap_or(0.0) - 0.4).abs() < 0.0001);
+    }
+}
