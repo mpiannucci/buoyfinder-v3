@@ -1,6 +1,6 @@
-extern crate buoyfinder;
+extern crate buoyfinder_core;
 
-use buoyfinder::data::station::BuoyStations;
+use buoyfinder_core::data::station::BuoyStations;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;

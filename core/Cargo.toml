@@ -1,11 +1,11 @@
 [package]
-name = "buoyfinder"
+name = "buoyfinder_core"
 version = "0.1.0"
 authors = ["Matthew Iannucci <mpiannucci@gmail.com>"]
 edition = "2018"
 
 [lib]
-name = "buoyfinder"
+name = "buoyfinder_core"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [dependencies]

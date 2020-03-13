@@ -1,7 +1,7 @@
-extern crate buoyfinder;
+extern crate buoyfinder_core;
 
 use std::fs;
-use buoyfinder::data::buoy_data::BuoyDataRecord;
+use buoyfinder_core::data::buoy_data::BuoyDataRecord;
 
 #[test]
 fn read_meteorological_data() {
