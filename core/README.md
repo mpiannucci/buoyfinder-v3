@@ -6,6 +6,16 @@ Core BuoyFinder logic and functionality, written in Rust
 
 **Assumes `rustup` and the android NDK are installed**
 
+* Install `cbindgen`
+```bash
+cargo install cbindgen
+```
+
+* Generate C ABI Bindings
+```bash
+bash ./gen_bindings.sh
+```
+
 * Install `ios` targets
 ```bash
 rustup target add aarch64-apple-ios armv7-apple-ios armv7s-apple-ios x86_64-apple-ios i386-apple-ios
@@ -37,7 +47,6 @@ cp cargo-config.toml ./.cargo/config
 ```bash
 cargo lipo --release
 ```
-* Build Android OpenSSL in th `deps/` folder. See `deps/openssl/README.md`
 
 * Build android libraries
 ```bash
@@ -49,13 +58,13 @@ cargo lipo --release
 * Link to the fat static library in Xcode
 ```
 Link libresolv.d
-Link libbuoyfinder.a
+Link libbuoyfinder_core.a
 Add ./target/universal/release to LIBRARY_SEARCH_PATHS
 ```
 
 * Link to the shared libraries through the jni. Copy them over for use
 ```bash
-cp target/armv7-linux-androideabi/release/libbuoyfinder.so ../android/src/main/jniLibs/armeabi-v7a/libbuoyfinder.so
-cp target/aarch64-linux-android/release/libbuoyfinder.so ../android/src/main/jniLibs/arm64-v8a/libbuoyfinder.so
-cp target/i686-linux-android/release/libbuoyfinder.so ../android/src/main/jniLibs/x86/libbuoyfinder.so
+cp target/armv7-linux-androideabi/release/libbuoyfinder_core.so ../android/src/main/jniLibs/armeabi-v7a/libbuoyfinder_core.so
+cp target/aarch64-linux-android/release/libbuoyfinder_core.so ../android/src/main/jniLibs/arm64-v8a/libbuoyfinder_core.so
+cp target/i686-linux-android/release/libbuoyfinder_core.so ../android/src/main/jniLibs/x86/libbuoyfinder_core.so
 ```

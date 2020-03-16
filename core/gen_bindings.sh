@@ -1,1 +1,1 @@
-cbindgen . -o include/buoyfinder.h -l c
+cbindgen . -o include/buoyfinder_core.h -l c

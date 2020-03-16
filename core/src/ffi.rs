@@ -271,9 +271,9 @@ pub mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Store_fetchBuoyStations(_: JNIEnv, _: JClass, ptr: jlong) {
-        let store = ptr as *mut Store<AppState, Actions>;
-        fetch_buoy_stations(store);
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Store_fetchBuoyStationsURL(_: JNIEnv, _: JClass, ptr: jlong) -> jstring {
+        let output = env.new_string(BuoyStations::active_stations_url().as_str()).expect("Failed to create station id string");
+        output.into_inner()
     }
 
     #[no_mangle]
