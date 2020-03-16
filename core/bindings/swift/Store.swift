@@ -20,7 +20,9 @@ class Store {
         store_free(raw)
     }
     
-    public func fetchBuoyStations() {
-        fetch_buoy_stations(raw)
+    private var fetch_buoy_stations_url: String{
+        get {
+            return String(cString: store_fetch_buoy_stations_url())
+        }
     }
 }

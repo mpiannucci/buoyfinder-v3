@@ -73,8 +73,6 @@ BuoyStationItemViewData *explore_view_data_station_index(const ExploreViewData *
 
 void explore_view_unbind(int32_t view_observer_id, Store_AppState *store);
 
-const char *fetch_buoy_stations_url(void);
-
 double location_altitude(const Location *data);
 
 void location_free(Location *data);
@@ -87,6 +85,14 @@ const char *location_name(const Location *data);
 
 Location *location_new(double latitude, double longitude, const char *name);
 
+const char *store_fetch_buoy_stations_url(void);
+
 void store_free(Store_AppState *store);
 
 Store_AppState *store_new(void);
+
+void store_set_buoy_stations(Store_AppState *store, const char *raw_data);
+
+void store_set_buoy_stations_loading(Store_AppState *store);
+
+void store_set_buoy_stations_loading_error(Store_AppState *store);

@@ -46,8 +46,28 @@ pub unsafe extern fn store_free(store: *mut Store<AppState>) {
 }
 
 #[no_mangle]
-pub unsafe extern fn fetch_buoy_stations_url() -> *const c_char {
+pub unsafe extern fn store_fetch_buoy_stations_url() -> *const c_char {
     string_to_c_char(BuoyStations::active_stations_url().clone())
+}
+
+#[no_mangle]
+pub unsafe extern fn store_set_buoy_stations_loading(store: *mut Store<AppState>) {
+    let store = &mut*store;
+    store.dispatch(Actions::SetBuoyStationsLoading);
+}
+
+#[no_mangle]
+pub unsafe extern fn store_set_buoy_stations(store: *mut Store<AppState>, raw_data: *const c_char) {
+    let store = &mut*store;
+
+    let stations = BuoyStations::from_raw_data(c_char_to_string(raw_data).as_str());
+    store.dispatch(Actions::SetBuoyStations(stations));
+}
+
+#[no_mangle]
+pub unsafe extern fn store_set_buoy_stations_loading_error(store: *mut Store<AppState>) {
+    let store = &mut*store;
+    store.dispatch(Actions::SetBuoyStationLoadError);
 }
 
 #[repr(C)]
@@ -274,6 +294,26 @@ pub mod android {
     pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Store_fetchBuoyStationsURL(_: JNIEnv, _: JClass, ptr: jlong) -> jstring {
         let output = env.new_string(BuoyStations::active_stations_url().as_str()).expect("Failed to create station id string");
         output.into_inner()
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Store_setBuoyStationsLoading(_: JNIEnv, _: JClass, ptr: jlong) {
+        let store = ptr as *mut Store<AppState, Actions>;
+        store_set_buoy_stations_loading(store);
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Store_setBuoyStations(_: JNIEnv, _: JClass, ptr: jlong, raw_data: JString) {
+        let store = ptr as *mut Store<AppState, Actions>;
+
+        let raw_data = env.get_string(raw_data).expect("Invalid data string");
+        store_set_buoy_stations(raw_data);
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_com_mpiannucci_buoyfinder_core_Store_setBuoyStationsLoadingError(_: JNIEnv, _: JClass, ptr: jlong) {
+        let store = ptr as *mut Store<AppState, Actions>;
+        store_set_buoy_stations_loading_error(store);
     }
 
     #[no_mangle]
