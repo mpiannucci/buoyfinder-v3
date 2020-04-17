@@ -19,6 +19,15 @@ impl Color {
             alpha: a,
         }
     }
+
+    pub fn black() -> Self {
+        Color {
+            red: 0,
+            green: 0,
+            blue: 0,
+            alpha: 0,
+        }
+    }
 }
 
 impl From<i64> for Color {
