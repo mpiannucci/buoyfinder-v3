@@ -17,7 +17,15 @@ pub fn ffi(_metadata: TokenStream, input: TokenStream) -> TokenStream {
             let constructor_ident = Ident::new(&format!("ffi_{}_new", struct_item.ident), Span::call_site());
             let destructor_ident = Ident::new(&format!("ffi_{}_free", struct_item.ident), Span::call_site());
 
-            let fields: Option<syn::punctuated::Punctuated<syn::Field, syn::token::Comma>> = match struct_item.fields {
+            let fields = match &struct_item.fields {
+                syn::Fields::Named(ref named_fields) => named_fields.named.clone(),
+                _ => panic!("Expected a struct with named fields")
+            }; 
+
+            let field_name = fields.iter().map(|field| &field.ident);
+            let field_value = fields.iter().map(|field| &field.ident);
+            let field_type = fields.iter().map(|field| &field.ty);
+            let field_args: Option<syn::punctuated::Punctuated<syn::Field, syn::token::Comma>> = match struct_item.fields {
                 syn::Fields::Named(ref named_fields) => Some(named_fields.named.clone()),
                 _ => None,
             };
@@ -25,9 +33,11 @@ pub fn ffi(_metadata: TokenStream, input: TokenStream) -> TokenStream {
             quote!{
                 #item 
 
-                pub unsafe extern fn #constructor_ident(#(#fields),*) -> *mut #struct_name {
+                pub unsafe extern fn #constructor_ident(#(#field_args),*) -> *mut #struct_name {
                     let boxed_var = Box::new(#struct_name {
-
+                        #(
+                            #field_name: #field_value,
+                        )*
                     });
                     Box::into_raw(boxed_var)
                 }
@@ -43,8 +53,4 @@ pub fn ffi(_metadata: TokenStream, input: TokenStream) -> TokenStream {
     println!("{}", output);
 
     output.into()
-}
-
-fn gen_struct_ffi(struct_item: &syn::ItemStruct) -> TokenStream {
-    
 }
